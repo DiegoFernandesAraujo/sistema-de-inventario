@@ -9,7 +9,7 @@ package my.inventariouepb;
  *
  * @author Coordenação
  */
-public class InventarioUEPB {
+public class Inventario {
 
     /**
      * @param args the command line arguments
