@@ -5,6 +5,8 @@
  */
 package my.inventariouepb;
 
+import static my.inventariouepb.InventarioUI.getNomeRelatorio;
+
 /**
  *
  * @author Coordenação
@@ -14,7 +16,11 @@ public class GerenciadorRelatorios extends javax.swing.JFrame {
     /**
      * Creates new form Relatorios
      */
+    InventarioUI objInventarioUI;
+    //private String titRelatorio = "Relatório";
+    
     public GerenciadorRelatorios() {
+        //System.out.println("criou objeto");
         initComponents();
     }
 
@@ -27,22 +33,30 @@ public class GerenciadorRelatorios extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        painelBotoes = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
+        painelRelatorio = new javax.swing.JPanel();
+        painelInfo = new javax.swing.JPanel();
+        quantitativos = new javax.swing.JLabel();
+        painelTabela = new javax.swing.JPanel();
+        painelCheck = new javax.swing.JPanel();
+        checkEmprest = new javax.swing.JCheckBox();
+        checkExtrav = new javax.swing.JCheckBox();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
+        painelBotoes.setLayout(new javax.swing.BoxLayout(painelBotoes, javax.swing.BoxLayout.LINE_AXIS));
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/my/imagens/icon_impressora2.png"))); // NOI18N
         jButton2.setText("Imprimir");
         jButton2.setMaximumSize(new java.awt.Dimension(107, 25));
         jButton2.setMinimumSize(new java.awt.Dimension(107, 25));
         jButton2.setPreferredSize(new java.awt.Dimension(107, 25));
-        jPanel1.add(jButton2);
+        painelBotoes.add(jButton2);
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/my/imagens/icon_xls.gif"))); // NOI18N
         jButton1.setText("Gerar XLS");
@@ -51,7 +65,7 @@ public class GerenciadorRelatorios extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1);
+        painelBotoes.add(jButton1);
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/my/imagens/icon_pdf.png"))); // NOI18N
         jButton3.setText("Gerar PDF");
@@ -60,27 +74,124 @@ public class GerenciadorRelatorios extends javax.swing.JFrame {
                 jButton3ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton3);
+        painelBotoes.add(jButton3);
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Relatório"));
-        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.LINE_AXIS));
+        painelRelatorio.setBorder(javax.swing.BorderFactory.createTitledBorder(null, getNomeRelatorio(), javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP));
+
+        quantitativos.setText("Informações xxxxxxxxxx");
+
+        javax.swing.GroupLayout painelInfoLayout = new javax.swing.GroupLayout(painelInfo);
+        painelInfo.setLayout(painelInfoLayout);
+        painelInfoLayout.setHorizontalGroup(
+            painelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(painelInfoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(quantitativos)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        painelInfoLayout.setVerticalGroup(
+            painelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelInfoLayout.createSequentialGroup()
+                .addGap(0, 13, Short.MAX_VALUE)
+                .addComponent(quantitativos))
+        );
+
+        checkEmprest.setText("Emprestados");
+        checkEmprest.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkEmprestActionPerformed(evt);
+            }
+        });
+
+        checkExtrav.setText("Extraviados");
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        javax.swing.GroupLayout painelCheckLayout = new javax.swing.GroupLayout(painelCheck);
+        painelCheck.setLayout(painelCheckLayout);
+        painelCheckLayout.setHorizontalGroup(
+            painelCheckLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(painelCheckLayout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addComponent(checkEmprest)
+                .addGap(30, 30, 30)
+                .addComponent(checkExtrav)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(painelCheckLayout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        painelCheckLayout.setVerticalGroup(
+            painelCheckLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(painelCheckLayout.createSequentialGroup()
+                .addGroup(painelCheckLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(checkEmprest)
+                    .addComponent(checkExtrav))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 31, Short.MAX_VALUE))
+        );
+
+        painelCheckLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {checkEmprest, checkExtrav});
+
+        javax.swing.GroupLayout painelTabelaLayout = new javax.swing.GroupLayout(painelTabela);
+        painelTabela.setLayout(painelTabelaLayout);
+        painelTabelaLayout.setHorizontalGroup(
+            painelTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(painelTabelaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(painelCheck, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        painelTabelaLayout.setVerticalGroup(
+            painelTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(painelTabelaLayout.createSequentialGroup()
+                .addComponent(painelCheck, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout painelRelatorioLayout = new javax.swing.GroupLayout(painelRelatorio);
+        painelRelatorio.setLayout(painelRelatorioLayout);
+        painelRelatorioLayout.setHorizontalGroup(
+            painelRelatorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(painelTabela, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(painelInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        painelRelatorioLayout.setVerticalGroup(
+            painelRelatorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(painelRelatorioLayout.createSequentialGroup()
+                .addComponent(painelInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(painelTabela, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(painelBotoes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(painelRelatorio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(painelBotoes, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(painelRelatorio, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -94,6 +205,29 @@ public class GerenciadorRelatorios extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void checkEmprestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkEmprestActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_checkEmprestActionPerformed
+
+    public void mostraChecks(boolean valor){
+        //painelCheck.setVisible(valor);
+        checkEmprest.setVisible(valor);
+        checkExtrav.setVisible(valor);
+    }
+    
+    public void setRefInventarioUI(InventarioUI obj){
+        objInventarioUI = obj;
+    }
+    
+    /**
+     *
+     * @param tit
+     */
+    /*public void setTitRelatorio(String tit){
+        titRelatorio = tit;
+        System.out.println("setTit");
+    }*/
+    
     /**
      * @param args the command line arguments
      */
@@ -131,10 +265,18 @@ public class GerenciadorRelatorios extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox checkEmprest;
+    private javax.swing.JCheckBox checkExtrav;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JPanel painelBotoes;
+    private javax.swing.JPanel painelCheck;
+    private javax.swing.JPanel painelInfo;
+    private javax.swing.JPanel painelRelatorio;
+    private javax.swing.JPanel painelTabela;
+    private javax.swing.JLabel quantitativos;
     // End of variables declaration//GEN-END:variables
 }

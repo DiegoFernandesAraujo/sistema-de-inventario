@@ -5,17 +5,14 @@
  */
 package my.inventariouepb;
 
+import javax.swing.JTable;
+
 /**
  *
- * @author Coordenação
+ * @author Diego
  */
-public class Inventario {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-    }
+abstract public class TabelaRelatorio extends JTable{
+    
+    
     
 }
