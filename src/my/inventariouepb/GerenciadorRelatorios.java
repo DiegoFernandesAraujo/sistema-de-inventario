@@ -5,6 +5,15 @@
  */
 package my.inventariouepb;
 
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.JTable;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.TableModel;
 import static my.inventariouepb.InventarioUI.getNomeRelatorio;
 
 /**
@@ -12,15 +21,21 @@ import static my.inventariouepb.InventarioUI.getNomeRelatorio;
  * @author Coordenação
  */
 public class GerenciadorRelatorios extends javax.swing.JFrame {
+    
+  
+    TableModel modeloTabela = null;
 
     /**
      * Creates new form Relatorios
      */
     InventarioUI objInventarioUI;
+    
     //private String titRelatorio = "Relatório";
     
-    public GerenciadorRelatorios() {
+    public GerenciadorRelatorios(TableModel modelo) {
+        modeloTabela = modelo;
         //System.out.println("criou objeto");
+        //setModeloTabelaRelat(TabelaRelatorio.getTabela());
         initComponents();
     }
 
@@ -34,9 +49,9 @@ public class GerenciadorRelatorios extends javax.swing.JFrame {
     private void initComponents() {
 
         painelBotoes = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        botImprimir = new javax.swing.JButton();
+        botXLS = new javax.swing.JButton();
+        botPDF = new javax.swing.JButton();
         painelRelatorio = new javax.swing.JPanel();
         painelInfo = new javax.swing.JPanel();
         quantitativos = new javax.swing.JLabel();
@@ -45,36 +60,39 @@ public class GerenciadorRelatorios extends javax.swing.JFrame {
         checkEmprest = new javax.swing.JCheckBox();
         checkExtrav = new javax.swing.JCheckBox();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabRelat = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         painelBotoes.setLayout(new javax.swing.BoxLayout(painelBotoes, javax.swing.BoxLayout.LINE_AXIS));
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/my/imagens/icon_impressora2.png"))); // NOI18N
-        jButton2.setText("Imprimir");
-        jButton2.setMaximumSize(new java.awt.Dimension(107, 25));
-        jButton2.setMinimumSize(new java.awt.Dimension(107, 25));
-        jButton2.setPreferredSize(new java.awt.Dimension(107, 25));
-        painelBotoes.add(jButton2);
+        botImprimir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/my/imagens/icon_impressora2.png"))); // NOI18N
+        botImprimir.setText("Imprimir");
+        botImprimir.setMnemonic(KeyEvent.VK_I);
+        botImprimir.setMaximumSize(new java.awt.Dimension(107, 25));
+        botImprimir.setMinimumSize(new java.awt.Dimension(107, 25));
+        botImprimir.setPreferredSize(new java.awt.Dimension(107, 25));
+        painelBotoes.add(botImprimir);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/my/imagens/icon_xls.gif"))); // NOI18N
-        jButton1.setText("Gerar XLS");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        botXLS.setIcon(new javax.swing.ImageIcon(getClass().getResource("/my/imagens/icon_xls.gif"))); // NOI18N
+        botXLS.setText("Gerar XLS");
+        botXLS.setMnemonic(KeyEvent.VK_X);
+        botXLS.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                botXLSActionPerformed(evt);
             }
         });
-        painelBotoes.add(jButton1);
+        painelBotoes.add(botXLS);
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/my/imagens/icon_pdf.png"))); // NOI18N
-        jButton3.setText("Gerar PDF");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        botPDF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/my/imagens/icon_pdf.png"))); // NOI18N
+        botPDF.setText("Gerar PDF");
+        botPDF.setMnemonic(KeyEvent.VK_P);
+        botPDF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                botPDFActionPerformed(evt);
             }
         });
-        painelBotoes.add(jButton3);
+        painelBotoes.add(botPDF);
 
         painelRelatorio.setBorder(javax.swing.BorderFactory.createTitledBorder(null, getNomeRelatorio(), javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP));
 
@@ -105,18 +123,8 @@ public class GerenciadorRelatorios extends javax.swing.JFrame {
 
         checkExtrav.setText("Extraviados");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        tabRelat.setModel(/*TabelaRelatorio.getTabela()*/modeloTabela);
+        jScrollPane1.setViewportView(tabRelat);
 
         javax.swing.GroupLayout painelCheckLayout = new javax.swing.GroupLayout(painelCheck);
         painelCheck.setLayout(painelCheckLayout);
@@ -197,13 +205,45 @@ public class GerenciadorRelatorios extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void botXLSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botXLSActionPerformed
+        File arq = null;
+        JFileChooser fileChooser = new JFileChooser();  
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Arquivo XLS", "xls");
+        fileChooser.setFileFilter(filtro);
+        int returnVal = fileChooser.showSaveDialog(null);
+        if (returnVal == JFileChooser.APPROVE_OPTION){
+            //File dir = fileChooser.getCurrentDirectory();
+            arq = fileChooser.getSelectedFile();
+        }
+        ManipulaXLS objManipula = new ManipulaXLS();
+        try {
+            //objManipula.criaXLS(arq.getAbsolutePath(), "Plan1");
+            //objManipula.criaXLS1(arq.getAbsolutePath(), "Plan1");
+            objManipula.criaXLS(getTabelaRelat(), arq.getAbsolutePath(), "Plan1");
+        } catch (IOException ex) {
+            Logger.getLogger(GerenciadorRelatorios.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NullPointerException ex){
+            System.out.println("teste");
+        }
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_botXLSActionPerformed
+
+    //Retorna a tabela em exibição
+    public JTable getTabelaRelat(){
+        return tabRelat;
+    }
+    
+    public void setTabelaRelat(JTable tabExterna){
+        tabRelat = tabExterna;//tabRelat tem que receber um tabela já formatada
+    }
+    
+    public void setModeloTabelaRelat(TableModel modeloTab){
+        tabRelat.setModel(modeloTab);
+    }
+    
+    private void botPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botPDFActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_botPDFActionPerformed
 
     private void checkEmprestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkEmprestActionPerformed
         // TODO add your handling code here:
@@ -215,6 +255,7 @@ public class GerenciadorRelatorios extends javax.swing.JFrame {
         checkExtrav.setVisible(valor);
     }
     
+    //Recebe a instância de InventarioUI para poder chamar seus métodos a partir desta
     public void setRefInventarioUI(InventarioUI obj){
         objInventarioUI = obj;
     }
@@ -257,26 +298,26 @@ public class GerenciadorRelatorios extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new GerenciadorRelatorios().setVisible(true);
-            }
-        });
+        /*java.awt.EventQueue.invokeLater(new Runnable() {
+        public void run() {
+        new GerenciadorRelatorios().setVisible(true);
+        }
+        });*/
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botImprimir;
+    private javax.swing.JButton botPDF;
+    private javax.swing.JButton botXLS;
     private javax.swing.JCheckBox checkEmprest;
     private javax.swing.JCheckBox checkExtrav;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JPanel painelBotoes;
     private javax.swing.JPanel painelCheck;
     private javax.swing.JPanel painelInfo;
     private javax.swing.JPanel painelRelatorio;
     private javax.swing.JPanel painelTabela;
     private javax.swing.JLabel quantitativos;
+    private javax.swing.JTable tabRelat;
     // End of variables declaration//GEN-END:variables
 }

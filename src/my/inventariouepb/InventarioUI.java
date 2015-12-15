@@ -7,9 +7,10 @@ package my.inventariouepb;
 
 import java.awt.event.KeyEvent;
 import java.io.File;
-import javax.swing.ImageIcon;
+import java.io.IOException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import static my.inventariouepb.TabelaRelatorio.getModeloTabela;
 
 /**
  *
@@ -19,8 +20,8 @@ public class InventarioUI extends javax.swing.JFrame {
 
     JFileChooser fc = new JFileChooser();
     //Observacoes objObs = new Observacoes();
+    String nomeArq = null;
     
-    boolean verfExemplar = false;
     /**
      * Creates new form InventarioUI
      */
@@ -48,7 +49,7 @@ public class InventarioUI extends javax.swing.JFrame {
         botOk = new javax.swing.JButton();
         jPanel11 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tabUltIni = new javax.swing.JTable();
         abaAcervo = new javax.swing.JPanel();
         painelCargArqAcervo = new javax.swing.JPanel();
         botCargAcervo = new javax.swing.JButton();
@@ -118,6 +119,7 @@ public class InventarioUI extends javax.swing.JFrame {
         });
 
         botOk.setText("Ok");
+        botOk.setMnemonic(KeyEvent.VK_O);
         botOk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botOkActionPerformed(evt);
@@ -165,7 +167,7 @@ public class InventarioUI extends javax.swing.JFrame {
 
         jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Últimos valores inseridos", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 13), new java.awt.Color(0, 0, 153))); // NOI18N
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tabUltIni.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -179,7 +181,7 @@ public class InventarioUI extends javax.swing.JFrame {
                 java.lang.Object.class, java.lang.Object.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true
+                false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -190,12 +192,12 @@ public class InventarioUI extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable2.getTableHeader().setReorderingAllowed(false);
-        jScrollPane2.setViewportView(jTable2);
-        if (jTable2.getColumnModel().getColumnCount() > 0) {
-            jTable2.getColumnModel().getColumn(1).setMinWidth(100);
-            jTable2.getColumnModel().getColumn(1).setPreferredWidth(100);
-            jTable2.getColumnModel().getColumn(1).setMaxWidth(100);
+        tabUltIni.getTableHeader().setReorderingAllowed(false);
+        jScrollPane2.setViewportView(tabUltIni);
+        if (tabUltIni.getColumnModel().getColumnCount() > 0) {
+            tabUltIni.getColumnModel().getColumn(1).setMinWidth(100);
+            tabUltIni.getColumnModel().getColumn(1).setPreferredWidth(100);
+            tabUltIni.getColumnModel().getColumn(1).setMaxWidth(100);
         }
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
@@ -248,6 +250,7 @@ public class InventarioUI extends javax.swing.JFrame {
         painelCargArqAcervo.setToolTipText("Selecione um arquivo de texto simples (TXT) ou do Excel (XLS)");
 
         botCargAcervo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/my/imagens/icon_bd.png"))); // NOI18N
+        botCargAcervo.setMnemonic(KeyEvent.VK_C);
         botCargAcervo.setText("Carregar arquivo");
         botCargAcervo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -260,6 +263,7 @@ public class InventarioUI extends javax.swing.JFrame {
         jLabel4.setText("2º Passo:");
 
         botSelAcervo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/my/imagens/icon_open.png"))); // NOI18N
+        botSelAcervo.setMnemonic(KeyEvent.VK_S);
         botSelAcervo.setText("Selecionar arquivo");
         botSelAcervo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -335,6 +339,7 @@ public class InventarioUI extends javax.swing.JFrame {
         });
 
         vrfExemplar.setText("Verificar depois");
+        vrfExemplar.setMnemonic(KeyEvent.VK_F);
         vrfExemplar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 vrfExemplarActionPerformed(evt);
@@ -376,6 +381,7 @@ public class InventarioUI extends javax.swing.JFrame {
 
         botInsCod.setText("Inserir");
         botInsCod.setToolTipText("Insere o valor acima na tabela");
+        botInsCod.setMnemonic(KeyEvent.VK_I);
         botInsCod.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botInsCodActionPerformed(evt);
@@ -389,6 +395,7 @@ public class InventarioUI extends javax.swing.JFrame {
 
         botLimpCod.setText("Limpar");
         botLimpCod.setToolTipText("Limpa os dados do campo acima");
+        botLimpCod.setMnemonic(KeyEvent.VK_L);
         botLimpCod.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botLimpCodActionPerformed(evt);
@@ -397,6 +404,7 @@ public class InventarioUI extends javax.swing.JFrame {
 
         botDesfInsCod.setText("Desfazer");
         botDesfInsCod.setToolTipText("Desfaz a última inserção de dado na tabela");
+        botDesfInsCod.setMnemonic(KeyEvent.VK_D);
         botDesfInsCod.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botDesfInsCodActionPerformed(evt);
@@ -490,6 +498,7 @@ public class InventarioUI extends javax.swing.JFrame {
         painelCargArqSIABI.setPreferredSize(new java.awt.Dimension(221, 265));
 
         botCargSIABI.setIcon(new javax.swing.ImageIcon(getClass().getResource("/my/imagens/icon_bd.png"))); // NOI18N
+        botCargSIABI.setMnemonic(KeyEvent.VK_C);
         botCargSIABI.setText("Carregar arquivo");
         botCargSIABI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -502,6 +511,7 @@ public class InventarioUI extends javax.swing.JFrame {
         jLabel6.setText("2º Passo:");
 
         botSelSIABI.setIcon(new javax.swing.ImageIcon(getClass().getResource("/my/imagens/icon_open.png"))); // NOI18N
+        botSelSIABI.setMnemonic(KeyEvent.VK_S);
         botSelSIABI.setText("Selecionar arquivo");
         botSelSIABI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -582,6 +592,7 @@ public class InventarioUI extends javax.swing.JFrame {
         jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Gerar relatórios", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12), new java.awt.Color(0, 0, 204))); // NOI18N
         jPanel9.setToolTipText("Selecione um arquivo de texto simples (TXT) ou do Excel (XLS)");
 
+        botGerRelat.setMnemonic(KeyEvent.VK_G);
         botGerRelat.setText("Gerar");
         botGerRelat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -677,6 +688,7 @@ public class InventarioUI extends javax.swing.JFrame {
         System.out.println("Fui chamado!");
         System.out.println(obs);
         //Modifica o valor do 3º argumento da tabela dos últimos códigos lidos
+        //Chamar o método adequado aqui
     }
     
     public /*static*/ void setFocusBotaoInserir(){
@@ -714,12 +726,19 @@ public class InventarioUI extends javax.swing.JFrame {
         Observacoes obs = new Observacoes();
         obs.setVisible(true);
         obs.setRefInventarioUI(this);
-        //objObs.setVisible(true);
         
     }//GEN-LAST:event_vrfExemplarActionPerformed
 
     private void botCargAcervoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botCargAcervoActionPerformed
         System.out.println("Chamar método para inserir no BD");
+        try {
+            System.out.println(endArqAcervo.getText());
+            new ManipulaXLS().leXLS(endArqAcervo.getText());
+            
+        } catch (IOException ex) {
+            System.out.println("Arquivo não selecionado");
+            //Logger.getLogger(ManipulaXLS.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_botCargAcervoActionPerformed
 
     private void endArqAcervoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_endArqAcervoActionPerformed
@@ -727,7 +746,14 @@ public class InventarioUI extends javax.swing.JFrame {
     }//GEN-LAST:event_endArqAcervoActionPerformed
 
     private void botCargSIABIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botCargSIABIActionPerformed
-        // TODO add your handling code here:
+        System.out.println("Chamar método para inserir no BD");
+        try {
+            new ManipulaXLS().leXLS(endArqSIABI.getText());
+        } catch (IOException ex) {
+            System.out.println("Arquivo não selecionado");
+            //Logger.getLogger(ManipulaXLS.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
     }//GEN-LAST:event_botCargSIABIActionPerformed
 
     private void endArqSIABIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_endArqSIABIActionPerformed
@@ -741,36 +767,33 @@ public class InventarioUI extends javax.swing.JFrame {
             
             File dir = fc.getCurrentDirectory();
             File arq = fc.getSelectedFile();
-            String nomeArq = arq.getName();
-            String endArq = dir + "\\" + nomeArq;
+            //nomeArq = arq.getName();
+            String endArq = arq.getAbsolutePath();
+            //String endArq = dir + nomeArq;
             
-            if(this.getExtensao(arq).equals("txt")){
-                System.out.println("Arquivo TXT aberto.");
+            if(this.getExtensao(arq).equals("xls")){
+            //System.out.println("Arquivo XLS aberto.");
+
                 endArqAcervo.setForeground(new java.awt.Color(0, 0, 0));
                 endArqAcervo.setText(endArq);
-            }else{
-                if(this.getExtensao(arq).equals("xls")){
-                    System.out.println("Arquivo XLS aberto.");
-                }
+            }/*else{
+            if(this.getExtensao(arq).equals("txt")){
+            System.out.println("Arquivo TXT aberto.");
             }
+            }*/
         }
             
     }//GEN-LAST:event_botSelAcervoActionPerformed
 
     private void insereDados(){
-    //insereDadosBD() é implementado em BD DAO
-        
-        if (vrfExemplar.isSelected()) {
-            System.out.println("VERIFICAR");
-            //insereDadosBD(codBar.getText(), "SIM", setObs());
-        } else {
-            System.out.println("NÃO VERIFICAR");
-            //insereDadosBD(codBar.getText(), "NÃO", setObs())
-        }
+    //Chama a versão adequada do método insereDadosBD() de DAO
         JOptionPane.showMessageDialog(null, "Inserção realizada com sucesso!");
-        desmarcarVrfExemplar();
+        limpaTelaInsercao();
+    }
+    private void limpaTelaInsercao(){
         codBar.setText("");
-        codBar.requestFocusInWindow();
+        desmarcarVrfExemplar();
+        setFocusCodBar();
     }
     
     private void botInsCodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botInsCodActionPerformed
@@ -778,13 +801,11 @@ public class InventarioUI extends javax.swing.JFrame {
     }//GEN-LAST:event_botInsCodActionPerformed
 
     private void botLimpCodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botLimpCodActionPerformed
-        codBar.setText("");
-        desmarcarVrfExemplar();
-        setFocusCodBar();
+        limpaTelaInsercao();
     }//GEN-LAST:event_botLimpCodActionPerformed
 
     private void botDesfInsCodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botDesfInsCodActionPerformed
-        //Código aqui
+        //Chama o método de remoção da última linha do BD de DAO
         JOptionPane.showMessageDialog(null, "Alteração realizada com sucesso!");
         setFocusCodBar();    
     }//GEN-LAST:event_botDesfInsCodActionPerformed
@@ -795,18 +816,20 @@ public class InventarioUI extends javax.swing.JFrame {
             
             File dir = fc.getCurrentDirectory();
             File arq = fc.getSelectedFile();
-            String nomeArq = arq.getName();
-            String endArq = dir + "\\" + nomeArq;
+            //nomeArq = arq.getName();
+            //String endArqSIABI = dir + nomeArq;
+            String endArqSIABI = arq.getAbsolutePath();
             
+            if(this.getExtensao(arq).equals("xls")){
+            //System.out.println("Arquivo XLS aberto.");
+
+                endArqAcervo.setForeground(new java.awt.Color(0, 0, 0));
+                endArqAcervo.setText(endArqSIABI);
+            }/*else{
             if(this.getExtensao(arq).equals("txt")){
-                System.out.println("Arquivo TXT aberto.");
-                endArqSIABI.setForeground(new java.awt.Color(0, 0, 0));
-                endArqSIABI.setText(endArq);
-            }else{
-                if(this.getExtensao(arq).equals("xls")){
-                    System.out.println("Arquivo XLS aberto.");
-                }
+            System.out.println("Arquivo TXT aberto.");
             }
+            }*/
         }
     }//GEN-LAST:event_botSelSIABIActionPerformed
 
@@ -825,7 +848,7 @@ public class InventarioUI extends javax.swing.JFrame {
         System.out.println("Aba ativa");
     }//GEN-LAST:event_abaAcervoFocusGained
     
-    //Verifica quando a aba "Dados do acervo" está selecionada para mudar o foco da entrada de texto para codBar
+    //Muda os focos preferenciais dos componentes de cada aba de acordo com a que estiver selecionada
     private void grupoAbasStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_grupoAbasStateChanged
         if (grupoAbas.getSelectedComponent() == abaAcervo) {  
             //System.out.println ("Aba Acervo");  
@@ -837,8 +860,11 @@ public class InventarioUI extends javax.swing.JFrame {
     }//GEN-LAST:event_grupoAbasStateChanged
 
     private void botGerRelatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botGerRelatActionPerformed
-        GerenciadorRelatorios objGR = new GerenciadorRelatorios();
+        //Cria objeto passando uma tabela
+        GerenciadorRelatorios objGR = new GerenciadorRelatorios(TabelaRelatorio.getModeloTabela());
+        //objGR.setTabelaRelat(TabelaRelatorio.getModeloTabela());
         
+        //Passa a referência desta classe
         objGR.setRefInventarioUI(this);
         objGR.setVisible(true);
         //objGR.setTitRelatorio((String) comboRelat.getSelectedItem());
@@ -862,9 +888,10 @@ public class InventarioUI extends javax.swing.JFrame {
 
     private void pswdBDKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pswdBDKeyPressed
         if ( evt.getKeyCode() == KeyEvent.VK_ENTER){
+            //Acho que tem que ter um bloco try catch em algum canto aqui
             userBD.setText("");
             pswdBD.setText("");
-            requestFocus();
+            //requestFocus();
             //InventarioDAO.fazLogin(userBD.getText(), pswdBD.getText());
         }
     }//GEN-LAST:event_pswdBDKeyPressed
@@ -953,12 +980,12 @@ public class InventarioUI extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JTable jTable2;
     private javax.swing.JPanel painelCargArqAcervo;
     private javax.swing.JPanel painelCargArqSIABI;
     private javax.swing.JPanel painelLeCodAcervo;
     private javax.swing.JTextField pswdBD;
     private javax.swing.JTable tabUltCod;
+    private javax.swing.JTable tabUltIni;
     private javax.swing.JTextField userBD;
     private javax.swing.JRadioButton vrfExemplar;
     // End of variables declaration//GEN-END:variables

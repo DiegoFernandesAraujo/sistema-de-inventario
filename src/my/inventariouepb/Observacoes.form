@@ -148,8 +148,8 @@
         </Component>
         <Component class="javax.swing.JButton" name="botGuardar">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/my/imagens/icon_save.gif"/>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor" postCode="botGuardar.setMnemonic(KeyEvent.VK_G);">
+              <Image iconType="3" name="/my/imagens/icon_plus.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Guardar"/>
           </Properties>
@@ -160,7 +160,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="botCancelar">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor" postCode="botCancelar.setMnemonic(KeyEvent.VK_C);">
               <Image iconType="3" name="/my/imagens/icon_cancel.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Cancelar"/>

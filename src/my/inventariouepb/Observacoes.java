@@ -16,11 +16,9 @@ import javax.swing.JCheckBox;
  */
 public class Observacoes extends javax.swing.JFrame {
     
-    boolean vrfExemplar = false;
     InventarioUI objInventarioUI;
     String obs = "";
 
-    String cheks[] = new String[20];
     /**
      * Creates new form Observacoes
      */
@@ -76,7 +74,8 @@ public class Observacoes extends javax.swing.JFrame {
             }
         });
 
-        botGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/my/imagens/icon_save.gif"))); // NOI18N
+        botGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/my/imagens/icon_plus.png"))); // NOI18N
+        botGuardar.setMnemonic(KeyEvent.VK_G);
         botGuardar.setText("Guardar");
         botGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -90,6 +89,7 @@ public class Observacoes extends javax.swing.JFrame {
         });
 
         botCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/my/imagens/icon_cancel.png"))); // NOI18N
+        botCancelar.setMnemonic(KeyEvent.VK_C);
         botCancelar.setText("Cancelar");
         botCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -207,9 +207,6 @@ public class Observacoes extends javax.swing.JFrame {
                 }
             }
         }
-        //System.out.println(obs);
-        //Quem vai no lugar de  "new InventarioUI()"? Como fazer referência a instância correta da classe  InventarioUI()?
-        //vrfExemplar = true;
         //setObs(obs); //Chamada estática
         guardaObs(obs);
     }//GEN-LAST:event_botGuardarActionPerformed
@@ -223,6 +220,7 @@ public class Observacoes extends javax.swing.JFrame {
     private void botCancelarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_botCancelarKeyReleased
         if(evt.getKeyCode() == evt.VK_ESCAPE){
             this.dispose();
+            objInventarioUI.desmarcarVrfExemplar();
         }
     }//GEN-LAST:event_botCancelarKeyReleased
 
