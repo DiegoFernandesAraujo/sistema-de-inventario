@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
+    <Property name="title" type="java.lang.String" value="Relat&#xf3;rios"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -23,7 +24,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="103" groupAlignment="2" attributes="0">
+          <Group type="103" alignment="0" groupAlignment="2" attributes="0">
               <Component id="painelBotoes" alignment="2" max="-2" attributes="0"/>
               <Component id="painelRelatorio" alignment="2" max="32767" attributes="0"/>
           </Group>
@@ -47,10 +48,10 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="botImprimir">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/my/imagens/icon_impressora2.png"/>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor" postCode="botImprimir.setMnemonic(KeyEvent.VK_I);">
+              <Image iconType="3" name="/com/br/uepb/bsc7/www/images/icon_impressora2.png"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Imprimir" postCode="botImprimir.setMnemonic(KeyEvent.VK_I);"/>
+            <Property name="text" type="java.lang.String" value="Imprimir"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[107, 25]"/>
             </Property>
@@ -65,7 +66,7 @@
         <Component class="javax.swing.JButton" name="botXLS">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/my/imagens/icon_xls.gif"/>
+              <Image iconType="3" name="/com/br/uepb/bsc7/www/images/icon_xls.gif"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Gerar XLS"/>
           </Properties>
@@ -79,7 +80,7 @@
         <Component class="javax.swing.JButton" name="botPDF">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/my/imagens/icon_pdf.png"/>
+              <Image iconType="3" name="/com/br/uepb/bsc7/www/images/icon_pdf.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Gerar PDF"/>
           </Properties>
@@ -170,6 +171,10 @@
           </Layout>
           <SubComponents>
             <Container class="javax.swing.JPanel" name="painelCheck">
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JPanel()"/>
+                <AuxValue name="JavaCodeGenerator_LayoutCodePost" type="java.lang.String" value="painelCheckLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {checkEmprest, checkExtrav});"/>
+              </AuxValues>
 
               <Layout>
                 <DimensionLayout dim="0">
@@ -191,8 +196,8 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="checkEmprest" linkSize="1" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="checkExtrav" linkSize="1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="checkEmprest" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="checkExtrav" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jScrollPane1" min="-2" pref="120" max="-2" attributes="0"/>

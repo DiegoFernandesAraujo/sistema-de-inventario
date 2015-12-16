@@ -3,14 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package my.inventariouepb;
+package com.br.uepb.bsc7.www.UI;
 
+import com.br.uepb.bsc7.www.persistence.TabelaRelatorio;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import static my.inventariouepb.TabelaRelatorio.getModeloTabela;
 
 /**
  *
@@ -84,7 +86,6 @@ public class InventarioUI extends javax.swing.JFrame {
         abaAjuda = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(720, 360));
         setResizable(false);
 
         grupoAbas.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -169,19 +170,19 @@ public class InventarioUI extends javax.swing.JFrame {
 
         tabUltIni.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Tombo", "Verificar", "Observações"
+                "CDD", "Tombo", "Tombo Anterior 1", "Tombo Anterior 2", "Tombo Posterior 1", "Tombo Posterior 2", "Verificar", "Observações"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -192,8 +193,26 @@ public class InventarioUI extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tabUltIni.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        tabUltIni.getTableHeader().setResizingAllowed(false);
         tabUltIni.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(tabUltIni);
+        //Font font = getGraphics().getFont();
+
+        //FontMetrics fmetrics = tabUltIni.getFontMetrics();
+
+        for (int i = 0; i < tabUltIni.getColumnCount(); i++){
+
+            //Font font = getGraphics().getFont();
+            Font font = tabUltIni.getFont();
+            FontMetrics fmetrics = this.getFontMetrics(font);
+
+            int comprString = fmetrics.stringWidth(tabUltIni.getColumnName(i));
+            //int comprString = font.stringW(tabUltIni.getColumnName(i));
+            //tabUltIni.getColumnModel().getColumn(i).setPreferredWidth(comprString);
+            tabUltIni.getColumnModel().getColumn(i).setMinWidth(comprString + 10);
+
+        }
         if (tabUltIni.getColumnModel().getColumnCount() > 0) {
             tabUltIni.getColumnModel().getColumn(1).setMinWidth(100);
             tabUltIni.getColumnModel().getColumn(1).setPreferredWidth(100);
@@ -249,7 +268,7 @@ public class InventarioUI extends javax.swing.JFrame {
         painelCargArqAcervo.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Carregar arquivo", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12), new java.awt.Color(0, 0, 204))); // NOI18N
         painelCargArqAcervo.setToolTipText("Selecione um arquivo de texto simples (TXT) ou do Excel (XLS)");
 
-        botCargAcervo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/my/imagens/icon_bd.png"))); // NOI18N
+        botCargAcervo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_bd.png"))); // NOI18N
         botCargAcervo.setMnemonic(KeyEvent.VK_C);
         botCargAcervo.setText("Carregar arquivo");
         botCargAcervo.addActionListener(new java.awt.event.ActionListener() {
@@ -262,7 +281,7 @@ public class InventarioUI extends javax.swing.JFrame {
 
         jLabel4.setText("2º Passo:");
 
-        botSelAcervo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/my/imagens/icon_open.png"))); // NOI18N
+        botSelAcervo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_open.png"))); // NOI18N
         botSelAcervo.setMnemonic(KeyEvent.VK_S);
         botSelAcervo.setText("Selecionar arquivo");
         botSelAcervo.addActionListener(new java.awt.event.ActionListener() {
@@ -487,7 +506,7 @@ public class InventarioUI extends javax.swing.JFrame {
             .addGroup(abaAcervoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(abaAcervoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(painelLeCodAcervo, javax.swing.GroupLayout.PREFERRED_SIZE, 265, Short.MAX_VALUE)
+                    .addComponent(painelLeCodAcervo, javax.swing.GroupLayout.PREFERRED_SIZE, 268, Short.MAX_VALUE)
                     .addComponent(painelCargArqAcervo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
@@ -497,7 +516,7 @@ public class InventarioUI extends javax.swing.JFrame {
         painelCargArqSIABI.setToolTipText("Selecione um arquivo de texto simples (TXT) ou do Excel (XLS)");
         painelCargArqSIABI.setPreferredSize(new java.awt.Dimension(221, 265));
 
-        botCargSIABI.setIcon(new javax.swing.ImageIcon(getClass().getResource("/my/imagens/icon_bd.png"))); // NOI18N
+        botCargSIABI.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_bd.png"))); // NOI18N
         botCargSIABI.setMnemonic(KeyEvent.VK_C);
         botCargSIABI.setText("Carregar arquivo");
         botCargSIABI.addActionListener(new java.awt.event.ActionListener() {
@@ -510,7 +529,7 @@ public class InventarioUI extends javax.swing.JFrame {
 
         jLabel6.setText("2º Passo:");
 
-        botSelSIABI.setIcon(new javax.swing.ImageIcon(getClass().getResource("/my/imagens/icon_open.png"))); // NOI18N
+        botSelSIABI.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_open.png"))); // NOI18N
         botSelSIABI.setMnemonic(KeyEvent.VK_S);
         botSelSIABI.setText("Selecionar arquivo");
         botSelSIABI.addActionListener(new java.awt.event.ActionListener() {
@@ -584,7 +603,7 @@ public class InventarioUI extends javax.swing.JFrame {
             abaSIABILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(abaSIABILayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(painelCargArqSIABI, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(painelCargArqSIABI, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE))
         );
 
         grupoAbas.addTab("Dados do SIABI", abaSIABI);
@@ -672,7 +691,7 @@ public class InventarioUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     //Retorna a extensão de um arquivo
-    private static String getExtensao(File arq) {
+    private String getExtensao(File arq) {
         String extArq = null;
         String nomeArq = arq.getName();
         int i = nomeArq.lastIndexOf('.');
@@ -723,10 +742,13 @@ public class InventarioUI extends javax.swing.JFrame {
     private void vrfExemplarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vrfExemplarActionPerformed
         System.out.println("Botão clicado");
         
-        Observacoes obs = new Observacoes();
+        /*Observacoes obs = new Observacoes();
         obs.setVisible(true);
-        obs.setRefInventarioUI(this);
-        
+        obs.setRefInventarioUI(this);*/        
+        ObservacoesDialog obsD = new ObservacoesDialog(InventarioUI.this, rootPaneCheckingEnabled);
+        obsD.setRefInventarioUI(InventarioUI.this);
+        obsD.setVisible(true);
+
     }//GEN-LAST:event_vrfExemplarActionPerformed
 
     private void botCargAcervoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botCargAcervoActionPerformed
@@ -861,19 +883,20 @@ public class InventarioUI extends javax.swing.JFrame {
 
     private void botGerRelatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botGerRelatActionPerformed
         //Cria objeto passando uma tabela
-        GerenciadorRelatorios objGR = new GerenciadorRelatorios(TabelaRelatorio.getModeloTabela());
-        //objGR.setTabelaRelat(TabelaRelatorio.getModeloTabela());
-        
-        //Passa a referência desta classe
-        objGR.setRefInventarioUI(this);
-        objGR.setVisible(true);
-        //objGR.setTitRelatorio((String) comboRelat.getSelectedItem());
+        GerenciadorRelatoriosDialog objGRD = new GerenciadorRelatoriosDialog(InventarioUI.this, false, TabelaRelatorio.getModeloTabela());
         
         if ((comboRelat.getSelectedItem().equals("Itens não localizados no acervo"))){
-            objGR.mostraChecks(true);
+            System.out.println("Verdadeiro");
+            objGRD.mostraChecks(true);
         }else {
-            objGR.mostraChecks(false);
+            System.out.println("Falso");
+            objGRD.mostraChecks(false);
         }
+        
+        //Passa a referência desta classe
+        objGRD.setRefInventarioUI(InventarioUI.this);
+        objGRD.setVisible(true);
+        
     }//GEN-LAST:event_botGerRelatActionPerformed
 
     public static String getNomeRelatorio(){

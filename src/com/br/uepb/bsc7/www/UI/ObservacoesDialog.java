@@ -3,26 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package my.inventariouepb;
+package com.br.uepb.bsc7.www.UI;
 
 import java.awt.Component;
 import java.awt.event.KeyEvent;
 import javax.swing.JCheckBox;
-//import static my.inventariouepb.InventarioUI.setObs;
 
 /**
  *
  * @author Diego
  */
-public class Observacoes extends javax.swing.JFrame {
-    
+public class ObservacoesDialog extends javax.swing.JDialog {
+
     InventarioUI objInventarioUI;
     String obs = "";
-
     /**
-     * Creates new form Observacoes
+     * Creates new form ObservacoesDialog
      */
-    public Observacoes() {
+    public ObservacoesDialog(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         initComponents();
     }
 
@@ -48,12 +47,7 @@ public class Observacoes extends javax.swing.JFrame {
         outrasObs = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setResizable(false);
-        addWindowStateListener(new java.awt.event.WindowStateListener() {
-            public void windowStateChanged(java.awt.event.WindowEvent evt) {
-                formWindowStateChanged(evt);
-            }
-        });
+        setTitle("Observações");
 
         painelObs.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Observações", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 13), new java.awt.Color(0, 0, 204))); // NOI18N
 
@@ -74,8 +68,7 @@ public class Observacoes extends javax.swing.JFrame {
             }
         });
 
-        botGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/my/imagens/icon_plus.png"))); // NOI18N
-        botGuardar.setMnemonic(KeyEvent.VK_G);
+        botGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_save2.gif"))); // NOI18N
         botGuardar.setText("Guardar");
         botGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -88,8 +81,7 @@ public class Observacoes extends javax.swing.JFrame {
             }
         });
 
-        botCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/my/imagens/icon_cancel.png"))); // NOI18N
-        botCancelar.setMnemonic(KeyEvent.VK_C);
+        botCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_cancel.png"))); // NOI18N
         botCancelar.setText("Cancelar");
         botCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -180,25 +172,19 @@ public class Observacoes extends javax.swing.JFrame {
         outrasObs.requestFocus();
     }//GEN-LAST:event_jCheckBox6ActionPerformed
 
-    private void botCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botCancelarActionPerformed
-        //.desmarcarVrfExemplar(); //Não tá dando certo
-        objInventarioUI.desmarcarVrfExemplar();
-        this.dispose();
-    }//GEN-LAST:event_botCancelarActionPerformed
-
-    //Ajustar o texto que é passado para setText()
     private void botGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botGuardarActionPerformed
-        
+
         //System.out.println(painelObs.getComponentCount());
-        for (int i = 0; i< painelObs.getComponentCount(); i++) {  
-            
-            Component comp =  painelObs.getComponent(i);  
-              
-            if (comp instanceof JCheckBox) {  
-                                
-                JCheckBox check = (JCheckBox) comp;  
-               
-                if (check.isSelected())  {  
+        System.out.println("Antes do for.");
+        for (int i = 0; i< painelObs.getComponentCount(); i++) {
+
+            Component comp =  painelObs.getComponent(i);
+
+            if (comp instanceof JCheckBox) {
+
+                JCheckBox check = (JCheckBox) comp;
+
+                if (check.isSelected())  {
                     if (check.getText().equals("Outras:")){
                         obs = obs + outrasObs.getText()+ " ";
                     }else{
@@ -208,25 +194,9 @@ public class Observacoes extends javax.swing.JFrame {
             }
         }
         //setObs(obs); //Chamada estática
+        System.out.println("Após o for.");
         guardaObs(obs);
     }//GEN-LAST:event_botGuardarActionPerformed
-
-    private void botGuardarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_botGuardarKeyReleased
-        if ( evt.getKeyCode() == KeyEvent.VK_ENTER){
-            guardaObs(obs);
-        }
-    }//GEN-LAST:event_botGuardarKeyReleased
-
-    private void botCancelarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_botCancelarKeyReleased
-        if(evt.getKeyCode() == evt.VK_ESCAPE){
-            this.dispose();
-            objInventarioUI.desmarcarVrfExemplar();
-        }
-    }//GEN-LAST:event_botCancelarKeyReleased
-
-    private void formWindowStateChanged(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowStateChanged
-        // TODO add your handling code here:
-    }//GEN-LAST:event_formWindowStateChanged
 
     private void guardaObs(String obsG){
         objInventarioUI.setObs(obsG);
@@ -235,20 +205,35 @@ public class Observacoes extends javax.swing.JFrame {
         this.dispose();
     }
     
-    //Recebe a instância de InventarioUI para poder chamar seus métodos a partir desta
     public void setRefInventarioUI(InventarioUI obj){
         objInventarioUI = obj;
+        System.out.println("setRefInventarioUI");
     }
     
+    private void botGuardarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_botGuardarKeyReleased
+        if ( evt.getKeyCode() == KeyEvent.VK_ENTER){
+            guardaObs(obs);
+        }
+    }//GEN-LAST:event_botGuardarKeyReleased
+
+    private void botCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botCancelarActionPerformed
+        //.desmarcarVrfExemplar(); //Não tá dando certo
+        objInventarioUI.desmarcarVrfExemplar();
+        this.dispose();
+    }//GEN-LAST:event_botCancelarActionPerformed
+
+    private void botCancelarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_botCancelarKeyReleased
+        if(evt.getKeyCode() == evt.VK_ESCAPE){
+            this.dispose();
+            objInventarioUI.desmarcarVrfExemplar();
+        }
+    }//GEN-LAST:event_botCancelarKeyReleased
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+    /*public static void main(String args[]) {
+        
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -257,23 +242,30 @@ public class Observacoes extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Observacoes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ObservacoesDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Observacoes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ObservacoesDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Observacoes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ObservacoesDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Observacoes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ObservacoesDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
-        /* Create and display the form */
+        /* Create and display the dialog 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Observacoes().setVisible(true);
+                ObservacoesDialog dialog = new ObservacoesDialog(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
             }
         });
-    }
+    }*/
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botCancelar;

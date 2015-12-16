@@ -1,9 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package my.inventariouepb;
+package com.br.uepb.bsc7.www.UI;
 
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -14,25 +9,39 @@ import javax.swing.JFileChooser;
 import javax.swing.JTable;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.TableModel;
-import static my.inventariouepb.InventarioUI.getNomeRelatorio;
+import static com.br.uepb.bsc7.www.UI.InventarioUI.getNomeRelatorio;
 
 /**
  *
- * @author Coordenação
+ * @author Diego
  */
-public class GerenciadorRelatorios extends javax.swing.JFrame {
-    
+public class GerenciadorRelatoriosDialog extends javax.swing.JDialog {
+
   
     TableModel modeloTabela = null;
 
     /**
-     * Creates new form Relatorios
+     * Creates new form GerenciadorRelatoriosDialog
      */
     InventarioUI objInventarioUI;
     
     //private String titRelatorio = "Relatório";
+
+    /**
+     *
+     * @param parent
+     * @param modal
+     * @param modelo
+     */
     
-    public GerenciadorRelatorios(TableModel modelo) {
+    //Construtor original
+    public GerenciadorRelatoriosDialog(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
+        initComponents();
+    }
+    
+    public GerenciadorRelatoriosDialog(java.awt.Frame parent, boolean modal, TableModel modelo) {
+        super(parent, modal);
         modeloTabela = modelo;
         //System.out.println("criou objeto");
         //setModeloTabelaRelat(TabelaRelatorio.getTabela());
@@ -63,18 +72,19 @@ public class GerenciadorRelatorios extends javax.swing.JFrame {
         tabRelat = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Relatórios");
 
         painelBotoes.setLayout(new javax.swing.BoxLayout(painelBotoes, javax.swing.BoxLayout.LINE_AXIS));
 
-        botImprimir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/my/imagens/icon_impressora2.png"))); // NOI18N
-        botImprimir.setText("Imprimir");
+        botImprimir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_impressora2.png"))); // NOI18N
         botImprimir.setMnemonic(KeyEvent.VK_I);
+        botImprimir.setText("Imprimir");
         botImprimir.setMaximumSize(new java.awt.Dimension(107, 25));
         botImprimir.setMinimumSize(new java.awt.Dimension(107, 25));
         botImprimir.setPreferredSize(new java.awt.Dimension(107, 25));
         painelBotoes.add(botImprimir);
 
-        botXLS.setIcon(new javax.swing.ImageIcon(getClass().getResource("/my/imagens/icon_xls.gif"))); // NOI18N
+        botXLS.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_xls.gif"))); // NOI18N
         botXLS.setText("Gerar XLS");
         botXLS.setMnemonic(KeyEvent.VK_X);
         botXLS.addActionListener(new java.awt.event.ActionListener() {
@@ -84,7 +94,7 @@ public class GerenciadorRelatorios extends javax.swing.JFrame {
         });
         painelBotoes.add(botXLS);
 
-        botPDF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/my/imagens/icon_pdf.png"))); // NOI18N
+        botPDF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_pdf.png"))); // NOI18N
         botPDF.setText("Gerar PDF");
         botPDF.setMnemonic(KeyEvent.VK_P);
         botPDF.addActionListener(new java.awt.event.ActionListener() {
@@ -207,7 +217,7 @@ public class GerenciadorRelatorios extends javax.swing.JFrame {
 
     private void botXLSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botXLSActionPerformed
         File arq = null;
-        JFileChooser fileChooser = new JFileChooser();  
+        JFileChooser fileChooser = new JFileChooser();
         FileNameExtensionFilter filtro = new FileNameExtensionFilter("Arquivo XLS", "xls");
         fileChooser.setFileFilter(filtro);
         int returnVal = fileChooser.showSaveDialog(null);
@@ -221,11 +231,10 @@ public class GerenciadorRelatorios extends javax.swing.JFrame {
             //objManipula.criaXLS1(arq.getAbsolutePath(), "Plan1");
             objManipula.criaXLS(getTabelaRelat(), arq.getAbsolutePath(), "Plan1");
         } catch (IOException ex) {
-            Logger.getLogger(GerenciadorRelatorios.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GerenciadorRelatoriosDialog.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NullPointerException ex){
             System.out.println("teste");
         }
-
     }//GEN-LAST:event_botXLSActionPerformed
 
     //Retorna a tabela em exibição
@@ -259,16 +268,6 @@ public class GerenciadorRelatorios extends javax.swing.JFrame {
     public void setRefInventarioUI(InventarioUI obj){
         objInventarioUI = obj;
     }
-    
-    /**
-     *
-     * @param tit
-     */
-    /*public void setTitRelatorio(String tit){
-        titRelatorio = tit;
-        System.out.println("setTit");
-    }*/
-    
     /**
      * @param args the command line arguments
      */
@@ -286,23 +285,29 @@ public class GerenciadorRelatorios extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GerenciadorRelatorios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GerenciadorRelatoriosDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GerenciadorRelatorios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GerenciadorRelatoriosDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GerenciadorRelatorios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GerenciadorRelatoriosDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GerenciadorRelatorios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GerenciadorRelatoriosDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
         //</editor-fold>
 
-        /* Create and display the form */
-        /*java.awt.EventQueue.invokeLater(new Runnable() {
-        public void run() {
-        new GerenciadorRelatorios().setVisible(true);
-        }
-        });*/
+        /* Create and display the dialog */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                GerenciadorRelatoriosDialog dialog = new GerenciadorRelatoriosDialog(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
+            }
+        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

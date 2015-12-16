@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package my.inventariouepb;
+package com.br.uepb.bsc7.www.persistence;
 
 import java.util.ArrayList;
 
@@ -19,13 +19,13 @@ public class TesteInsereBD {
         ArrayList<String> valoresBD = valores;
         System.out.println("Método insereLinha chamado!");
         
-        if (tam == 1) {
+        if (tam == 3) {
             for (String valor : valoresBD) {
                 //Insere valor na tabela Acervo no índice 0
                 System.out.println(valor);
             }
 
-        } else if (tam >= 2) {
+        } else if (tam >= 4) {
             int indice = 0;
             for (String valor : valoresBD) {
                 //Insere valor na tabela SIABI no índice atual
