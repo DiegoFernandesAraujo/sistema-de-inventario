@@ -1,5 +1,6 @@
 package com.br.uepb.bsc7.www.main;
 
+<<<<<<< HEAD
 import com.br.uepb.bsc7.www.UI.InventarioUI;
 
 
@@ -10,3 +11,7 @@ public class InventarioUEPB{
     }
 
 }
+=======
+//Teste pull
+
+>>>>>>> origin/master
