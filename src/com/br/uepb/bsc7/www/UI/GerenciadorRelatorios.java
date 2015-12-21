@@ -15,13 +15,13 @@ import static com.br.uepb.bsc7.www.UI.InventarioUI.getNomeRelatorio;
  *
  * @author Diego
  */
-public class GerenciadorRelatoriosDialog extends javax.swing.JDialog {
+public class GerenciadorRelatorios extends javax.swing.JDialog {
 
   
     TableModel modeloTabela = null;
 
     /**
-     * Creates new form GerenciadorRelatoriosDialog
+     * Creates new form GerenciadorRelatorios
      */
     InventarioUI objInventarioUI;
     
@@ -35,12 +35,12 @@ public class GerenciadorRelatoriosDialog extends javax.swing.JDialog {
      */
     
     //Construtor original
-    public GerenciadorRelatoriosDialog(java.awt.Frame parent, boolean modal) {
+    public GerenciadorRelatorios(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
     
-    public GerenciadorRelatoriosDialog(java.awt.Frame parent, boolean modal, TableModel modelo) {
+    public GerenciadorRelatorios(java.awt.Frame parent, boolean modal, TableModel modelo) {
         super(parent, modal);
         modeloTabela = modelo;
         //System.out.println("criou objeto");
@@ -231,7 +231,7 @@ public class GerenciadorRelatoriosDialog extends javax.swing.JDialog {
             //objManipula.criaXLS1(arq.getAbsolutePath(), "Plan1");
             objManipula.criaXLS(getTabelaRelat(), arq.getAbsolutePath(), "Plan1");
         } catch (IOException ex) {
-            Logger.getLogger(GerenciadorRelatoriosDialog.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GerenciadorRelatorios.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NullPointerException ex){
             System.out.println("teste");
         }
@@ -285,20 +285,21 @@ public class GerenciadorRelatoriosDialog extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GerenciadorRelatoriosDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GerenciadorRelatorios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GerenciadorRelatoriosDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GerenciadorRelatorios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GerenciadorRelatoriosDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GerenciadorRelatorios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GerenciadorRelatoriosDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GerenciadorRelatorios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                GerenciadorRelatoriosDialog dialog = new GerenciadorRelatoriosDialog(new javax.swing.JFrame(), true);
+                GerenciadorRelatorios dialog = new GerenciadorRelatorios(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

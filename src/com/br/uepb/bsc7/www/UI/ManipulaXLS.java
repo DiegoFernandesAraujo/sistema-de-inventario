@@ -5,6 +5,7 @@
  */
 package com.br.uepb.bsc7.www.UI;
 
+import com.br.uepb.bsc7.www.persistence.InventarioDAO;
 import com.br.uepb.bsc7.www.persistence.TesteInsereBD;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -30,6 +31,7 @@ public class ManipulaXLS {
     
     HSSFWorkbook wb; 
     ArrayList<String> dados = new ArrayList<>();
+    InventarioDAO dao = null;
     
     //Tem acesso à Pasta de Trabalho
     /*private static HSSFWorkbook leArquivoXLS(String filename) throws IOException {
@@ -41,6 +43,21 @@ public class ManipulaXLS {
     fileInputStream.close();
     }
     }*/
+
+    public ManipulaXLS(InventarioDAO obj) {
+        dao = obj;
+    }
+
+    public ManipulaXLS() {
+    }
+    
+    
+    
+    
+    
+    public void setRefInventarioDAO(InventarioDAO obj){
+        dao = obj;
+    }
     
     public /*static*/ void leXLS(String filename) throws IOException {
         System.out.println("Método leXLS chamado!");
@@ -71,7 +88,7 @@ public class ManipulaXLS {
                 }
                 
                 //Chamada ao método do BD que recebe o ArrayList (Deve estar em DAO)
-                new TesteInsereBD().insereLinha(dados, dados.size());
+                dao.insereLinha(dados);
                 //Limpa o ArrayLista para preenchê-lo novamente
                 dados.clear();
             }
@@ -145,7 +162,14 @@ public class ManipulaXLS {
                 
                 /*O valor passado deve ser de acordo com aquele recebido por cada relatório, 
                                 provavelmente String;*/
-                celula.setCellValue((String) tabela.getValueAt(i, j));
+                if(tabela.getValueAt(i, j) instanceof Integer){
+                    Integer valorInteger = (Integer) tabela.getValueAt(i, j);
+                    double valor = valorInteger.doubleValue();
+                //celula.setCellValue(/*(String)*/ tabela.getValueAt(i, j).toString());
+                    celula.setCellValue(valor);
+            }else{
+                  celula.setCellValue((String) tabela.getValueAt(i, j));  
+                }
             }
         }
 

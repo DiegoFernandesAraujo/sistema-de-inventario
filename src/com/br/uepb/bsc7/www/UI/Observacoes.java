@@ -13,14 +13,15 @@ import javax.swing.JCheckBox;
  *
  * @author Diego
  */
-public class ObservacoesDialog extends javax.swing.JDialog {
+public class Observacoes extends javax.swing.JDialog {
 
     InventarioUI objInventarioUI;
     String obs = "";
+    private boolean guardar = false;
     /**
      * Creates new form ObservacoesDialog
      */
-    public ObservacoesDialog(java.awt.Frame parent, boolean modal) {
+    public Observacoes(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
@@ -46,8 +47,13 @@ public class ObservacoesDialog extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         outrasObs = new javax.swing.JTextArea();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Observações");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         painelObs.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Observações", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 13), new java.awt.Color(0, 0, 204))); // NOI18N
 
@@ -175,7 +181,7 @@ public class ObservacoesDialog extends javax.swing.JDialog {
     private void botGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botGuardarActionPerformed
 
         //System.out.println(painelObs.getComponentCount());
-        System.out.println("Antes do for.");
+        //System.out.println("Antes do for.");
         for (int i = 0; i< painelObs.getComponentCount(); i++) {
 
             Component comp =  painelObs.getComponent(i);
@@ -194,14 +200,15 @@ public class ObservacoesDialog extends javax.swing.JDialog {
             }
         }
         //setObs(obs); //Chamada estática
-        System.out.println("Após o for.");
+        //System.out.println("Após o for.");
         guardaObs(obs);
     }//GEN-LAST:event_botGuardarActionPerformed
 
     private void guardaObs(String obsG){
         objInventarioUI.setObs(obsG);
         objInventarioUI.setFocusBotaoInserir();
-        objInventarioUI.desmarcarVrfExemplar();
+        //objInventarioUI.desmarcarVrfExemplar();
+        guardar = true;
         this.dispose();
     }
     
@@ -229,6 +236,14 @@ public class ObservacoesDialog extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_botCancelarKeyReleased
 
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        System.out.println("Janela fechada!");
+        /*if (!guardar) {
+        objInventarioUI.desmarcarVrfExemplar();
+        }*/
+        this.dispose();
+    }//GEN-LAST:event_formWindowClosed
+
     /**
      * @param args the command line arguments
      */
@@ -242,20 +257,20 @@ public class ObservacoesDialog extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ObservacoesDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Observacoes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ObservacoesDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Observacoes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ObservacoesDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Observacoes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ObservacoesDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Observacoes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the dialog 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ObservacoesDialog dialog = new ObservacoesDialog(new javax.swing.JFrame(), true);
+                Observacoes dialog = new Observacoes(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
