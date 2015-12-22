@@ -20,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -35,6 +36,8 @@ public class InventarioUI extends javax.swing.JFrame {
     ResultSet rs = null;
     ResultSetMetaData metadados = null;
     ArrayList<String> dados = new ArrayList<>();
+    TableModel modeloTabelaIni = null;
+    TableModel modeloTabelaAcerv = null;
     
     /**
      * Creates new form InventarioUI
@@ -212,31 +215,7 @@ public class InventarioUI extends javax.swing.JFrame {
 
         jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Últimos valores inseridos", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 13), new java.awt.Color(0, 0, 153))); // NOI18N
 
-        tabUltIni.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
-            },
-            new String [] {
-                "CDD", "Tombo", "Tombo Anterior 1", "Tombo Anterior 2", "Tombo Posterior 1", "Tombo Posterior 2"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        tabUltIni.setModel(modeloTabelaIni);
         tabUltIni.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         tabUltIni.setPreferredSize(new java.awt.Dimension(474, 48));
         tabUltIni.getTableHeader().setResizingAllowed(false);
@@ -960,24 +939,15 @@ public class InventarioUI extends javax.swing.JFrame {
         if (grupoAbas.getSelectedComponent() == abaAcervo) {  
             //System.out.println ("Aba Acervo");  
             setFocusCodBar();
+            modeloTabelaAcerv = dao.getTresUltimasLinhas("Teste");
         }  else if (grupoAbas.getSelectedComponent() == abaInicio) {  
             setFocusUser();
+            modeloTabelaIni = dao.getLocalizacaoDosVizinhos();
         }  
         
     }//GEN-LAST:event_grupoAbasStateChanged
 
     private void botGerRelatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botGerRelatActionPerformed
-        //Cria objeto passando uma tabela
-        //rs = dao.mostraTabelaAcervo();
-        //ResultSetMetaData metadados = null;
-        /*try {
-        metadados = rs.getMetaData();
-        } catch (SQLException ex) {
-        Logger.getLogger(InventarioUI.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
-        
-        //GerenciadorRelatorios objGRD = new GerenciadorRelatorios(InventarioUI.this, false, TabelaRelatorio.getModeloTabela());
-        //GerenciadorRelatorios objGRD = new GerenciadorRelatorios(InventarioUI.this, false, new TabelaRelatorio(rs, metadados));
         GerenciadorRelatorios objGRD = null;
         System.out.println(comboRelat.getSelectedIndex());
         switch(comboRelat.getSelectedIndex()){
