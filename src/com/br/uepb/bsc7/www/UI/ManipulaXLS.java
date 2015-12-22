@@ -8,6 +8,7 @@ package com.br.uepb.bsc7.www.UI;
 import com.br.uepb.bsc7.www.persistence.InventarioDAO;
 import com.br.uepb.bsc7.www.persistence.TesteInsereBD;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class ManipulaXLS {
     HSSFWorkbook wb; 
     ArrayList<String> dados = new ArrayList<>();
     InventarioDAO dao = null;
+    public static boolean continua;
     
     //Tem acesso à Pasta de Trabalho
     /*private static HSSFWorkbook leArquivoXLS(String filename) throws IOException {
@@ -59,43 +61,89 @@ public class ManipulaXLS {
         dao = obj;
     }
     
+    public boolean ehSIABI(String filename) throws IOException{
+        boolean siabi = false;
+        FileInputStream fileInputStream = new FileInputStream(filename);
+        try {
+            wb = new HSSFWorkbook(fileInputStream);
+            //Obtem acesso à planilha Plan1
+            HSSFSheet s = wb.getSheet("Plan1");
+
+            Row linha = s.getRow(0);
+            //Só aceita com 15 colunas
+            if (linha.getLastCellNum() == 15) {
+                siabi = true;
+            } else {
+                JOptionPane.showMessageDialog(null, "Deve ser carregado um arquivo padrão gerado pelo SIABI!", null, JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(ManipulaXLS.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return siabi;
+    }
+    
     public /*static*/ void leXLS(String filename) throws IOException {
         System.out.println("Método leXLS chamado!");
         FileInputStream fileInputStream = new FileInputStream(filename);
+        continua = true;
         try {
             //Obtem acesso à pasta de trabalho
             wb = new HSSFWorkbook(fileInputStream);
             //Obtem acesso à planilha Plan1
             HSSFSheet s = wb.getSheet("Plan1");
-            
-            Iterator<Row> rowIterator =  s.rowIterator();
-            
-            while(rowIterator.hasNext()){
-                System.out.println("Nova linha!");
-                //Obtem acesso a cada linha de Plan1
-                Row linha = rowIterator.next();
-                
-                Iterator<Cell> cellIterator =  linha.cellIterator();
-                
-                while(cellIterator.hasNext()){
-                    //Obtem acesso a cada célula de cada linha de Plan1
-                    Cell celula = cellIterator.next();
-                    //System.out.println(celula.getStringCellValue());
-                    
-                    //Adiciona o valor de cada célula ao ArrayList que será passado a DAO
-                    dados.add(celula.getStringCellValue());
-                    //
-                }
-                
-                //Chamada ao método do BD que recebe o ArrayList (Deve estar em DAO)
-                dao.insereLinha(dados);
-                //Limpa o ArrayLista para preenchê-lo novamente
-                dados.clear();
+
+            Iterator<Row> rowIterator = s.rowIterator();
+
+            while (rowIterator.hasNext()) {
+
+                if (continua == true) {
+
+                    System.out.println("Nova linha!");
+                    //Obtem acesso a cada linha de Plan1
+                    Row linha = rowIterator.next();
+
+                    Iterator<Cell> cellIterator = linha.cellIterator();
+
+                    while (cellIterator.hasNext()) {
+                        //Obtem acesso a cada célula de cada linha de Plan1
+                        Cell celula = cellIterator.next();
+                        //System.out.println(celula.getStringCellValue());
+
+                        //Adiciona o valor de cada célula ao ArrayList que será passado a DAO
+                        try {
+                            Double temp = celula.getNumericCellValue();
+
+                            dados.add((String) temp.toString());
+                        } catch (Exception ex) {
+                            try {
+                                dados.add((String) celula.getStringCellValue());
+                            } catch (Exception ex2) {
+                                System.out.println("Nem numérico nem textual");
+                            }
+                        } 
+                        
+                        
+                        //dados.add(celula.get);
+                        //
+                    }
+
+                    //Chamada ao método do BD que recebe o ArrayList (Deve estar em DAO)
+                    dao.insereLinha(dados);
+                    //Limpa o ArrayLista para preenchê-lo novamente
+                    dados.clear();
+                }else{break;}
+            }
+            if (continua == true) {
+                JOptionPane.showMessageDialog(null, "Arquivo carregado com sucesso!", null, JOptionPane.INFORMATION_MESSAGE);
+            } else{
+                JOptionPane.showMessageDialog(null, "Não foi possível carregar o arquivo!\nleXLS()", null, JOptionPane.ERROR_MESSAGE);
             }
             //Corrigir este catch com algo mais eficiente
-        } catch(IOException ex){
-            System.out.println("Teste");
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possível carregar o arquivo!\ncatch - leXLS()", null, JOptionPane.ERROR_MESSAGE);
         }
+
     }
     //Versão sem JTable
     public /*static*/ void criaXLS1(String arqSaida, String nomePlan) throws IOException, NullPointerException {
@@ -143,13 +191,13 @@ public class ManipulaXLS {
     public /*static*/ void criaXLS(JTable tabela, String arqSaida, String nomePlan) throws IOException, NullPointerException {
         int numLinhas = tabela.getRowCount();
         int numCelulas = tabela.getColumnCount();
-        
+
         //Cria pasta de trabalho
         wb = new HSSFWorkbook();
         //Cria planilha
         HSSFSheet s = wb.createSheet(nomePlan);
         //wb.setSheetName(0, nomePlan);
-        
+
         //Alterar para a quantidade de linhas retornada por cada relatório
         for (int i = 0; i < numLinhas; i++) {
 
@@ -159,16 +207,16 @@ public class ManipulaXLS {
             //Alterar para a quantidade de células retornada por cada relatório
             for (int j = 0; j < numCelulas; j++) {
                 HSSFCell celula = linha.createCell(j);
-                
+
                 /*O valor passado deve ser de acordo com aquele recebido por cada relatório, 
                                 provavelmente String;*/
-                if(tabela.getValueAt(i, j) instanceof Integer){
+                if (tabela.getValueAt(i, j) instanceof Integer) {
                     Integer valorInteger = (Integer) tabela.getValueAt(i, j);
                     double valor = valorInteger.doubleValue();
-                //celula.setCellValue(/*(String)*/ tabela.getValueAt(i, j).toString());
+                    //celula.setCellValue(/*(String)*/ tabela.getValueAt(i, j).toString());
                     celula.setCellValue(valor);
-            }else{
-                  celula.setCellValue((String) tabela.getValueAt(i, j));  
+                } else {
+                    celula.setCellValue((String) tabela.getValueAt(i, j));
                 }
             }
         }

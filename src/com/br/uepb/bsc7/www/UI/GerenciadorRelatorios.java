@@ -10,6 +10,7 @@ import javax.swing.JTable;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.TableModel;
 import static com.br.uepb.bsc7.www.UI.InventarioUI.getNomeRelatorio;
+import com.br.uepb.bsc7.www.persistence.InventarioDAO;
 
 /**
  *
@@ -24,7 +25,7 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
      * Creates new form GerenciadorRelatorios
      */
     InventarioUI objInventarioUI;
-    
+    InventarioDAO dao;
     //private String titRelatorio = "Relatório";
 
     /**
@@ -40,9 +41,10 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
         initComponents();
     }
     
-    public GerenciadorRelatorios(java.awt.Frame parent, boolean modal, TableModel modelo) {
+    public GerenciadorRelatorios(java.awt.Frame parent, boolean modal, TableModel modelo, InventarioDAO objDAO) {
         super(parent, modal);
         modeloTabela = modelo;
+        dao = objDAO;
         //System.out.println("criou objeto");
         //setModeloTabelaRelat(TabelaRelatorio.getTabela());
         initComponents();
@@ -73,6 +75,11 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Relatórios");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         painelBotoes.setLayout(new javax.swing.BoxLayout(painelBotoes, javax.swing.BoxLayout.LINE_AXIS));
 
@@ -257,6 +264,14 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
     private void checkEmprestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkEmprestActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_checkEmprestActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        
+        //se nenhuma outra instância de GerenciadorRelatorios estiver ativa{
+        dao.fechaConexao();
+        this.dispose();
+        //}
+    }//GEN-LAST:event_formWindowClosed
 
     public void mostraChecks(boolean valor){
         //painelCheck.setVisible(valor);

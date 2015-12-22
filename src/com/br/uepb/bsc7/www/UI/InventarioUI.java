@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -33,6 +34,7 @@ public class InventarioUI extends javax.swing.JFrame {
     InventarioDAO dao = new InventarioDAO();
     ResultSet rs = null;
     ResultSetMetaData metadados = null;
+    ArrayList<String> dados = new ArrayList<>();
     
     /**
      * Creates new form InventarioUI
@@ -54,12 +56,13 @@ public class InventarioUI extends javax.swing.JFrame {
 
         grupoAbas = new javax.swing.JTabbedPane();
         abaInicio = new javax.swing.JPanel();
-        jPanel7 = new javax.swing.JPanel();
+        painelLogin = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         userBD = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         pswdBD = new javax.swing.JPasswordField();
         botOk = new javax.swing.JButton();
+        sesaoIni = new javax.swing.JLabel();
         jPanel11 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tabUltIni = new javax.swing.JTable();
@@ -98,7 +101,7 @@ public class InventarioUI extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(723, 350));
+        setPreferredSize(new java.awt.Dimension(927, 360));
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
@@ -107,6 +110,7 @@ public class InventarioUI extends javax.swing.JFrame {
         });
 
         grupoAbas.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        grupoAbas.setPreferredSize(new java.awt.Dimension(699, 200));
         grupoAbas.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 grupoAbasStateChanged(evt);
@@ -118,11 +122,18 @@ public class InventarioUI extends javax.swing.JFrame {
             }
         });
 
-        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Login", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 13), new java.awt.Color(0, 0, 204))); // NOI18N
+        abaInicio.setPreferredSize(new java.awt.Dimension(694, 200));
+
+        painelLogin.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Login", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 13), new java.awt.Color(0, 0, 204))); // NOI18N
 
         jLabel7.setText("Usuário:");
 
         userBD.setPreferredSize(new java.awt.Dimension(150, 22));
+        userBD.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                userBDActionPerformed(evt);
+            }
+        });
         userBD.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 userBDKeyPressed(evt);
@@ -150,44 +161,54 @@ public class InventarioUI extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        sesaoIni.setText("Sessão iniciada!");
+        sesaoIni.setVisible(false);
+
+        javax.swing.GroupLayout painelLoginLayout = new javax.swing.GroupLayout(painelLogin);
+        painelLogin.setLayout(painelLoginLayout);
+        painelLoginLayout.setHorizontalGroup(
+            painelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(painelLoginLayout.createSequentialGroup()
+                .addGroup(painelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7)
                     .addComponent(jLabel8))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(painelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(userBD, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(pswdBD, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelLoginLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(botOk)
-                .addGap(68, 68, 68))
+                .addGroup(painelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelLoginLayout.createSequentialGroup()
+                        .addComponent(botOk)
+                        .addGap(67, 67, 67))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelLoginLayout.createSequentialGroup()
+                        .addComponent(sesaoIni)
+                        .addGap(45, 45, 45))))
         );
 
-        jPanel7Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {pswdBD, userBD});
+        painelLoginLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {pswdBD, userBD});
 
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
+        painelLoginLayout.setVerticalGroup(
+            painelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(painelLoginLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(painelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(userBD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(painelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(pswdBD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(botOk)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(sesaoIni)
                 .addContainerGap())
         );
 
-        jPanel7Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {pswdBD, userBD});
+        painelLoginLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {pswdBD, userBD});
 
         jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Últimos valores inseridos", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 13), new java.awt.Color(0, 0, 153))); // NOI18N
 
@@ -217,6 +238,7 @@ public class InventarioUI extends javax.swing.JFrame {
             }
         });
         tabUltIni.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        tabUltIni.setPreferredSize(new java.awt.Dimension(474, 48));
         tabUltIni.getTableHeader().setResizingAllowed(false);
         tabUltIni.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(tabUltIni);
@@ -258,7 +280,7 @@ public class InventarioUI extends javax.swing.JFrame {
             abaInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(abaInicioLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(painelLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(0, 0, 0))
@@ -268,9 +290,9 @@ public class InventarioUI extends javax.swing.JFrame {
             .addGroup(abaInicioLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(abaInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, 138, Short.MAX_VALUE)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(130, Short.MAX_VALUE))
+                    .addComponent(painelLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(108, Short.MAX_VALUE))
         );
 
         grupoAbas.addTab("Início", abaInicio);
@@ -283,6 +305,7 @@ public class InventarioUI extends javax.swing.JFrame {
 
         painelCargArqAcervo.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Carregar arquivo", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12), new java.awt.Color(0, 0, 204))); // NOI18N
         painelCargArqAcervo.setToolTipText("Selecione um arquivo de texto simples (TXT) ou do Excel (XLS)");
+        painelCargArqAcervo.setPreferredSize(new java.awt.Dimension(221, 210));
 
         botCargAcervo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_bd.png"))); // NOI18N
         botCargAcervo.setMnemonic(KeyEvent.VK_C);
@@ -355,10 +378,11 @@ public class InventarioUI extends javax.swing.JFrame {
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(botCargAcervo)
-                .addContainerGap(72, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         painelLeCodAcervo.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Leitura de Código de Barras", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12), new java.awt.Color(0, 0, 204))); // NOI18N
+        painelLeCodAcervo.setPreferredSize(new java.awt.Dimension(434, 210));
 
         codBar.setCaretPosition(0);
         codBar.setToolTipText("");
@@ -521,16 +545,17 @@ public class InventarioUI extends javax.swing.JFrame {
             abaAcervoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(abaAcervoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(abaAcervoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(painelLeCodAcervo, javax.swing.GroupLayout.PREFERRED_SIZE, 268, Short.MAX_VALUE)
-                    .addComponent(painelCargArqAcervo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(abaAcervoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(painelCargArqAcervo, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
+                    .addComponent(painelLeCodAcervo, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 9, Short.MAX_VALUE))
         );
 
         grupoAbas.addTab("Dados do acervo", abaAcervo);
 
         painelCargArqSIABI.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Carregar arquivo", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12), new java.awt.Color(0, 0, 204))); // NOI18N
         painelCargArqSIABI.setToolTipText("Selecione um arquivo de texto simples (TXT) ou do Excel (XLS)");
-        painelCargArqSIABI.setPreferredSize(new java.awt.Dimension(221, 265));
+        painelCargArqSIABI.setPreferredSize(new java.awt.Dimension(221, 210));
 
         botCargSIABI.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_bd.png"))); // NOI18N
         botCargSIABI.setMnemonic(KeyEvent.VK_C);
@@ -603,7 +628,7 @@ public class InventarioUI extends javax.swing.JFrame {
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(botCargSIABI)
-                .addContainerGap(72, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout abaSIABILayout = new javax.swing.GroupLayout(abaSIABI);
@@ -619,7 +644,7 @@ public class InventarioUI extends javax.swing.JFrame {
             abaSIABILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(abaSIABILayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(painelCargArqSIABI, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE))
+                .addComponent(painelCargArqSIABI, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE))
         );
 
         grupoAbas.addTab("Dados do SIABI", abaSIABI);
@@ -673,7 +698,7 @@ public class InventarioUI extends javax.swing.JFrame {
             .addGroup(abaRelatoriosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(220, Short.MAX_VALUE))
+                .addContainerGap(216, Short.MAX_VALUE))
         );
 
         grupoAbas.addTab("Relatórios", abaRelatorios);
@@ -699,7 +724,7 @@ public class InventarioUI extends javax.swing.JFrame {
             .addGroup(abaAjudaLayout.createSequentialGroup()
                 .addGap(69, 69, 69)
                 .addComponent(jButton1)
-                .addContainerGap(187, Short.MAX_VALUE))
+                .addContainerGap(183, Short.MAX_VALUE))
         );
 
         grupoAbas.addTab("Ajuda", abaAjuda);
@@ -710,15 +735,15 @@ public class InventarioUI extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(grupoAbas)
+                .addComponent(grupoAbas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(grupoAbas, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(51, 51, 51))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(grupoAbas, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(55, Short.MAX_VALUE))
         );
 
         pack();
@@ -752,7 +777,7 @@ public class InventarioUI extends javax.swing.JFrame {
         codBar.requestFocusInWindow();
     }
     
-    public void setFocusUser(){
+    public static void setFocusUser(){
         userBD.requestFocusInWindow();
     }
     
@@ -769,6 +794,14 @@ public class InventarioUI extends javax.swing.JFrame {
         vrfExemplar.setSelected(false);
     }
     
+    public void travaLogin(){
+        userBD.setEnabled(false);
+        pswdBD.setEnabled(false);
+        botOk.setEnabled(false);
+        sesaoIni.setVisible(true);
+        painelLogin.setToolTipText("A sessão será encerrada quando o programa for finalizado.");
+    }
+    
     private void botCargAcervoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botCargAcervoActionPerformed
         System.out.println("Chamar método para inserir no BD");
         try {
@@ -777,8 +810,6 @@ public class InventarioUI extends javax.swing.JFrame {
                     
             xls.leXLS(endArqAcervo.getText());
             //xls.setRefInventarioDAO(dao);
-            
-            
         } catch (IOException ex) {
             System.out.println("Arquivo não selecionado");
             //Logger.getLogger(ManipulaXLS.class.getName()).log(Level.SEVERE, null, ex);
@@ -792,7 +823,12 @@ public class InventarioUI extends javax.swing.JFrame {
     private void botCargSIABIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botCargSIABIActionPerformed
         System.out.println("Chamar método para inserir no BD");
         try {
-            new ManipulaXLS().leXLS(endArqSIABI.getText());
+            System.out.println(endArqSIABI.getText());
+            ManipulaXLS xls = new ManipulaXLS(dao);
+            
+            if(xls.ehSIABI(endArqSIABI.getText())){
+                xls.leXLS(endArqSIABI.getText());
+            }
         } catch (IOException ex) {
             System.out.println("Arquivo não selecionado");
             //Logger.getLogger(ManipulaXLS.class.getName()).log(Level.SEVERE, null, ex);
@@ -847,14 +883,14 @@ public class InventarioUI extends javax.swing.JFrame {
             File dir = fc.getCurrentDirectory();
             File arq = fc.getSelectedFile();
             //nomeArq = arq.getName();
-            //String endArqSIABI = dir + nomeArq;
-            String endArqSIABI = arq.getAbsolutePath();
+            //String endArq = dir + nomeArq;
+            String endArq = arq.getAbsolutePath();
             
             if(this.getExtensao(arq).equals("xls")){
             //System.out.println("Arquivo XLS aberto.");
 
-                endArqAcervo.setForeground(new java.awt.Color(0, 0, 0));
-                endArqAcervo.setText(endArqSIABI);
+                endArqSIABI.setForeground(new java.awt.Color(0, 0, 0));
+                endArqSIABI.setText(endArq);
             }/*else{
             if(this.getExtensao(arq).equals("txt")){
             System.out.println("Arquivo TXT aberto.");
@@ -864,10 +900,11 @@ public class InventarioUI extends javax.swing.JFrame {
     }//GEN-LAST:event_botSelSIABIActionPerformed
 
     private void botOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botOkActionPerformed
-        
+        dao.setRefInventarioUI(InventarioUI.this);
         dao.login(userBD.getText(), pswdBD.getText());
         userBD.setText("");
         pswdBD.setText("");
+        
     }//GEN-LAST:event_botOkActionPerformed
 
     private void grupoAbasFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_grupoAbasFocusGained
@@ -941,15 +978,40 @@ public class InventarioUI extends javax.swing.JFrame {
         
         //GerenciadorRelatorios objGRD = new GerenciadorRelatorios(InventarioUI.this, false, TabelaRelatorio.getModeloTabela());
         //GerenciadorRelatorios objGRD = new GerenciadorRelatorios(InventarioUI.this, false, new TabelaRelatorio(rs, metadados));
-        GerenciadorRelatorios objGRD = new GerenciadorRelatorios(InventarioUI.this, false, dao.mostraTabelaAcervo2());
-        
-        if ((comboRelat.getSelectedItem().equals("Itens não localizados no acervo"))){
-            System.out.println("Verdadeiro");
-            objGRD.mostraChecks(true);
-        }else {
-            System.out.println("Falso");
-            objGRD.mostraChecks(false);
+        GerenciadorRelatorios objGRD = null;
+        System.out.println(comboRelat.getSelectedIndex());
+        switch(comboRelat.getSelectedIndex()){
+            case 0:
+                objGRD = new GerenciadorRelatorios(InventarioUI.this, true, dao.mostraTabelaAcervo(), dao);
+                break;
+            case 1:
+                //System.out.println((String) comboRelat.getSelectedItem());
+                objGRD = new GerenciadorRelatorios(InventarioUI.this, true, dao.mostraTabelaAcervoParcial(), dao);
+                break;
+            case 2:
+                System.out.println((String) comboRelat.getSelectedItem());
+                break;
+            case 3:
+                System.out.println((String) comboRelat.getSelectedItem());
+                break;
+            case 4:
+                System.out.println((String) comboRelat.getSelectedItem());
+                break;
+
+            default:
+                System.out.println("Qualquer coisa!");
         }
+        
+        
+        /*if ((comboRelat.getSelectedItem().equals("Itens não localizados no acervo"))){
+        objGRD = new GerenciadorRelatorios(InventarioUI.this, true, dao.mostraTabelaAcervo(), dao);
+        System.out.println("Verdadeiro");
+        objGRD.mostraChecks(true);
+        }else {
+        objGRD = new GerenciadorRelatorios(InventarioUI.this, true, dao.mostraTabelaAcervoParcial(), dao);
+        System.out.println("Falso");
+        objGRD.mostraChecks(false);
+        }*/
         
         //Passa a referência desta classe
         objGRD.setRefInventarioUI(InventarioUI.this);
@@ -970,6 +1032,7 @@ public class InventarioUI extends javax.swing.JFrame {
     private void pswdBDKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pswdBDKeyPressed
         if ( evt.getKeyCode() == KeyEvent.VK_ENTER){
             //Acho que tem que ter um bloco try catch em algum canto aqui
+            dao.setRefInventarioUI(InventarioUI.this);
             dao.login(userBD.getText(), pswdBD.getText());
             userBD.setText("");
             pswdBD.setText("");
@@ -1030,9 +1093,15 @@ public class InventarioUI extends javax.swing.JFrame {
     }//GEN-LAST:event_pswdBDActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        System.out.println("Janela fechada!");
-        dao.fechaConexao();
-        this.dispose();
+        System.out.println("nada?");
+        try {
+            dao.fechaConexao();
+            System.out.println("Janela fechada!");
+        } catch (Exception e) {
+        }finally{
+        System.exit( 0 ); 
+        //this.dispose();
+        }
     }//GEN-LAST:event_formWindowClosed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -1040,6 +1109,10 @@ public class InventarioUI extends javax.swing.JFrame {
         dao.fechaConexao();
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void userBDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userBDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_userBDActionPerformed
     
     /**
      * @param args the command line arguments
@@ -1106,7 +1179,6 @@ public class InventarioUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel11;
-    private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -1116,10 +1188,12 @@ public class InventarioUI extends javax.swing.JFrame {
     private javax.swing.JPanel painelCargArqAcervo;
     private javax.swing.JPanel painelCargArqSIABI;
     private javax.swing.JPanel painelLeCodAcervo;
+    private javax.swing.JPanel painelLogin;
     private javax.swing.JTextField pswdBD;
+    private javax.swing.JLabel sesaoIni;
     private javax.swing.JTable tabUltCod;
     private javax.swing.JTable tabUltIni;
-    private javax.swing.JTextField userBD;
+    private static javax.swing.JTextField userBD;
     private javax.swing.JRadioButton vrfExemplar;
     // End of variables declaration//GEN-END:variables
 }

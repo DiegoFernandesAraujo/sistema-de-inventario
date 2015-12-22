@@ -1,5 +1,6 @@
 package com.br.uepb.bsc7.www.persistence;
 
+import com.br.uepb.bsc7.www.UI.InventarioUI;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,11 +17,15 @@ public class InventarioDAO {
     static ConexaoBD cBD = null;
     String usuario = "";
     String senha = "";
+    private InventarioUI objInventarioUI = null;
 
     public InventarioDAO() {
         cBD = new ConexaoBD();
     }
     
+    public void setRefInventarioUI(InventarioUI obj){
+        objInventarioUI = obj;
+    }
     
     //InventarioUI deve bloquear ou liberar componentes de acordo com o sucesso da conexão,
     //dessa forma login() deve retornar um booleano
@@ -35,11 +40,12 @@ public class InventarioDAO {
         if (cBD.statusConnection()) {
             
             JOptionPane.showMessageDialog(null, "Login efetuado com sucesso!", null, JOptionPane.INFORMATION_MESSAGE);
+            objInventarioUI.travaLogin();
             
         }else{
             //Código para insucesso da conexão
         }
-        cBD.closeConnection();
+        //cBD.closeConnection();
         return status;
     }
 
@@ -86,88 +92,70 @@ public class InventarioDAO {
         ArrayList<String> valoresBD = valores;
         int comprLinha = valoresBD.size();
         //String sql = null;
-        
+
         System.out.println("Método insereLinha chamado!");
         System.out.println(toString(valoresBD));
-        
-        
-        if (comprLinha > 0 && comprLinha <= 3) {
-            int index = 0;
-            //for (String valor : valoresBD) {
-            //Insere valor na tabela Acervo no índice 0
-            //System.out.println(valor);
-            String sql = "insert into acervo (tombo, verf, obs) VALUES"
-                    + "(" + toString(valoresBD) + ");";
-            try {
-                //fazConexao();
-                conexao = cBD.getConnection(usuario, senha);
-                Statement st = conexao.createStatement();
-                st.executeUpdate(sql);
-                cBD.closeConnection();
 
-            } catch (SQLException e) {
-
-                System.out.println("Deu erro!");
-                System.out.println("SQL Exception em insereLinha");
-            /*
-            try {
-            PreparedStatement st = conexao.prepareStatement(sql);
-            st.executeUpdate(sql);
-            
-            } catch (Exception e) {
-            }*/
-            
-            /*System.out.println(e.getErrorCode());
-            e.printStackTrace();
-            fechaConexao();*/
-            mostraTabelaAcervo();
-            
-        
-        
-            }
-
-        } else if (comprLinha >= 4) {
-            int indice = 0;
-            for (String valor : valoresBD) {
-                //Insere valor na tabela SIABI no índice atual
-                //indice++;
-                System.out.println(valor);
-            }
-
-        }
-    }
-    
-    
-    public ResultSet mostraTabelaAcervo() {
-        String sql = "SELECT * FROM acervo;";
         try {
-            //System.out.println("try do mostraTabelaAcertvo()");
+            //fazConexao();
             conexao = cBD.getConnection(usuario, senha);
-            //System.out.println("Passou!");
             Statement st = conexao.createStatement();
-            st.executeQuery(sql);
-            ResultSet rs = st.getResultSet();
-            /*while ( rs.next() )
-            {
-            for ( int i = 1; i <= 2; i++ )
-            System.out.printf( "%-8s\t", rs.getObject( i ) );
-            System.out.println();*/
-            return rs;
-         
-			
-        //cBD.closeConnection();
-        
+
+            if (comprLinha > 0 && comprLinha <= 3) {
+                //int index = 0;
+                //for (String valor : valoresBD) {
+                //Insere valor na tabela Acervo no índice 0
+                //System.out.println(valor);
+                String sql = "insert into acervo (tombo, verf, obs) VALUES"
+                        + "(" + toString(valoresBD) + ");";
+
+                st.executeUpdate(sql);
+                //cBD.closeConnection();
+            } else if (comprLinha >= 4) {
+                int indice = 0;
+                for (String valor : valoresBD) {
+                    //Insere valor na tabela SIABI no índice atual
+                    //indice++;
+                    System.out.println(valor);
+                }
+            }
+
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
-            e.printStackTrace();
+
             cBD.closeConnection();
-            }/*finally{
-            
-            }*/
-        return null;
-    }
+            System.out.println("Deu erro!");
+            System.out.println("SQL Exception em insereLinha");
+        } catch (Exception ex) {
+            //JOptionPane.showMessageDialog(null, "Arquivo não carregado!\ncatch - insereLinha()", null, JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+    } 
     
-    public TabelaRelatorio mostraTabelaAcervo2() {
+    
+    /*public ResultSet mostraTabelaAcervo() {
+    String sql = "SELECT * FROM acervo;";
+    try {
+    //System.out.println("try do mostraTabelaAcertvo()");
+    conexao = cBD.getConnection(usuario, senha);
+    //System.out.println("Passou!");
+    Statement st = conexao.createStatement();
+    st.executeQuery(sql);
+    ResultSet rs = st.getResultSet();
+    return rs;
+    
+    
+    //cBD.closeConnection();
+    
+    } catch (SQLException e) {
+    System.out.println(e.getErrorCode());
+    e.printStackTrace();
+    cBD.closeConnection();
+    }
+    return null;
+    }*/
+    
+    public TabelaRelatorio mostraTabelaAcervo() {
         String sql = "SELECT * FROM acervo;";
         try {
             //System.out.println("try do mostraTabelaAcertvo()");
@@ -192,7 +180,40 @@ public class InventarioDAO {
             e.printStackTrace();
             cBD.closeConnection();
             
-            }/*finally{
+            }/*
+        finally{
+            
+            }*/
+        return null;
+    }
+    
+    public TabelaRelatorio mostraTabelaAcervoParcial() {
+        String sql = "SELECT pos FROM acervo WHERE MOD(pos,2)=0;";
+        try {
+            //System.out.println("try do mostraTabelaAcertvo()");
+            conexao = cBD.getConnection(usuario, senha);
+            //System.out.println("Passou!");
+            Statement st = conexao.createStatement();
+            st.executeQuery(sql);
+            ResultSet rs = st.getResultSet();
+            ResultSetMetaData metadados = rs.getMetaData();
+            /*while ( rs.next() )
+            {
+            for ( int i = 1; i <= 2; i++ )
+            System.out.printf( "%-8s\t", rs.getObject( i ) );
+            System.out.println();*/
+            return new TabelaRelatorio(rs, metadados);
+         
+			
+        //cBD.closeConnection();
+        
+        } catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+            e.printStackTrace();
+            cBD.closeConnection();
+            
+            }/*
+        finally{
             
             }*/
         return null;

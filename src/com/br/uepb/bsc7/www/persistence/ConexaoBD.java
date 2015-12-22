@@ -1,5 +1,7 @@
 package com.br.uepb.bsc7.www.persistence;
 
+import com.br.uepb.bsc7.www.UI.InventarioUI;
+import com.br.uepb.bsc7.www.UI.ManipulaXLS;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,12 +49,20 @@ public class ConexaoBD {
             
         } catch (SQLException e) {
             System.out.println(e.getErrorCode());
+            if (e.getErrorCode() == 1044 || e.getErrorCode() == 1045){
+                JOptionPane.showMessageDialog(null, "Insira um nome de usuário e senha válidos!", null, JOptionPane.ERROR_MESSAGE);
+                ManipulaXLS.continua = false;
+                InventarioUI.setFocusUser();
+                return null;
+                
+            }
             //Criar método que retorna uma mensagem de erro de acordo com o erro lançado
             System.out.println("SQLException em getConnection!");
         } catch (ClassNotFoundException ex) {
             System.out.println("ClassNotFoundException!");
             System.out.println("Fudeu!");
             Logger.getLogger(ConexaoBD.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         }
         return conexao;
     }
