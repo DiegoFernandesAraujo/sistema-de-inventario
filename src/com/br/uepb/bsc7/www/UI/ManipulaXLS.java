@@ -87,6 +87,7 @@ public class ManipulaXLS {
         System.out.println("Método leXLS chamado!");
         FileInputStream fileInputStream = new FileInputStream(filename);
         continua = true;
+        
         try {
             //Obtem acesso à pasta de trabalho
             wb = new HSSFWorkbook(fileInputStream);
@@ -103,11 +104,23 @@ public class ManipulaXLS {
                     //Obtem acesso a cada linha de Plan1
                     Row linha = rowIterator.next();
 
-                    Iterator<Cell> cellIterator = linha.cellIterator();
+                    //Iterator<Cell> cellIterator = linha.cellIterator();
 
-                    while (cellIterator.hasNext()) {
+                    //while (cellIterator.hasNext()) {
+                    
+                    for (int cellCounter = 0; cellCounter < linha.getLastCellNum(); cellCounter++) { // Loop through cells
+                        System.out.println("Coluna  " + cellCounter);
                         
-                        Cell celula = cellIterator.next();
+                        Cell celula;
+                        //Obtem acesso a cada célula de cada linha de Plan1
+                        if (linha.getCell(cellCounter) == null) {
+                            celula = linha.createCell(cellCounter);
+                        } else {
+                            celula = linha.getCell(cellCounter);
+                        }
+
+                        
+                        //Cell celula = cellIterator.next();
                         
                         //Obtem acesso a cada célula de cada linha de Plan1
                         
@@ -117,22 +130,23 @@ public class ManipulaXLS {
                         //O ERRO ESTÁ AQUI
                         try {
                             
-                            if ((celula.equals(null))) {
-                                System.out.println("Vazio");
-                                dados.add("-");
+                            /*if ((celula.getStringCellValue() == null)) {
+                            System.out.println("Vazio");
+                            dados.add("-");
                             } else {
-                                dados.add(celula.getStringCellValue());
-                                System.out.println("Cheio");
-                            }
-
+                            dados.add(celula.getStringCellValue());
+                            System.out.println("Cheio");
+                            }*/
+                            dados.add(celula.getStringCellValue());
                         } catch (Exception ex) {
-                            System.out.println(celula.getNumericCellValue());
+                            //System.out.println(celula.getNumericCellValue());
                             try {
                                 Double temp = celula.getNumericCellValue();
 
                                 dados.add((String) temp.toString());
 
                             } catch (Exception ex2) {
+                                JOptionPane.showMessageDialog(null, "ERRO em leXLS");
                                 System.out.println("Nem numérico nem textual");
                             }
                          

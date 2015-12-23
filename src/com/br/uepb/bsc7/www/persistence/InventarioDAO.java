@@ -376,6 +376,40 @@ public class InventarioDAO {
             }*/
         return null;
     }
+    
+    public TabelaRelatorio getTomboDosVizinhos(int seq) {
+        
+        String sql = "SELECT tombo"
+                + " FROM (SELECT cod_barras"
+                + " FROM acervo_estante"
+                + " WHERE ((seq = " + seq + " - 2)"
+                + " OR (seq =  " + seq + " - 1))) AS vizinhos, acervo_siabi"
+                + " WHERE cod_barras = tombo;";
+        try {
+            conexao = cBD.getConnection(usuario, senha);
+            PreparedStatement st = conexao.prepareStatement(sql);
+            st.execute(sql);
+            ResultSet rs = st.getResultSet();
+            ResultSetMetaData metadados = rs.getMetaData();
+            /*while (rs.next()) {
+            System.out.print(rs.getString(1) + " | ");
+            System.out.print(rs.getString(2) + " | ");
+            System.out.print(rs.getString(3) + " | ");
+            System.out.println(rs.getString(4));
+            }*/
+            return new TabelaRelatorio(rs, metadados);
+
+        } catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+            e.printStackTrace();
+            cBD.closeConnection();
+
+        }/*
+        finally{
+            
+            }*/
+        return null;
+    }
 
     // assume que todas as tabelas passadas como parametro possuem um numero de sequencia
     public TabelaRelatorio getTresUltimasLinhas() {

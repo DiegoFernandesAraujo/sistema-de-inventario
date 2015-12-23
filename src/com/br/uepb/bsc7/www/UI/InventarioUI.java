@@ -39,6 +39,8 @@ public class InventarioUI extends javax.swing.JFrame {
     ArrayList<String> dadosIns = new ArrayList<>();
     TableModel modeloTabelaLocaliz;
     TableModel modeloTabelaTombo;
+    TableModel modeloTabelaAcerv;
+    //public static boolean emExecucao = false;
     private boolean logado = false;
     private String obsIns = null;
     
@@ -133,6 +135,11 @@ public class InventarioUI extends javax.swing.JFrame {
         });
 
         abaInicio.setPreferredSize(new java.awt.Dimension(694, 200));
+        abaInicio.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                abaInicioFocusGained(evt);
+            }
+        });
 
         painelLogin.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Login", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 13), new java.awt.Color(0, 0, 204))); // NOI18N
 
@@ -310,7 +317,7 @@ public class InventarioUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(abaInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(painelLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(painelLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 153, Short.MAX_VALUE))
                 .addContainerGap(111, Short.MAX_VALUE))
         );
 
@@ -902,6 +909,8 @@ public class InventarioUI extends javax.swing.JFrame {
         
         JOptionPane.showMessageDialog(null, "Inserção realizada com sucesso!");
         limpaTelaInsercao();
+        modeloTabelaAcerv = dao.getTresUltimasLinhas();
+        tabUltCod.setModel(modeloTabelaAcerv);
     }
     private void limpaTelaInsercao(){
         codBar.setText("");
@@ -994,26 +1003,26 @@ public class InventarioUI extends javax.swing.JFrame {
             //System.out.println ("Aba Acervo");  
             setFocusCodBar();
             if(logado){
-            //modeloTabelaAcerv = dao.getTresUltimasLinhas("Teste");
-            //tabUltCod.setModel(modeloTabelaAcerv);
-            tabUltCod.setModel(new javax.swing.table.DefaultTableModel(
-                    new Object[][]{
-                        {null, null, null},
-                        {null, null, null},
-                        {null, null, null}
-                    },
-                    new String[]{
-                        "Teste", "Teste", "Teste"
-                    }
-            ));
+            modeloTabelaAcerv = dao.getTresUltimasLinhas();
+            tabUltCod.setModel(modeloTabelaAcerv);
+            /*tabUltCod.setModel(new javax.swing.table.DefaultTableModel(
+            new Object[][]{
+            {null, null, null},
+            {null, null, null},
+            {null, null, null}
+            },
+            new String[]{
+            "Teste", "Teste", "Teste"
+            }
+            ));*/
             }
         }  else if (grupoAbas.getSelectedComponent() == abaInicio) {  
             setFocusUser();
             if(logado){
-                /*modeloTabelaLocaliz = dao.getLocalizacaoDosVizinhos(dao.getUltSeq());
+                modeloTabelaLocaliz = dao.getLocalizacaoDosVizinhos(dao.getUltSeq());
                 tabLocaliz.setModel(modeloTabelaLocaliz);
                 modeloTabelaTombo = dao.getTomboDosVizinhos(dao.getUltSeq());
-                tabTombos.setModel(modeloTabelaTombo);*/
+                tabTombos.setModel(modeloTabelaTombo);
                 
                 /*tabLocaliz.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[][]{
@@ -1108,6 +1117,8 @@ public class InventarioUI extends javax.swing.JFrame {
     private void botDesfInsCodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botDesfInsCodActionPerformed
         dao.removerUltimaLinha();
         setFocusCodBar();
+        modeloTabelaAcerv = dao.getTresUltimasLinhas();
+        tabUltCod.setModel(modeloTabelaAcerv);
         //modeloTabelaAcerv = dao.getTresUltimasLinhas("Teste");
         //tabUltCod.setModel(modeloTabelaAcerv);
     }//GEN-LAST:event_botDesfInsCodActionPerformed
@@ -1174,6 +1185,16 @@ public class InventarioUI extends javax.swing.JFrame {
     private void userBDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userBDActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_userBDActionPerformed
+
+    private void abaInicioFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_abaInicioFocusGained
+        if(logado){
+        
+        modeloTabelaLocaliz = dao.getLocalizacaoDosVizinhos(dao.getUltSeq());
+                tabLocaliz.setModel(modeloTabelaLocaliz);
+                modeloTabelaTombo = dao.getTomboDosVizinhos(dao.getUltSeq());
+                tabTombos.setModel(modeloTabelaTombo);
+        }
+    }//GEN-LAST:event_abaInicioFocusGained
     
     /**
      * @param args the command line arguments

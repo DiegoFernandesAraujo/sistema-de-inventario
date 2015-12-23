@@ -17,18 +17,20 @@ select * from acervo_siabi;
 
 describe acervo_estante;
 drop table acervo_estante;
+describe acervo_siabi;
+drop table acervo_siabi;
 
 CREATE TABLE acervo_estante (
 	seq INT AUTO_INCREMENT,
 	cod_barras varchar (25) NOT NULL,
     verf varchar (5) NOT NULL,
     obs varchar (30) NOT NULL,
-	PRIMARY KEY (cod_barras)
+	PRIMARY KEY (seq)
 );
 
 CREATE TABLE acervo_siabi (
 	
-	`seq` integer not null,
+	`seq` integer AUTO_INCREMENT,
    `patrimonio` varchar(45) null,
    `tombo` varchar(25) null,
    `localizacao` varchar(45) null,
@@ -45,10 +47,3 @@ CREATE TABLE acervo_siabi (
    `situacao` varchar(45) null,
    PRIMARY KEY (`seq`)
    );
-
-    
-    
-    
-    
-    
-    
