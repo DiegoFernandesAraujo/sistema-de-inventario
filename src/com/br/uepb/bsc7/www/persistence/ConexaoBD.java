@@ -25,7 +25,7 @@ public class ConexaoBD {
         prefixoBD = "jdbc:mysql://";
         host = "localhost";
         portaBD = "3306";
-        nomeBD = "inventario";
+        nomeBD = "inventario_uepb";
 
        url = prefixoBD + host + ":" + portaBD + "/" + nomeBD;
        //url = prefixoBD + host + "/" + nomeBD;

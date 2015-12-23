@@ -71,7 +71,7 @@ public class ManipulaXLS {
 
             Row linha = s.getRow(0);
             //Só aceita com 15 colunas
-            if (linha.getLastCellNum() == 15) {
+            if (linha.getLastCellNum() == 14) {
                 siabi = true;
             } else {
                 JOptionPane.showMessageDialog(null, "Deve ser carregado um arquivo padrão gerado pelo SIABI!", null, JOptionPane.ERROR_MESSAGE);
@@ -106,25 +106,39 @@ public class ManipulaXLS {
                     Iterator<Cell> cellIterator = linha.cellIterator();
 
                     while (cellIterator.hasNext()) {
-                        //Obtem acesso a cada célula de cada linha de Plan1
+                        
                         Cell celula = cellIterator.next();
+                        
+                        //Obtem acesso a cada célula de cada linha de Plan1
+                        
                         //System.out.println(celula.getStringCellValue());
 
                         //Adiciona o valor de cada célula ao ArrayList que será passado a DAO
+                        //O ERRO ESTÁ AQUI
                         try {
-                            Double temp = celula.getNumericCellValue();
+                            
+                            if ((celula.equals(null))) {
+                                System.out.println("Vazio");
+                                dados.add("-");
+                            } else {
+                                dados.add(celula.getStringCellValue());
+                                System.out.println("Cheio");
+                            }
 
-                            dados.add((String) temp.toString());
                         } catch (Exception ex) {
+                            System.out.println(celula.getNumericCellValue());
                             try {
-                                dados.add((String) celula.getStringCellValue());
+                                Double temp = celula.getNumericCellValue();
+
+                                dados.add((String) temp.toString());
+
                             } catch (Exception ex2) {
                                 System.out.println("Nem numérico nem textual");
                             }
-                        } 
+                         
                         
                         
-                        //dados.add(celula.get);
+                        }    //dados.add(celula.get);
                         //
                     }
 
@@ -145,48 +159,6 @@ public class ManipulaXLS {
         }
 
     }
-    //Versão sem JTable
-    public /*static*/ void criaXLS1(String arqSaida, String nomePlan) throws IOException, NullPointerException {
-        
-        int numLinhas = 5;
-        int numCelulas = 2;
-        
-        //Cria pasta de trabalho
-        wb = new HSSFWorkbook();
-        //Cria planilha
-        HSSFSheet s = wb.createSheet(nomePlan);
-        //wb.setSheetName(0, nomePlan);
-        
-        //Alterar para a quantidade de linhas retornada por cada relatório
-        for (int i = 0; i < numLinhas; i++) {
-
-            //Cria a linha
-            HSSFRow linha = s.createRow(i);
-
-            //Alterar para a quantidade de células retornada por cada relatório
-            for (int j = 0; j < numCelulas; j++) {
-                HSSFCell celula = linha.createCell(j);
-                
-                /*O valor passado deve ser de acordo com aquele recebido por cada relatório, 
-                                provavelmente String;*/
-                //celula.setCellValue((String) tabela.getValueAt(i, j));
-                celula.setCellValue(i+j);
-            }
-        }
-
-        FileOutputStream fileOutputStream = new FileOutputStream(arqSaida+".xls");
-        try {
-            wb.write(fileOutputStream);
-            //Fecha o fileOutputStream
-        //Melhorar este catch    
-        }catch(IOException ex){
-            System.out.println("Teste");
-        }finally{
-            fileOutputStream.close();
-            wb.close(); //Fecha a pasta de trabalho
-        }
-    }
-    
     //Versão com JTable
     public /*static*/ void criaXLS(JTable tabela, String arqSaida, String nomePlan) throws IOException, NullPointerException {
         int numLinhas = tabela.getRowCount();

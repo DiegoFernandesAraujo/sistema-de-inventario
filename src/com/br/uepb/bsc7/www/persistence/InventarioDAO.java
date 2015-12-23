@@ -60,7 +60,7 @@ public class InventarioDAO {
 
     }
 
-    //Retorna os valores da lista no formato ('Item1', 'Item2', 'Item3')
+    //Retorna os valores da lista no formato 'Item1', 'Item2', 'Item3'
     public String toString(ArrayList<String> valores) {
         StringBuilder sb = new StringBuilder();
         for (String s : valores) {
@@ -84,41 +84,68 @@ public class InventarioDAO {
             //fazConexao();
             conexao = cBD.getConnection(usuario, senha);
 
+            //Inserção na tabela acervo_estante
             if (comprLinha > 0 && comprLinha <= 3) {
                 //int index = 0;
                 //for (String valor : valoresBD) {
                 //Insere valor na tabela Acervo no índice 0
                 //System.out.println(valor);
-                String sql = "insert into acervo (tombo, verf, obs) VALUES"
+                String sql = "INSERT INTO acervo_estante (cod_barras, verf, obs) VALUES"
                         + "(" + toString(valoresBD) + ");";
 
-                conexao.prepareStatement(sql);
+                st = conexao.prepareStatement(sql);
 
                 st.executeUpdate(sql);
                 //cBD.closeConnection();
+              
+              //Inserção na tabela acervo_siabi  
             } else if (comprLinha >= 4) {
-                int indice = 0;
-                for (String valor : valoresBD) {
-                    //Insere valor na tabela SIABI no índice atual
-                    //indice++;
-                    System.out.println(valor);
-                }
+                //int indice = 0;
+                /*for (String valor : valoresBD) {
+                //Insere valor na tabela SIABI no índice atual
+                //indice++;
+                System.out.println(valor.toString());
+                }*/
+                String sql = "INSERT INTO acervo_siabi (patrimonio, tombo, localizacao, autor, titulo, edicao, ano, volume, tomo, valor, nota_fiscal, empenho, rb, situacao) VALUES"
+                        + "(" + toString(valoresBD) + ");";
+
+                st = conexao.prepareStatement(sql);
+
+                st.executeUpdate(sql);
+                
             }
 
         } catch (SQLException e) {
 
-            cBD.closeConnection();
             System.out.println("Deu erro!");
             System.out.println("SQL Exception em insereLinha");
         } catch (Exception ex) {
             //JOptionPane.showMessageDialog(null, "Arquivo não carregado!\ncatch - insereLinha()", null, JOptionPane.ERROR_MESSAGE);
             return;
+        } finally{
+            cBD.closeConnection();
         }
 
     }
+    
+    public void removerUltimaLinha(){
+	String sql = "DELETE FROM acervo_estante WHERE ("
+                   + " SELECT seq FROM (SELECT COUNT(*) ultimo FROM acervo_estante) AS tamanho WHERE seq = ultimo);";
+        try {
+            conexao = cBD.getConnection(usuario, senha);
+            Statement st = conexao.prepareStatement(sql);
+            st.execute(sql);
+            JOptionPane.showMessageDialog(null, "Alteração realizada com sucesso!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Não foi possíel desfazer a última inserção!");
+        }finally{
+            cBD.closeConnection();
+        }
+    }
 
     public TabelaRelatorio mostraTabelaAcervo() {
-        String sql = "SELECT * FROM acervo;";
+        String sql = "SELECT * FROM acervo_estante;";
         try {
             //System.out.println("try do mostraTabelaAcertvo()");
             conexao = cBD.getConnection(usuario, senha);
@@ -147,7 +174,7 @@ public class InventarioDAO {
     }
 
     public TabelaRelatorio mostraTabelaAcervoParcial() {
-        String sql = "SELECT pos FROM acervo WHERE MOD(pos,2)=0;";
+        String sql = "SELECT seq FROM acervo_estante WHERE MOD(pos,2)=0;";
         try {
             //System.out.println("try do mostraTabelaAcertvo()");
             conexao = cBD.getConnection(usuario, senha);
@@ -226,7 +253,7 @@ public class InventarioDAO {
     public TabelaRelatorio getNaoLocalizados() {
         String sql = "SELECT asi.tombo, asi.situacao, asi.titulo, asi.localizacao, asi.autor"
                 + " FROM acervo_siabi asi"
-                + " where (asi.situacao <> \"02 - Emprestado\""
+                + " WHERE (asi.situacao <> \"02 - Emprestado\""
                 + " AND asi.situacao <>  \"07 - Perdido por Leitor\""
                 + " AND asi.situacao <> \"11 - Extraviado\""
                 + " AND asi.situacao <> \"14 - Inexistente\""
@@ -316,15 +343,13 @@ public class InventarioDAO {
     //alterado dia 22/12/2015
     //retorna as cdds dos livros vizinhos
     //adequar para os nomes das tabelas criadas
-    public TabelaRelatorio getLocalizacaoDosVizinhos(/*int seq*/) {
-        int seq = getUltSeq();
+    public TabelaRelatorio getLocalizacaoDosVizinhos(int seq) {
+        
         String sql = "SELECT localizacao"
-                + " FROM (select cod_barras"
-                + " from acervo_estante2"
-                + " where ((seq = " + seq + " + 1)"
-                + " OR (seq =  " + seq + " + 2)"
-                + " OR (seq =  " + seq + " - 2)"
-                + " OR (seq =  " + seq + " - 1))) as vizinhos, acervo_siabi"
+                + " FROM (SELECT cod_barras"
+                + " FROM acervo_estante"
+                + " WHERE ((seq = " + seq + " - 2)"
+                + " OR (seq =  " + seq + " - 1))) AS vizinhos, acervo_siabi"
                 + " WHERE cod_barras = tombo;";
         try {
             conexao = cBD.getConnection(usuario, senha);
@@ -353,11 +378,11 @@ public class InventarioDAO {
     }
 
     // assume que todas as tabelas passadas como parametro possuem um numero de sequencia
-    public TabelaRelatorio getTresUltimasLinhas(String nome_tabela) {
+    public TabelaRelatorio getTresUltimasLinhas() {
         String sql = "SELECT *"
-                + " FROM (select count(*) as ult"
-                + " from " + nome_tabela + ") as ultimo, "
-                + nome_tabela + " where seq > (ult - 3);";
+                + " FROM (SELECT COUNT(*) AS ult"
+                + " FROM acervo_estante AS ultimo, "
+                + "acervo_estante WHERE seq > (ult - 3);";
 
         try {
             conexao = cBD.getConnection(usuario, senha);
@@ -387,9 +412,9 @@ public class InventarioDAO {
 
     //lembrar de fechar as conexões, resultsets etc...
     public TabelaRelatorio getItensParaVerificacao() {
-        String sql = "select *"
-                + " from acervo_estante"
-                + " where verificar is not null;";
+        String sql = "SELECT *"
+                + " FROM acervo_estante"
+                + " WHERE verificar IS NOT NULL;";
         try {
             conexao = cBD.getConnection(usuario, senha);
             Statement st = conexao.prepareStatement(sql);
