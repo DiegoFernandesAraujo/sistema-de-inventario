@@ -104,12 +104,12 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
         
         //Alterar tamanhos das colunas aqui
         for (int k = 0; k < colunas; k++) {
-            if(maxDimColunas[k] <= 1500){
-                System.out.println("Menor ou igual a 1500.");
+            if(maxDimColunas[k] > 200 && maxDimColunas[k] <= 1500){
+                
                 tabRelat.getColumnModel().getColumn( k ).setPreferredWidth( maxDimColunas[k] );
                 largPainel = largPainel + maxDimColunas[k];
             }else{
-                System.out.println("Maior que 1500.");
+               
                 tabRelat.getColumnModel().getColumn( k ).setPreferredWidth( 200 );
                 largPainel = largPainel + 200;
             }
