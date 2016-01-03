@@ -208,11 +208,11 @@ public class Observacoes extends javax.swing.JDialog {
     }//GEN-LAST:event_botGuardarActionPerformed
 
     private void guardaObs(String obsG){
-        System.out.println(obsG);
+        //System.out.println(obsG);
         objInventarioUI.setObs(obsG);
         objInventarioUI.setFocusBotaoInserir();
         //objInventarioUI.desmarcarVrfExemplar();
-        guardar = true;
+        objInventarioUI.blockVrfExemplar(false);
         this.dispose();
     }
     

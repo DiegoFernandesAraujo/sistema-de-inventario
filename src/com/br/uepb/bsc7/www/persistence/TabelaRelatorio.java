@@ -63,7 +63,7 @@ public class TabelaRelatorio extends AbstractTableModel{
 
     }
     
-    public String getColumnName(int coluna){
+    public String getColumnName(int coluna) {
         try {
             return metadados.getColumnName(coluna + 1);
         } catch (SQLException ex) {

@@ -11,6 +11,11 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.TableModel;
 import static com.br.uepb.bsc7.www.UI.InventarioUI.getNomeRelatorio;
 import com.br.uepb.bsc7.www.persistence.InventarioDAO;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import static java.awt.SystemColor.text;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -45,11 +50,76 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
         super(parent, modal);
         modeloTabela = modelo;
         dao = objDAO;
+        
         //System.out.println("criou objeto");
         //setModeloTabelaRelat(TabelaRelatorio.getTabela());
         initComponents();
+        quantitativos.setText(modelo.getRowCount() + " registros encontrados.");
+        checkEmprest.setVisible(false);
+        checkExtrav.setVisible(false);
+        redimensionaTabela();
+        //System.out.println(tabRelat.getHeight());
     }
 
+    private void redimensionaTabela(){
+        int linhas = modeloTabela.getRowCount();
+        int colunas = modeloTabela.getColumnCount();
+        String valor = null;
+        Font font = getFont();
+        FontMetrics metrics = this.getFontMetrics(font);
+        int tam;
+        int largPainel = 0;
+        
+        int[] maxDimColunas = new int[colunas];
+        
+        for (int i = 0; i < colunas; i++) {
+            int max = 0;
+            //System.out.println("Primeiro for");
+            for (int j = 0; j < linhas; j++) {
+                    //System.out.println("Segundo for");
+                    
+                    if (modeloTabela.getValueAt(j, i) instanceof Integer) {
+                        Integer valorInteger = (Integer) modeloTabela.getValueAt(j, i);
+                        valor = valorInteger.toString();
+                        
+                    } else {
+                        valor = (String) modeloTabela.getValueAt(j, i);
+                        
+                    }
+                    //System.out.println(valor);
+                
+                tam = metrics.stringWidth(valor);
+                
+                
+                if (tam > max) {
+                    
+                    max = tam;
+                    
+                }
+            }
+            maxDimColunas[i] = max + 30;
+            System.out.println(max);
+            
+        }
+        
+        //Alterar tamanhos das colunas aqui
+        for (int k = 0; k < colunas; k++) {
+            if(maxDimColunas[k] <= 1500){
+                System.out.println("Menor ou igual a 1500.");
+                tabRelat.getColumnModel().getColumn( k ).setPreferredWidth( maxDimColunas[k] );
+                largPainel = largPainel + maxDimColunas[k];
+            }else{
+                System.out.println("Maior que 1500.");
+                tabRelat.getColumnModel().getColumn( k ).setPreferredWidth( 200 );
+                largPainel = largPainel + 200;
+            }
+        }
+        //Redimensiona o painel      
+        System.out.println("Largura do painel: " + largPainel);
+        GerenciadorRelatorios.this.setSize(largPainel, 300);
+        System.out.println("Largura real do painel: " + GerenciadorRelatorios.this.getWidth());
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -81,15 +151,12 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
             }
         });
 
-        painelBotoes.setLayout(new javax.swing.BoxLayout(painelBotoes, javax.swing.BoxLayout.LINE_AXIS));
-
         botImprimir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_impressora2.png"))); // NOI18N
         botImprimir.setMnemonic(KeyEvent.VK_I);
         botImprimir.setText("Imprimir");
         botImprimir.setMaximumSize(new java.awt.Dimension(107, 25));
         botImprimir.setMinimumSize(new java.awt.Dimension(107, 25));
         botImprimir.setPreferredSize(new java.awt.Dimension(107, 25));
-        painelBotoes.add(botImprimir);
 
         botXLS.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_xls.gif"))); // NOI18N
         botXLS.setText("Gerar XLS");
@@ -99,7 +166,6 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
                 botXLSActionPerformed(evt);
             }
         });
-        painelBotoes.add(botXLS);
 
         botPDF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_pdf.png"))); // NOI18N
         botPDF.setText("Gerar PDF");
@@ -109,7 +175,27 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
                 botPDFActionPerformed(evt);
             }
         });
-        painelBotoes.add(botPDF);
+
+        javax.swing.GroupLayout painelBotoesLayout = new javax.swing.GroupLayout(painelBotoes);
+        painelBotoes.setLayout(painelBotoesLayout);
+        painelBotoesLayout.setHorizontalGroup(
+            painelBotoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(painelBotoesLayout.createSequentialGroup()
+                .addComponent(botImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(botXLS)
+                .addGap(0, 0, 0)
+                .addComponent(botPDF))
+        );
+        painelBotoesLayout.setVerticalGroup(
+            painelBotoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(painelBotoesLayout.createSequentialGroup()
+                .addGap(11, 11, 11)
+                .addGroup(painelBotoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(botImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botXLS)
+                    .addComponent(botPDF)))
+        );
 
         painelRelatorio.setBorder(javax.swing.BorderFactory.createTitledBorder(null, getNomeRelatorio(), javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP));
 
@@ -141,6 +227,7 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
         checkExtrav.setText("Extraviados");
 
         tabRelat.setModel(/*TabelaRelatorio.getTabela()*/modeloTabela);
+        tabRelat.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         jScrollPane1.setViewportView(tabRelat);
 
         javax.swing.GroupLayout painelCheckLayout = new javax.swing.GroupLayout(painelCheck);
@@ -153,9 +240,7 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
                 .addGap(30, 30, 30)
                 .addComponent(checkExtrav)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(painelCheckLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
         painelCheckLayout.setVerticalGroup(
             painelCheckLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -164,8 +249,8 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
                     .addComponent(checkEmprest)
                     .addComponent(checkExtrav))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 31, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                .addGap(19, 19, 19))
         );
 
         painelCheckLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {checkEmprest, checkExtrav});
@@ -176,14 +261,14 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
             painelTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(painelTabelaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(painelCheck, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(painelCheck, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         painelTabelaLayout.setVerticalGroup(
             painelTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(painelTabelaLayout.createSequentialGroup()
-                .addComponent(painelCheck, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(painelCheck, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
         );
 
         javax.swing.GroupLayout painelRelatorioLayout = new javax.swing.GroupLayout(painelRelatorio);
@@ -196,7 +281,7 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
         painelRelatorioLayout.setVerticalGroup(
             painelRelatorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(painelRelatorioLayout.createSequentialGroup()
-                .addComponent(painelInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(painelInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(painelTabela, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -207,16 +292,18 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                .addComponent(painelBotoes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(29, 29, 29)
+                    .addComponent(painelBotoes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addComponent(painelRelatorio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(painelBotoes, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(painelRelatorio, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(19, 19, 19)
+                .addComponent(painelBotoes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(19, 19, 19)
+                .addComponent(painelRelatorio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -225,7 +312,8 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
     private void botXLSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botXLSActionPerformed
         File arq = null;
         JFileChooser fileChooser = new JFileChooser();
-        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Arquivo XLS", "xls");
+        //FileNameExtensionFilter filtro = new FileNameExtensionFilter("Arquivo XLS", "xls");
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Arquivo XLSX", "xlsx");
         fileChooser.setFileFilter(filtro);
         int returnVal = fileChooser.showSaveDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION){
@@ -236,11 +324,13 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
         try {
             //objManipula.criaXLS(arq.getAbsolutePath(), "Plan1");
             //objManipula.criaXLS1(arq.getAbsolutePath(), "Plan1");
-            objManipula.criaXLS(getTabelaRelat(), arq.getAbsolutePath(), "Plan1");
+            objManipula.criaXLSX(getTabelaRelat(), arq.getAbsolutePath(), "Plan1");
+            JOptionPane.showMessageDialog(null, "Relatório salvo!", null, JOptionPane.INFORMATION_MESSAGE);
         } catch (IOException ex) {
             Logger.getLogger(GerenciadorRelatorios.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Relatório não pôde ser salvo!", null, JOptionPane.ERROR_MESSAGE);
         } catch (NullPointerException ex){
-            System.out.println("teste");
+            JOptionPane.showMessageDialog(null, "Relatório não pôde ser salvo!", null, JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_botXLSActionPerformed
 
@@ -251,6 +341,7 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
     
     public void setTabelaRelat(JTable tabExterna){
         tabRelat = tabExterna;//tabRelat tem que receber um tabela já formatada
+        //tabRelat.set
     }
     
     public void setModeloTabelaRelat(TableModel modeloTab){
@@ -261,10 +352,6 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_botPDFActionPerformed
 
-    private void checkEmprestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkEmprestActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_checkEmprestActionPerformed
-
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         
         //se nenhuma outra instância de GerenciadorRelatorios estiver ativa{
@@ -273,11 +360,12 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
         //}
     }//GEN-LAST:event_formWindowClosed
 
-    public void mostraChecks(boolean valor){
-        //painelCheck.setVisible(valor);
-        checkEmprest.setVisible(valor);
-        checkExtrav.setVisible(valor);
-    }
+    
+    
+    private void checkEmprestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkEmprestActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_checkEmprestActionPerformed
+
     
     //Recebe a instância de InventarioUI para poder chamar seus métodos a partir desta
     public void setRefInventarioUI(InventarioUI obj){

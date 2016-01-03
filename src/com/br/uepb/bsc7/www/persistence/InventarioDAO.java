@@ -1,6 +1,7 @@
 package com.br.uepb.bsc7.www.persistence;
 
 import com.br.uepb.bsc7.www.UI.InventarioUI;
+import com.br.uepb.bsc7.www.UI.ManipulaXLS;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -45,7 +46,7 @@ public class InventarioDAO {
         } else {
             //Código para insucesso da conexão
         }
-        cBD.closeConnection();
+        //cBD.closeConnection();
         return status;
     }
 
@@ -84,13 +85,13 @@ public class InventarioDAO {
             //fazConexao();
             conexao = cBD.getConnection(usuario, senha);
 
-            //Inserção na tabela acervo_estante
-            if (comprLinha > 0 && comprLinha <= 3) {
+            //Inserção na tabela acervo_estante apenas com código de barras
+            if (comprLinha == 1) {
                 //int index = 0;
                 //for (String valor : valoresBD) {
                 //Insere valor na tabela Acervo no índice 0
                 //System.out.println(valor);
-                String sql = "INSERT INTO acervo_estante (cod_barras, verf, obs) VALUES"
+                String sql = "INSERT INTO acervo_estante (cod_barras) VALUES"
                         + "(" + toString(valoresBD) + ");";
 
                 st = conexao.prepareStatement(sql);
@@ -98,20 +99,54 @@ public class InventarioDAO {
                 st.executeUpdate(sql);
                 //cBD.closeConnection();
               
-              //Inserção na tabela acervo_siabi  
-            } else if (comprLinha >= 4) {
-                //int indice = 0;
-                /*for (String valor : valoresBD) {
-                //Insere valor na tabela SIABI no índice atual
-                //indice++;
-                System.out.println(valor.toString());
-                }*/
-                String sql = "INSERT INTO acervo_siabi (patrimonio, tombo, localizacao, autor, titulo, edicao, ano, volume, tomo, valor, nota_fiscal, empenho, rb, situacao) VALUES"
+              //Inserção na tabela acervo_estante com três colunas  
+            }else if (comprLinha > 0 && comprLinha <= 3) {
+                String sql = "INSERT INTO acervo_estante (cod_barras, verificar, obs) VALUES"
                         + "(" + toString(valoresBD) + ");";
 
                 st = conexao.prepareStatement(sql);
 
                 st.executeUpdate(sql);
+            }
+            //Inserção na tabela acervo_siabi  
+            else if (comprLinha >= 4) {
+                System.out.println("Inserindo SIABI");
+                //Se não for a primeira linha da planilha original do SIABI
+                if (!"SEQ.".equals(valoresBD.get(0))) {
+                    
+                    //PARA PODER UTILIZAR A PLANILHA SIABI SEM EDITÁ-LA:
+                    
+                    //tentar retirar o primeiro valor (SEQ), converter em int e inserir direto no BD
+                    //System.out.println(valoresBD.get(0));
+                    int seq = Integer.parseInt(valoresBD.get(0));
+                    
+                    System.out.println(seq);
+                    
+                    /*st = conexao.prepareStatement(sql);
+                    
+                    st.executeUpdate(sql);*/
+                    StringBuilder sb = new StringBuilder();
+                    
+                    String temp = toString(valoresBD);
+                    //System.out.println(valoresBD.get(0));
+                    //String valorSeq = sb.append("'").append((Integer) seq.)
+                    /*StringBuilder primValor = sb.append("'").append(valoresBD.get(0)).append("'").append(",");
+                    String s = temp.replaceFirst(primValor.toString(), "");*/
+                    
+                    StringBuilder primValor = sb.append("'").append(valoresBD.get(0)).append("'").append(",");
+                    String s = temp.replaceFirst(primValor.toString(), Integer.toString(seq)+",");
+                    
+                    /*String sql2 = "INSERT INTO acervo_siabi2 (seq, patrimonio, tombo, localizacao, autor, titulo, edicao, ano, volume, tomo, valor, nota_fiscal, empenho, rb, situacao) VALUES"
+                    + "(" + seq + "," + s + ");"; //tentar fazer toString menos primeiro elemento*/
+                    
+                    String sql2 = "INSERT INTO acervo_siabi (seq, patrimonio, tombo, localizacao, autor, titulo, edicao, ano, volume, tomo, valor, nota_fiscal, empenho, rb, situacao) VALUES "
+                    + "(" + s + ");";
+                    
+                    //System.out.println(sql2);
+                    st = conexao.prepareStatement(sql2);
+                    
+                    st.executeUpdate(sql2);
+                }
                 
             }
 
@@ -119,8 +154,15 @@ public class InventarioDAO {
 
             System.out.println("Deu erro!");
             System.out.println("SQL Exception em insereLinha");
+            //System.out.println(e.getErrorCode());
+            JOptionPane.showMessageDialog(null, "Não foi possível inserir dados no Banco de Dados! \n Erro MYSQL " + e.getErrorCode() + "\n" + e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
+            /*System.out.println(e.getSQLState());
+            System.out.println(e.getMessage());*/
+            ManipulaXLS.continua = false;
+            return;
         } catch (Exception ex) {
             //JOptionPane.showMessageDialog(null, "Arquivo não carregado!\ncatch - insereLinha()", null, JOptionPane.ERROR_MESSAGE);
+            ManipulaXLS.continua = false;
             return;
         } finally{
             cBD.closeConnection();
@@ -144,64 +186,50 @@ public class InventarioDAO {
         }
     }
 
-    public TabelaRelatorio mostraTabelaAcervo() {
-        String sql = "SELECT * FROM acervo_estante;";
-        try {
-            //System.out.println("try do mostraTabelaAcertvo()");
-            conexao = cBD.getConnection(usuario, senha);
-            //System.out.println("Passou!");
-            PreparedStatement st = conexao.prepareStatement(sql);
-            st.executeQuery(sql);
-            ResultSet rs = st.getResultSet();
-            ResultSetMetaData metadados = rs.getMetaData();
-            /*while ( rs.next() )
-            {
-            for ( int i = 1; i <= 2; i++ )
-            System.out.printf( "%-8s\t", rs.getObject( i ) );
-            System.out.println();*/
-            return new TabelaRelatorio(rs, metadados);
-
-        } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
-            e.printStackTrace();
-            cBD.closeConnection();
-
-        }/*
-        finally{
-            
-            }*/
-        return null;
+    /*public TabelaRelatorio mostraTabelaAcervo() {
+    String sql = "SELECT * FROM acervo_estante;";
+    try {
+    //System.out.println("try do mostraTabelaAcertvo()");
+    conexao = cBD.getConnection(usuario, senha);
+    //System.out.println("Passou!");
+    PreparedStatement st = conexao.prepareStatement(sql);
+    st.executeQuery(sql);
+    ResultSet rs = st.getResultSet();
+    ResultSetMetaData metadados = rs.getMetaData();
+    
+    return new TabelaRelatorio(rs, metadados);
+    
+    } catch (SQLException e) {
+    System.out.println(e.getErrorCode());
+    e.printStackTrace();
+    cBD.closeConnection();
+    
     }
+    return null;
+    }*/
 
-    public TabelaRelatorio mostraTabelaAcervoParcial() {
-        String sql = "SELECT seq FROM acervo_estante WHERE MOD(pos,2)=0;";
-        try {
-            //System.out.println("try do mostraTabelaAcertvo()");
-            conexao = cBD.getConnection(usuario, senha);
-            //System.out.println("Passou!");
-            PreparedStatement st = conexao.prepareStatement(sql);
-            st.executeQuery(sql);
-            ResultSet rs = st.getResultSet();
-            ResultSetMetaData metadados = rs.getMetaData();
-            /*while ( rs.next() )
-            {
-            for ( int i = 1; i <= 2; i++ )
-            System.out.printf( "%-8s\t", rs.getObject( i ) );
-            System.out.println();*/
-            return new TabelaRelatorio(rs, metadados);
+    /*public TabelaRelatorio mostraTabelaAcervoParcial() {
+    String sql = "SELECT seq FROM acervo_estante WHERE MOD(pos,2)=0;";
+    try {
+    //System.out.println("try do mostraTabelaAcertvo()");
+    conexao = cBD.getConnection(usuario, senha);
+    //System.out.println("Passou!");
+    PreparedStatement st = conexao.prepareStatement(sql);
+    st.executeQuery(sql);
+    ResultSet rs = st.getResultSet();
+    ResultSetMetaData metadados = rs.getMetaData();
+    
+    return new TabelaRelatorio(rs, metadados);
+    
+    //cBD.closeConnection();
+} catch (SQLException e) {
+System.out.println(e.getErrorCode());
+e.printStackTrace();
+cBD.closeConnection();
 
-            //cBD.closeConnection();
-        } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
-            e.printStackTrace();
-            cBD.closeConnection();
-
-        }/*
-        finally{
-            
-            }*/
-        return null;
-    }
+}
+return null;
+}*/
 
     //Por fazer ainda
     /**
@@ -219,7 +247,7 @@ public class InventarioDAO {
     }
 
     //retorna todos dos encontrados nos dois acervos, sem considerar a situa��o.
-    public TabelaRelatorio getItensLocalizados() {
+    public TabelaRelatorio getLocalizados() {
         String sql = "SELECT ac1.tombo, ac1.titulo, ac1.autor, ac1.localizacao"
                 + " FROM acervo_estante, acervo_siabi ac1"
                 + " WHERE acervo_estante.cod_barras = ac1.tombo;";
@@ -276,6 +304,30 @@ public class InventarioDAO {
             return new TabelaRelatorio(rs, metadados);
 
         } catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+            e.printStackTrace();
+            cBD.closeConnection();
+
+        }/*
+        finally{
+            
+            }*/
+        return null;
+    }
+    
+    public TabelaRelatorio getNaoCadastrados(){
+		String sql = "select seq, cod_barras from acervo_estante"  
+				+ " where cod_barras not in (select tombo from acervo_siabi);";
+		
+		try{
+		conexao = cBD.getConnection(usuario, senha);	
+                    PreparedStatement st = conexao.prepareStatement(sql);
+			st.execute(sql);
+			ResultSet rs = st.getResultSet();
+                         ResultSetMetaData metadados = rs.getMetaData();
+			return new TabelaRelatorio(rs, metadados);
+			
+		} catch (SQLException e) {
             System.out.println(e.getErrorCode());
             e.printStackTrace();
             cBD.closeConnection();
@@ -344,12 +396,12 @@ public class InventarioDAO {
     //retorna as cdds dos livros vizinhos
     //adequar para os nomes das tabelas criadas
     public TabelaRelatorio getLocalizacaoDosVizinhos(int seq) {
-        
-        String sql = "SELECT localizacao"
+        //System.out.println(seq);
+        String sql = "SELECT tombo, localizacao"
                 + " FROM (SELECT cod_barras"
                 + " FROM acervo_estante"
-                + " WHERE ((seq = " + seq + " - 2)"
-                + " OR (seq =  " + seq + " - 1))) AS vizinhos, acervo_siabi"
+                + " WHERE ((seq = " + seq + " - 1)"
+                + " OR (seq =  " + seq + "))) AS vizinhos, acervo_siabi"
                 + " WHERE cod_barras = tombo;";
         try {
             conexao = cBD.getConnection(usuario, senha);
@@ -377,45 +429,37 @@ public class InventarioDAO {
         return null;
     }
     
-    public TabelaRelatorio getTomboDosVizinhos(int seq) {
-        
-        String sql = "SELECT tombo"
-                + " FROM (SELECT cod_barras"
-                + " FROM acervo_estante"
-                + " WHERE ((seq = " + seq + " - 2)"
-                + " OR (seq =  " + seq + " - 1))) AS vizinhos, acervo_siabi"
-                + " WHERE cod_barras = tombo;";
-        try {
-            conexao = cBD.getConnection(usuario, senha);
-            PreparedStatement st = conexao.prepareStatement(sql);
-            st.execute(sql);
-            ResultSet rs = st.getResultSet();
-            ResultSetMetaData metadados = rs.getMetaData();
-            /*while (rs.next()) {
-            System.out.print(rs.getString(1) + " | ");
-            System.out.print(rs.getString(2) + " | ");
-            System.out.print(rs.getString(3) + " | ");
-            System.out.println(rs.getString(4));
-            }*/
-            return new TabelaRelatorio(rs, metadados);
-
-        } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
-            e.printStackTrace();
-            cBD.closeConnection();
-
-        }/*
-        finally{
-            
-            }*/
-        return null;
+    /*public TabelaRelatorio getTomboDosVizinhos(int seq) {
+    
+    String sql = "SELECT tombo"
+    + " FROM (SELECT cod_barras"
+    + " FROM acervo_estante"
+    + " WHERE ((seq = " + seq + " - 2)"
+    + " OR (seq =  " + seq + " - 1))) AS vizinhos, acervo_siabi"
+    + " WHERE cod_barras = tombo;";
+    try {
+    conexao = cBD.getConnection(usuario, senha);
+    PreparedStatement st = conexao.prepareStatement(sql);
+    st.execute(sql);
+    ResultSet rs = st.getResultSet();
+    ResultSetMetaData metadados = rs.getMetaData();
+    
+    return new TabelaRelatorio(rs, metadados);
+    
+    } catch (SQLException e) {
+    System.out.println(e.getErrorCode());
+    e.printStackTrace();
+    cBD.closeConnection();
+    
     }
+    return null;
+    }*/
 
     // assume que todas as tabelas passadas como parametro possuem um numero de sequencia
     public TabelaRelatorio getTresUltimasLinhas() {
-        String sql = "SELECT *"
+        String sql = "SELECT cod_barras, verificar, obs"
                 + " FROM (SELECT COUNT(*) AS ult"
-                + " FROM acervo_estante AS ultimo, "
+                + " FROM acervo_estante) AS ultimo, "
                 + "acervo_estante WHERE seq > (ult - 3);";
 
         try {
