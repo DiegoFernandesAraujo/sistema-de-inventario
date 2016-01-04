@@ -19,6 +19,7 @@ public class InventarioDAO {
     String usuario = "";
     String senha = "";
     private InventarioUI objInventarioUI = null;
+    private int numSeq;
 
     public InventarioDAO() {
         cBD = new ConexaoBD();
@@ -58,6 +59,7 @@ public class InventarioDAO {
     public void fechaConexao() {
         System.out.println("Fecha Conexão!");
         cBD.closeConnection();
+       
 
     }
 
@@ -80,7 +82,10 @@ public class InventarioDAO {
 
         System.out.println("Método insereLinha chamado!");
         System.out.println(toString(valoresBD));
-
+        numSeq = getNumLinhas();
+        System.out.println("Em insere linha:" + numSeq);
+        numSeq++;
+        
         try {
             //fazConexao();
             conexao = cBD.getConnection(usuario, senha);
@@ -91,8 +96,8 @@ public class InventarioDAO {
                 //for (String valor : valoresBD) {
                 //Insere valor na tabela Acervo no índice 0
                 //System.out.println(valor);
-                String sql = "INSERT INTO acervo_estante (cod_barras) VALUES"
-                        + "(" + toString(valoresBD) + ");";
+                String sql = "INSERT INTO acervo_estante (seq, cod_barras) VALUES"
+                        + "(" + numSeq + "," + toString(valoresBD) + ");";
 
                 st = conexao.prepareStatement(sql);
 
@@ -101,8 +106,8 @@ public class InventarioDAO {
               
               //Inserção na tabela acervo_estante com três colunas  
             }else if (comprLinha > 0 && comprLinha <= 3) {
-                String sql = "INSERT INTO acervo_estante (cod_barras, verificar, obs) VALUES"
-                        + "(" + toString(valoresBD) + ");";
+                String sql = "INSERT INTO acervo_estante (seq, cod_barras, verificar, obs) VALUES"
+                        + "(" + numSeq + ", " + toString(valoresBD) + ");";
 
                 st = conexao.prepareStatement(sql);
 
@@ -149,6 +154,8 @@ public class InventarioDAO {
                 }
                 
             }
+            
+            System.out.println("Em insere linha, após inserção:" + numSeq);
 
         } catch (SQLException e) {
 
@@ -173,6 +180,8 @@ public class InventarioDAO {
     public void removerUltimaLinha(){
 	String sql = "DELETE FROM acervo_estante WHERE ("
                    + " SELECT seq FROM (SELECT COUNT(*) ultimo FROM acervo_estante) AS tamanho WHERE seq = ultimo);";
+        if(getNumLinhas() != 0){
+        
         try {
             conexao = cBD.getConnection(usuario, senha);
             Statement st = conexao.prepareStatement(sql);
@@ -183,6 +192,9 @@ public class InventarioDAO {
             JOptionPane.showMessageDialog(null, "Não foi possíel desfazer a última inserção!");
         }finally{
             cBD.closeConnection();
+        }
+        }else{
+        JOptionPane.showMessageDialog(null, "Não há valores a serem removidos", null, JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -237,7 +249,28 @@ return null;
      * @return
      */
     public int getNumLinhas() {
-        return 0;
+        int tamTab = 0;
+        String sql = "Select count(*) as total from acervo_estante";
+
+        try {
+
+            conexao = cBD.getConnection(usuario, senha);
+            Statement st = conexao.prepareStatement(sql);
+            st.execute(sql);
+            ResultSet rs = st.getResultSet();
+            rs.last();
+            tamTab = rs.getInt(1);
+            //numSeq++;
+
+        } catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+            e.printStackTrace();
+
+        } finally {
+            cBD.closeConnection();
+        }
+        System.out.println(tamTab);
+        return tamTab;
     }
 
     //Por fazer ainda
