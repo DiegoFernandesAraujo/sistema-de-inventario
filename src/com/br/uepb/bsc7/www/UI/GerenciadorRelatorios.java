@@ -11,10 +11,10 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.TableModel;
 import static com.br.uepb.bsc7.www.UI.InventarioUI.getNomeRelatorio;
 import com.br.uepb.bsc7.www.persistence.InventarioDAO;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
-import static java.awt.SystemColor.text;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import javax.swing.JOptionPane;
 
 /**
@@ -157,6 +157,11 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
         botImprimir.setMaximumSize(new java.awt.Dimension(107, 25));
         botImprimir.setMinimumSize(new java.awt.Dimension(107, 25));
         botImprimir.setPreferredSize(new java.awt.Dimension(107, 25));
+        botImprimir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botImprimirActionPerformed(evt);
+            }
+        });
 
         botXLS.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_xls.gif"))); // NOI18N
         botXLS.setText("Gerar XLS");
@@ -349,7 +354,7 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
     }
     
     private void botPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botPDFActionPerformed
-        // TODO add your handling code here:
+        new GerenciadorPDF().geraPDF(tabRelat);
     }//GEN-LAST:event_botPDFActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
@@ -365,6 +370,24 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
     private void checkEmprestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkEmprestActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_checkEmprestActionPerformed
+
+    private void botImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botImprimirActionPerformed
+        try {
+            /*PrinterJob job = PrinterJob.getPrinterJob();
+            job.setPrintable(new GerenciadorImpressao());
+            boolean ok = job.printDialog();
+            if (ok) {
+            try {
+            job.print();
+            } catch (PrinterException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possível imprimir!", null, JOptionPane.ERROR_MESSAGE);
+            }
+            }*/
+            tabRelat.print();
+        } catch (PrinterException ex) {
+            Logger.getLogger(GerenciadorRelatorios.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_botImprimirActionPerformed
 
     
     //Recebe a instância de InventarioUI para poder chamar seus métodos a partir desta

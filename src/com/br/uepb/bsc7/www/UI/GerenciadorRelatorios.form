@@ -92,6 +92,9 @@
               <Dimension value="[107, 25]"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botImprimirActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="botXLS">
           <Properties>
