@@ -104,6 +104,8 @@ public class InventarioUI extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         botSelSIABI = new javax.swing.JButton();
         endArqSIABI = new javax.swing.JTextField();
+        barraProg = new javax.swing.JProgressBar();
+        labelProg = new javax.swing.JLabel();
         abaRelatorios = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         botGerRelat = new javax.swing.JButton();
@@ -634,8 +636,10 @@ public class InventarioUI extends javax.swing.JFrame {
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(botCargSIABI)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(68, Short.MAX_VALUE))
         );
+
+        labelProg.setText("jLabel11");
 
         javax.swing.GroupLayout abaSIABILayout = new javax.swing.GroupLayout(abaSIABI);
         abaSIABI.setLayout(abaSIABILayout);
@@ -644,13 +648,23 @@ public class InventarioUI extends javax.swing.JFrame {
             .addGroup(abaSIABILayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(painelCargArqSIABI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(523, Short.MAX_VALUE))
+                .addGap(36, 36, 36)
+                .addGroup(abaSIABILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(labelProg, javax.swing.GroupLayout.PREFERRED_SIZE, 378, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(barraProg, javax.swing.GroupLayout.PREFERRED_SIZE, 459, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
         abaSIABILayout.setVerticalGroup(
             abaSIABILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(abaSIABILayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(painelCargArqSIABI, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE))
+            .addGroup(abaSIABILayout.createSequentialGroup()
+                .addGap(73, 73, 73)
+                .addComponent(barraProg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(labelProg)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         grupoAbas.addTab("Dados do SIABI", abaSIABI);
@@ -835,6 +849,7 @@ public class InventarioUI extends javax.swing.JFrame {
             ManipulaXLS xls = new ManipulaXLS(dao);
             
             if(xls.ehSIABI(endArqSIABI.getText())){
+                dao.deletaSIABI();
                 xls.leXLS(endArqSIABI.getText());
             }
         } catch (IOException ex) {
@@ -944,8 +959,10 @@ public class InventarioUI extends javax.swing.JFrame {
         pswdBD.setText("");
         if(logado){
             System.out.println("LOGADO!");
+            //dao.criaTabelas();
                 modeloTabelaUlt = dao.getLocalizacaoDosVizinhos(dao.getUltSeq());
                 tabUltIni.setModel(modeloTabelaUlt);
+                
         }
         
     }//GEN-LAST:event_botOkActionPerformed
@@ -1080,7 +1097,7 @@ public class InventarioUI extends javax.swing.JFrame {
     }//GEN-LAST:event_userBDKeyPressed
 
     private void pswdBDKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pswdBDKeyPressed
-        if ( evt.getKeyCode() == KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             //Acho que tem que ter um bloco try catch em algum canto aqui
             dao.setRefInventarioUI(InventarioUI.this);
             logado = dao.login(userBD.getText(), pswdBD.getText());
@@ -1088,6 +1105,13 @@ public class InventarioUI extends javax.swing.JFrame {
             pswdBD.setText("");
             //requestFocus();
             //InventarioDAO.fazLogin(userBD.getText(), pswdBD.getText());
+            if (logado) {
+                System.out.println("LOGADO!");
+                //dao.criaTabelas();
+                modeloTabelaUlt = dao.getLocalizacaoDosVizinhos(dao.getUltSeq());
+                tabUltIni.setModel(modeloTabelaUlt);
+                
+            }
         }
     }//GEN-LAST:event_pswdBDKeyPressed
 
@@ -1230,6 +1254,7 @@ public class InventarioUI extends javax.swing.JFrame {
     private javax.swing.JPanel abaInicio;
     private javax.swing.JPanel abaRelatorios;
     private javax.swing.JPanel abaSIABI;
+    private javax.swing.JProgressBar barraProg;
     private javax.swing.JButton botCargAcervo;
     private javax.swing.JButton botCargSIABI;
     private javax.swing.JButton botDesfInsCod;
@@ -1261,6 +1286,7 @@ public class InventarioUI extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JLabel labelProg;
     private javax.swing.JPanel painelCargArqAcervo;
     private javax.swing.JPanel painelCargArqSIABI;
     private javax.swing.JPanel painelLeCodAcervo;

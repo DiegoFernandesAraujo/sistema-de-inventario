@@ -100,7 +100,7 @@ public class ManipulaXLS {
 
                 if (continua == true) {
 
-                    System.out.println("Nova linha!");
+                    //System.out.println("Nova linha!");
                     //Obtem acesso a cada linha de Plan1
                     Row linha = rowIterator.next();
 

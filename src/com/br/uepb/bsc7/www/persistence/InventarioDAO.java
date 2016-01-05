@@ -20,6 +20,8 @@ public class InventarioDAO {
     String senha = "";
     private InventarioUI objInventarioUI = null;
     private int numSeq;
+    private final String use = "use inventario_uepb;";
+    private int seq;
 
     public InventarioDAO() {
         cBD = new ConexaoBD();
@@ -42,6 +44,7 @@ public class InventarioDAO {
         if (cBD.statusConnection()) {
 
             JOptionPane.showMessageDialog(null, "Login efetuado com sucesso!", null, JOptionPane.INFORMATION_MESSAGE);
+            criaTabelas();
             objInventarioUI.travaLogin();
 
         } else {
@@ -57,7 +60,7 @@ public class InventarioDAO {
     
     }*/
     public void fechaConexao() {
-        System.out.println("Fecha Conexão!");
+        //System.out.println("Fecha Conexão!");
         cBD.closeConnection();
        
 
@@ -67,9 +70,132 @@ public class InventarioDAO {
     public String toString(ArrayList<String> valores) {
         StringBuilder sb = new StringBuilder();
         for (String s : valores) {
+            s = s.replaceAll("'", "''");//Caso encontre algum nome que contenha apóstrofo
             sb.append(",").append("'").append(s).append("'");
         }
         return sb.toString().replaceFirst(",", "");
+    }
+        
+    public void criaTabelas(){
+        criaAcervoEstante();
+        criaAcervoSIABI();
+    }
+    
+    public void criaAcervoEstante(){
+        String sql = "CREATE TABLE IF NOT EXISTS acervo_estante (\n"
+                + "	 seq  int not null,\n"
+                + "	 cod_barras  varchar (25) NOT NULL,\n"
+                + "     verificar  varchar (5) NOT NULL,\n"
+                + "     obs  varchar (30) NOT NULL,\n"
+                + "	primary key (seq)\n"
+                + ");";
+        
+        System.out.println(sql);
+        
+        PreparedStatement st = null;
+        
+        try {
+            
+            conexao = cBD.getConnection(usuario, senha);
+
+            
+                st = conexao.prepareStatement(sql);
+
+                st.executeUpdate(use);
+                st.executeUpdate(sql);
+                
+        } catch (SQLException e) {
+            
+            JOptionPane.showMessageDialog(null, "Não foi possível criar Tabela acervo_estante! \n Erro MYSQL " + e.getErrorCode() + "\n" + e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
+            
+            return;
+        } catch (Exception ex) {
+            //JOptionPane.showMessageDialog(null, "Arquivo não carregado!\ncatch - insereLinha()", null, JOptionPane.ERROR_MESSAGE);
+            
+            return;
+        } finally{
+            cBD.closeConnection();
+        }
+    }
+    
+    public void criaAcervoSIABI(){
+        String sql = "   CREATE TABLE IF NOT EXISTS acervo_siabi (\n"
+                + "	\n"
+                + "	seq  integer not null,\n"
+                + "    patrimonio  varchar(45) null,\n"
+                + "    tombo  varchar(25) null,\n"
+                + "    localizacao  varchar(45) null,\n"
+                + "    autor  varchar(255) null,\n"
+                + "    titulo  varchar(255) null,\n"
+                + "    edicao  varchar(45) null,\n"
+                + "    ano  varchar(45) null,\n"
+                + "    volume  varchar(45) null,\n"
+                + "    tomo  varchar(45) null,\n"
+                + "    valor  varchar(25) null,\n"
+                + "    nota_fiscal  varchar(45) null,\n"
+                + "    empenho  varchar(45) null,\n"
+                + "    rb  varchar(25) null,\n"
+                + "    situacao  varchar(45) null,\n"
+                + "   primary key ( seq )\n"
+                + "   );";
+
+        
+        System.out.println(sql);
+        
+        PreparedStatement st = null;
+        
+        try {
+            
+            conexao = cBD.getConnection(usuario, senha);
+
+            
+                st = conexao.prepareStatement(sql);
+
+                st.executeUpdate(use);
+                st.executeUpdate(sql);
+            
+        } catch (SQLException e) {
+            
+            JOptionPane.showMessageDialog(null, "Não foi possível criar Tabela acervo_siabi! \n Erro MYSQL " + e.getErrorCode() + "\n" + e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
+            
+            return;
+        } catch (Exception ex) {
+            //JOptionPane.showMessageDialog(null, "Arquivo não carregado!\ncatch - insereLinha()", null, JOptionPane.ERROR_MESSAGE);
+            
+            return;
+        } finally{
+            cBD.closeConnection();
+        }
+    }
+    
+    public void deletaSIABI(){
+        String sql = "DELETE FROM acervo_siabi;";
+        
+        System.out.println(sql);
+        
+        PreparedStatement st = null;
+        
+        try {
+            
+            conexao = cBD.getConnection(usuario, senha);
+
+            
+                st = conexao.prepareStatement(sql);
+
+                st.executeUpdate(sql);
+            
+        } catch (SQLException e) {
+            
+            JOptionPane.showMessageDialog(null, "Não foi deletar Tabela acervo_siabi! \n Erro MYSQL " + e.getErrorCode() + "\n" + e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
+            
+            return;
+        } catch (Exception ex) {
+            //JOptionPane.showMessageDialog(null, "Arquivo não carregado!\ncatch - insereLinha()", null, JOptionPane.ERROR_MESSAGE);
+            
+            return;
+        } finally{
+            cBD.closeConnection();
+        }
     }
 
     //Por fazer ainda
@@ -80,10 +206,10 @@ public class InventarioDAO {
         PreparedStatement st = null;
         //String sql = null;
 
-        System.out.println("Método insereLinha chamado!");
+        //System.out.println("Método insereLinha chamado!");
         System.out.println(toString(valoresBD));
         numSeq = getNumLinhas();
-        System.out.println("Em insere linha:" + numSeq);
+        //System.out.println("Em insere linha:" + numSeq);
         numSeq++;
         
         try {
@@ -115,7 +241,7 @@ public class InventarioDAO {
             }
             //Inserção na tabela acervo_siabi  
             else if (comprLinha >= 4) {
-                System.out.println("Inserindo SIABI");
+                //System.out.println("Inserindo SIABI");
                 //Se não for a primeira linha da planilha original do SIABI
                 if (!"SEQ.".equals(valoresBD.get(0))) {
                     
@@ -123,9 +249,9 @@ public class InventarioDAO {
                     
                     //tentar retirar o primeiro valor (SEQ), converter em int e inserir direto no BD
                     //System.out.println(valoresBD.get(0));
-                    int seq = Integer.parseInt(valoresBD.get(0));
+                    seq = Integer.parseInt(valoresBD.get(0));
                     
-                    System.out.println(seq);
+                    //System.out.println(seq);
                     
                     /*st = conexao.prepareStatement(sql);
                     
@@ -155,11 +281,11 @@ public class InventarioDAO {
                 
             }
             
-            System.out.println("Em insere linha, após inserção:" + numSeq);
+            //System.out.println("Em insere linha, após inserção:" + numSeq);
 
         } catch (SQLException e) {
 
-            System.out.println("Deu erro!");
+            //System.out.println("Deu erro!");
             System.out.println("SQL Exception em insereLinha");
             //System.out.println(e.getErrorCode());
             JOptionPane.showMessageDialog(null, "Não foi possível inserir dados no Banco de Dados! \n Erro MYSQL " + e.getErrorCode() + "\n" + e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
@@ -248,6 +374,7 @@ return null;
      *
      * @return
      */
+    //Retorna o número de linhas de acervo_estante
     public int getNumLinhas() {
         int tamTab = 0;
         String sql = "Select count(*) as total from acervo_estante";
