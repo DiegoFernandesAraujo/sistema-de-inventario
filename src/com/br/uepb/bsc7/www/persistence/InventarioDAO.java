@@ -90,8 +90,6 @@ public class InventarioDAO {
                 + "	primary key (seq)\n"
                 + ");";
         
-        System.out.println(sql);
-        
         PreparedStatement st = null;
         
         try {
@@ -138,10 +136,7 @@ public class InventarioDAO {
                 + "    situacao  varchar(45) null,\n"
                 + "   primary key ( seq )\n"
                 + "   );";
-
-        
-        System.out.println(sql);
-        
+ 
         PreparedStatement st = null;
         
         try {
@@ -207,7 +202,7 @@ public class InventarioDAO {
         //String sql = null;
 
         //System.out.println("Método insereLinha chamado!");
-        System.out.println(toString(valoresBD));
+        //System.out.println(toString(valoresBD));
         numSeq = getNumLinhas();
         //System.out.println("Em insere linha:" + numSeq);
         numSeq++;
@@ -277,6 +272,9 @@ public class InventarioDAO {
                     st = conexao.prepareStatement(sql2);
                     
                     st.executeUpdate(sql2);
+                    /*InventarioUI.labelPorc.setText("Registro " + seq + " inserido!");
+                    InventarioUI.labelPorc.repaint();*/
+                    //objInventarioUI.setLabelPorc(seq);
                 }
                 
             }

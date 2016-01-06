@@ -6,21 +6,17 @@
 package com.br.uepb.bsc7.www.UI;
 
 import com.br.uepb.bsc7.www.persistence.InventarioDAO;
-import com.br.uepb.bsc7.www.persistence.TabelaRelatorio;
-import java.awt.Font;
-import java.awt.FontMetrics;
+import java.awt.Cursor;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 /**
@@ -52,6 +48,9 @@ public class InventarioUI extends javax.swing.JFrame {
         primChamada = true;
         initComponents();
         setFocusUser();
+
+        labelProg.setVisible(false);
+        labelPorc.setVisible(false);
     }
 
     /**
@@ -104,8 +103,8 @@ public class InventarioUI extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         botSelSIABI = new javax.swing.JButton();
         endArqSIABI = new javax.swing.JTextField();
-        barraProg = new javax.swing.JProgressBar();
         labelProg = new javax.swing.JLabel();
+        labelPorc = new javax.swing.JLabel();
         abaRelatorios = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         botGerRelat = new javax.swing.JButton();
@@ -113,6 +112,8 @@ public class InventarioUI extends javax.swing.JFrame {
         abaAjuda = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Inventário_UEPB");
+        setIconImage(new ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_livros.png")).getImage());
         setPreferredSize(new java.awt.Dimension(800, 360));
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -266,7 +267,7 @@ public class InventarioUI extends javax.swing.JFrame {
                     .addComponent(jLabel10))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(312, Short.MAX_VALUE))
+                .addContainerGap(111, Short.MAX_VALUE))
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -639,7 +640,10 @@ public class InventarioUI extends javax.swing.JFrame {
                 .addContainerGap(68, Short.MAX_VALUE))
         );
 
-        labelProg.setText("jLabel11");
+        labelProg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_atencao.png"))); // NOI18N
+        labelProg.setText("Aguarde enquanto os dados da planilha são inseridos no Banco de Dados.");
+
+        labelPorc.setText("jLabel11");
 
         javax.swing.GroupLayout abaSIABILayout = new javax.swing.GroupLayout(abaSIABI);
         abaSIABI.setLayout(abaSIABILayout);
@@ -648,11 +652,11 @@ public class InventarioUI extends javax.swing.JFrame {
             .addGroup(abaSIABILayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(painelCargArqSIABI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36)
+                .addGap(48, 48, 48)
                 .addGroup(abaSIABILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(labelProg, javax.swing.GroupLayout.PREFERRED_SIZE, 378, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(barraProg, javax.swing.GroupLayout.PREFERRED_SIZE, 459, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(28, Short.MAX_VALUE))
+                    .addComponent(labelPorc)
+                    .addComponent(labelProg))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
         abaSIABILayout.setVerticalGroup(
             abaSIABILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -660,10 +664,10 @@ public class InventarioUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(painelCargArqSIABI, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE))
             .addGroup(abaSIABILayout.createSequentialGroup()
-                .addGap(73, 73, 73)
-                .addComponent(barraProg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(130, 130, 130)
                 .addComponent(labelProg)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(labelPorc)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -842,20 +846,43 @@ public class InventarioUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_endArqAcervoActionPerformed
 
+    public void setLabelPorc(int valor){
+        System.out.println("SETLABEL CHAMADO");
+        labelPorc.setText("Registro " + valor + " inserido!");
+        
+        labelPorc.repaint();
+        abaSIABI.repaint();
+        return;
+    }
+    
     private void botCargSIABIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botCargSIABIActionPerformed
-        System.out.println("Chamar método para inserir no BD");
+        
         try {
-            System.out.println(endArqSIABI.getText());
+            //System.out.println(endArqSIABI.getText());
             ManipulaXLS xls = new ManipulaXLS(dao);
             
             if(xls.ehSIABI(endArqSIABI.getText())){
                 dao.deletaSIABI();
+                dao.setRefInventarioUI(InventarioUI.this);
+                
+                Cursor cursor = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
+                grupoAbas.setCursor(cursor);
+                    labelProg.setVisible(true);
+     //               labelPorc.setVisible(true);
+                JOptionPane.showMessageDialog(null, new JLabel("Dependendo da quantidade de registros na planilha \nesta tarefa pode demorar um pouco. \nRecomenda-se não fazer uso de outras funções no computador \nenquanto a planilha estiver sendo carregada.", JLabel.CENTER), null, JOptionPane.INFORMATION_MESSAGE);
+                
                 xls.leXLS(endArqSIABI.getText());
+                
+                cursor = Cursor.getDefaultCursor();
+                grupoAbas.setCursor(cursor);
+
             }
         } catch (IOException ex) {
             System.out.println("Arquivo não selecionado");
             //Logger.getLogger(ManipulaXLS.class.getName()).log(Level.SEVERE, null, ex);
         }
+        labelProg.setVisible(false);
+        labelPorc.setVisible(false);
     
     }//GEN-LAST:event_botCargSIABIActionPerformed
 
@@ -1254,7 +1281,6 @@ public class InventarioUI extends javax.swing.JFrame {
     private javax.swing.JPanel abaInicio;
     private javax.swing.JPanel abaRelatorios;
     private javax.swing.JPanel abaSIABI;
-    private javax.swing.JProgressBar barraProg;
     private javax.swing.JButton botCargAcervo;
     private javax.swing.JButton botCargSIABI;
     private javax.swing.JButton botDesfInsCod;
@@ -1286,6 +1312,7 @@ public class InventarioUI extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
+    public static javax.swing.JLabel labelPorc;
     private javax.swing.JLabel labelProg;
     private javax.swing.JPanel painelCargArqAcervo;
     private javax.swing.JPanel painelCargArqSIABI;

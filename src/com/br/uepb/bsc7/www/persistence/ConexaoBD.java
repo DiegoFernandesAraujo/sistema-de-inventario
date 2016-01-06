@@ -92,6 +92,7 @@ return conexao;
             //System.out.println("Conexão aberta!");
             status = true;
         } catch (SQLException e) {
+            System.out.println("SQLException em getConnection");
             System.out.println(e.getErrorCode());
             if (e.getErrorCode() == 1044 || e.getErrorCode() == 1045) {
                 JOptionPane.showMessageDialog(null, "Insira um nome de usuário e senha válidos!", null, JOptionPane.ERROR_MESSAGE);
