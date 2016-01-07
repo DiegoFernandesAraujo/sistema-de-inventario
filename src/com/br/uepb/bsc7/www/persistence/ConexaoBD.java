@@ -39,41 +39,6 @@ public class ConexaoBD {
     public boolean statusConnection(){
         return status;
     }
-
-    /*public Connection getConnection(String user, String pswd) {
-    usuario = user;
-    senha = pswd;
-    
-    try {
-    Class.forName(driver);
-    conexao = DriverManager.getConnection(url, usuario, senha);
-    
-    System.out.println("Conexão aberta!");
-    status = true;
-    
-    } catch (SQLException e) {
-    System.out.println(e.getErrorCode());
-    if (e.getErrorCode() == 1044 || e.getErrorCode() == 1045){
-    JOptionPane.showMessageDialog(null, "Insira um nome de usuário e senha válidos!", null, JOptionPane.ERROR_MESSAGE);
-    ManipulaXLS.continua = false;
-    InventarioUI.setFocusUser();
-    return null;
-    
-    }
-    //Criar método que retorna uma mensagem de erro de acordo com o erro lançado
-    System.out.println("SQLException em getConnection!");
-    //Se o BD não existe
-    if (e.getErrorCode() == 1049){
-    System.out.println("");//dao.criaBD();
-    }
-} catch (ClassNotFoundException ex) {
-System.out.println("ClassNotFoundException!");
-System.out.println("Fudeu!");
-Logger.getLogger(ConexaoBD.class.getName()).log(Level.SEVERE, null, ex);
-return null;
-}
-return conexao;
-}*/
     
     public Connection getConnection(String user, String pswd) {
         usuario = user;
@@ -89,11 +54,9 @@ return conexao;
         //Caso o BD já exista    
         try {
             conexao = DriverManager.getConnection(url1, usuario, senha);
-            //System.out.println("Conexão aberta!");
             status = true;
         } catch (SQLException e) {
-            System.out.println("SQLException em getConnection");
-            System.out.println(e.getErrorCode());
+            
             if (e.getErrorCode() == 1044 || e.getErrorCode() == 1045) {
                 JOptionPane.showMessageDialog(null, "Insira um nome de usuário e senha válidos!", null, JOptionPane.ERROR_MESSAGE);
                 ManipulaXLS.continua = false;
@@ -110,6 +73,8 @@ return conexao;
                     JOptionPane.showMessageDialog(null, "Não foi possível criar o banco de dados!");
                     Logger.getLogger(ConexaoBD.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            } else {
+                JOptionPane.showMessageDialog(null, "Não foi possível realizar conexão com Banco de Dados! \n Erro MYSQL " + e.getErrorCode() + "\n" + e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
             }
 
         }
@@ -120,11 +85,10 @@ return conexao;
         if (conexao != null) {
             try {
                 conexao.close();
-                //System.out.println("Conexão fechada!");
                 status = false;
             } catch (SQLException ex) {
                 ex.printStackTrace();
-                System.out.println("Não foi possível fechar a conexão!");
+                JOptionPane.showConfirmDialog(null, "Não foi possível fechar a conexão!", null, JOptionPane.ERROR_MESSAGE);
             }
         }
     }

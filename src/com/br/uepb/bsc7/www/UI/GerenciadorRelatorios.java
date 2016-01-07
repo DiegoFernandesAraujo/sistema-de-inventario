@@ -50,15 +50,11 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
         super(parent, modal);
         modeloTabela = modelo;
         dao = objDAO;
-        
-        //System.out.println("criou objeto");
-        //setModeloTabelaRelat(TabelaRelatorio.getTabela());
         initComponents();
         quantitativos.setText(modelo.getRowCount() + " registros encontrados.");
         checkEmprest.setVisible(false);
         checkExtrav.setVisible(false);
         redimensionaTabela();
-        //System.out.println(tabRelat.getHeight());
     }
 
     private void redimensionaTabela(){
@@ -70,13 +66,12 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
         int tam;
         int largPainel = 0;
         
-        int[] maxDimColunas = new int[colunas];
+        int[] maxDimColunas = new int[colunas];//Armazena as dimensões dos maiores conteúdos de cada coluna
         
         for (int i = 0; i < colunas; i++) {
             int max = 0;
-            //System.out.println("Primeiro for");
+            
             for (int j = 0; j < linhas; j++) {
-                    //System.out.println("Segundo for");
                     
                     if (modeloTabela.getValueAt(j, i) instanceof Integer) {
                         Integer valorInteger = (Integer) modeloTabela.getValueAt(j, i);
@@ -86,8 +81,7 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
                         valor = (String) modeloTabela.getValueAt(j, i);
                         
                     }
-                    //System.out.println(valor);
-                
+                    
                 tam = metrics.stringWidth(valor);
                 
                 
@@ -98,11 +92,8 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
                 }
             }
             maxDimColunas[i] = max + 30;
-            System.out.println(max);
-            
         }
-        
-        //Alterar tamanhos das colunas aqui
+        //Altera tamanhos das colunas
         for (int k = 0; k < colunas; k++) {
             if(maxDimColunas[k] > 200 && maxDimColunas[k] <= 1500){
                 
@@ -115,9 +106,7 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
             }
         }
         //Redimensiona o painel      
-        System.out.println("Largura do painel: " + largPainel);
         GerenciadorRelatorios.this.setSize(largPainel, 300);
-        System.out.println("Largura real do painel: " + GerenciadorRelatorios.this.getWidth());
     }
     
     /**
@@ -317,18 +306,14 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
     private void botXLSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botXLSActionPerformed
         File arq = null;
         JFileChooser fileChooser = new JFileChooser();
-        //FileNameExtensionFilter filtro = new FileNameExtensionFilter("Arquivo XLS", "xls");
         FileNameExtensionFilter filtro = new FileNameExtensionFilter("Arquivo XLSX", "xlsx");
         fileChooser.setFileFilter(filtro);
         int returnVal = fileChooser.showSaveDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION){
-            //File dir = fileChooser.getCurrentDirectory();
             arq = fileChooser.getSelectedFile();
         }
         ManipulaXLS objManipula = new ManipulaXLS();
         try {
-            //objManipula.criaXLS(arq.getAbsolutePath(), "Plan1");
-            //objManipula.criaXLS1(arq.getAbsolutePath(), "Plan1");
             objManipula.criaXLSX(getTabelaRelat(), arq.getAbsolutePath(), "Plan1");
             JOptionPane.showMessageDialog(null, "Relatório salvo!", null, JOptionPane.INFORMATION_MESSAGE);
         } catch (IOException ex) {
@@ -344,29 +329,15 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
         return tabRelat;
     }
     
-    public void setTabelaRelat(JTable tabExterna){
-        tabRelat = tabExterna;//tabRelat tem que receber um tabela já formatada
-        //tabRelat.set
-    }
-    
-    public void setModeloTabelaRelat(TableModel modeloTab){
-        tabRelat.setModel(modeloTab);
-    }
-    
     private void botPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botPDFActionPerformed
         new GerenciadorPDF().geraPDF(tabRelat);
     }//GEN-LAST:event_botPDFActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        
-        //se nenhuma outra instância de GerenciadorRelatorios estiver ativa{
         dao.fechaConexao();
         this.dispose();
-        //}
     }//GEN-LAST:event_formWindowClosed
 
-    
-    
     private void checkEmprestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkEmprestActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_checkEmprestActionPerformed
@@ -394,48 +365,7 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
     public void setRefInventarioUI(InventarioUI obj){
         objInventarioUI = obj;
     }
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GerenciadorRelatorios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GerenciadorRelatorios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GerenciadorRelatorios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GerenciadorRelatorios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                GerenciadorRelatorios dialog = new GerenciadorRelatorios(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botImprimir;

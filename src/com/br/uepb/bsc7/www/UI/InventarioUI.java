@@ -48,7 +48,6 @@ public class InventarioUI extends javax.swing.JFrame {
         primChamada = true;
         initComponents();
         setFocusUser();
-
         labelProg.setVisible(false);
         labelPorc.setVisible(false);
     }
@@ -70,7 +69,7 @@ public class InventarioUI extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         pswdBD = new javax.swing.JPasswordField();
         botOk = new javax.swing.JButton();
-        sesaoIni = new javax.swing.JLabel();
+        sessaoIni = new javax.swing.JLabel();
         jPanel11 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tabUltIni = new javax.swing.JTable();
@@ -182,8 +181,8 @@ public class InventarioUI extends javax.swing.JFrame {
             }
         });
 
-        sesaoIni.setText("Sessão iniciada!");
-        sesaoIni.setVisible(false);
+        sessaoIni.setText("Sessão iniciada!");
+        sessaoIni.setVisible(false);
 
         javax.swing.GroupLayout painelLoginLayout = new javax.swing.GroupLayout(painelLogin);
         painelLogin.setLayout(painelLoginLayout);
@@ -205,7 +204,7 @@ public class InventarioUI extends javax.swing.JFrame {
                         .addComponent(botOk)
                         .addGap(67, 67, 67))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelLoginLayout.createSequentialGroup()
-                        .addComponent(sesaoIni)
+                        .addComponent(sessaoIni)
                         .addGap(45, 45, 45))))
         );
 
@@ -225,7 +224,7 @@ public class InventarioUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(botOk)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(sesaoIni)
+                .addComponent(sessaoIni)
                 .addContainerGap())
         );
 
@@ -778,16 +777,14 @@ public class InventarioUI extends javax.swing.JFrame {
         return extArq;
     }
     
-    //Um método estático pode ser chamdo a partir de outra classe (Obsevacoes)
-    public /*static*/ void setObs(String obs){
+    //Modifica o campo obs a ser inserido na tabela acervo_estante
+    public  void setObs(String obs){
         System.out.println("Fui chamado!");
         System.out.println(obs);
         obsIns = obs;
-        //Modifica o valor do 3º argumento da tabela dos últimos códigos lidos
-        //Chamar o método adequado aqui
     }
     
-    public /*static*/ void setFocusBotaoInserir(){
+    public  void setFocusBotaoInserir(){
         botInsCod.requestFocusInWindow();
     }
     
@@ -808,13 +805,11 @@ public class InventarioUI extends javax.swing.JFrame {
     }
     
     public void desmarcarVrfExemplar(){
-        //System.out.println("desmarcar");
         vrfExemplar.setSelected(false);
         vrfExemplar.setEnabled(true);
     }
     
     public void blockVrfExemplar(boolean b){
-        //System.out.println("desmarcar");
         vrfExemplar.setEnabled(b);
     }
     
@@ -822,22 +817,21 @@ public class InventarioUI extends javax.swing.JFrame {
         userBD.setEnabled(false);
         pswdBD.setEnabled(false);
         botOk.setEnabled(false);
-        sesaoIni.setVisible(true);
+        sessaoIni.setVisible(true);
         painelLogin.setToolTipText("A sessão será encerrada quando o programa for finalizado.");
         modeloTabelaUlt = dao.getLocalizacaoDosVizinhos(dao.getUltSeq());
         tabUltIni.setModel(modeloTabelaUlt);
     }
     
     private void botCargAcervoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botCargAcervoActionPerformed
-        System.out.println("Chamar método para inserir no BD");
+        
         try {
-            System.out.println(endArqAcervo.getText());
+        
             ManipulaXLS xls = new ManipulaXLS(dao);
-                    
             xls.leXLS(endArqAcervo.getText());
             //xls.setRefInventarioDAO(dao);
         } catch (IOException ex) {
-            System.out.println("Arquivo não selecionado");
+            JOptionPane.showConfirmDialog(null, "Arquivo não selecionado!", null, JOptionPane.INFORMATION_MESSAGE);
             //Logger.getLogger(ManipulaXLS.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_botCargAcervoActionPerformed
@@ -846,10 +840,10 @@ public class InventarioUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_endArqAcervoActionPerformed
 
+    //Não funcional ainda
+    //Tentativa de exibir na UI os valores de sequência sendo inseridos
     public void setLabelPorc(int valor){
-        System.out.println("SETLABEL CHAMADO");
         labelPorc.setText("Registro " + valor + " inserido!");
-        
         labelPorc.repaint();
         abaSIABI.repaint();
         return;
@@ -858,7 +852,7 @@ public class InventarioUI extends javax.swing.JFrame {
     private void botCargSIABIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botCargSIABIActionPerformed
         
         try {
-            //System.out.println(endArqSIABI.getText());
+            
             ManipulaXLS xls = new ManipulaXLS(dao);
             
             if(xls.ehSIABI(endArqSIABI.getText())){
@@ -867,9 +861,10 @@ public class InventarioUI extends javax.swing.JFrame {
                 
                 Cursor cursor = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
                 grupoAbas.setCursor(cursor);
-                    labelProg.setVisible(true);
-     //               labelPorc.setVisible(true);
-                JOptionPane.showMessageDialog(null, new JLabel("Dependendo da quantidade de registros na planilha \nesta tarefa pode demorar um pouco. \nRecomenda-se não fazer uso de outras funções no computador \nenquanto a planilha estiver sendo carregada.", JLabel.CENTER), null, JOptionPane.INFORMATION_MESSAGE);
+                
+                labelProg.setVisible(true);
+                //labelPorc.setVisible(true);
+                JOptionPane.showMessageDialog(null, "Dependendo da quantidade de registros na planilha \nesta tarefa pode demorar um pouco. \nRecomenda-se não fazer uso de outras funções no computador \nenquanto a planilha estiver sendo carregada.</html>", null, JOptionPane.INFORMATION_MESSAGE);
                 
                 xls.leXLS(endArqSIABI.getText());
                 
@@ -882,14 +877,13 @@ public class InventarioUI extends javax.swing.JFrame {
             //Logger.getLogger(ManipulaXLS.class.getName()).log(Level.SEVERE, null, ex);
         }
         labelProg.setVisible(false);
-        labelPorc.setVisible(false);
-    
+        
     }//GEN-LAST:event_botCargSIABIActionPerformed
 
     private void endArqSIABIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_endArqSIABIActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_endArqSIABIActionPerformed
-    //Falta tratar as extensões TXT e XLS
+    //Falta tratar a extensão TXT
     //Falta tratar eventos, como no caso de digitar um endereço inexistente
     private void botSelAcervoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botSelAcervoActionPerformed
         int returnVal = fc.showOpenDialog(painelCargArqAcervo);
@@ -897,18 +891,14 @@ public class InventarioUI extends javax.swing.JFrame {
             
             File dir = fc.getCurrentDirectory();
             File arq = fc.getSelectedFile();
-            //nomeArq = arq.getName();
             String endArq = arq.getAbsolutePath();
-            //String endArq = dir + nomeArq;
             
             if(this.getExtensao(arq).equals("xls")){
-            //System.out.println("Arquivo XLS aberto.");
-
                 endArqAcervo.setForeground(new java.awt.Color(0, 0, 0));
                 endArqAcervo.setText(endArq);
             }/*else{
             if(this.getExtensao(arq).equals("txt")){
-            System.out.println("Arquivo TXT aberto.");
+            
             }
             }*/
         }
@@ -962,18 +952,15 @@ public class InventarioUI extends javax.swing.JFrame {
             
             File dir = fc.getCurrentDirectory();
             File arq = fc.getSelectedFile();
-            //nomeArq = arq.getName();
-            //String endArq = dir + nomeArq;
             String endArq = arq.getAbsolutePath();
             
             if(this.getExtensao(arq).equals("xls") || this.getExtensao(arq).equals("xlsx")){
-            //System.out.println("Arquivo XLS aberto.");
-
+            
                 endArqSIABI.setForeground(new java.awt.Color(0, 0, 0));
                 endArqSIABI.setText(endArq);
             }/*else{
             if(this.getExtensao(arq).equals("txt")){
-            System.out.println("Arquivo TXT aberto.");
+            
             }
             }*/
         }
@@ -985,11 +972,8 @@ public class InventarioUI extends javax.swing.JFrame {
         userBD.setText("");
         pswdBD.setText("");
         if(logado){
-            System.out.println("LOGADO!");
-            //dao.criaTabelas();
-                modeloTabelaUlt = dao.getLocalizacaoDosVizinhos(dao.getUltSeq());
-                tabUltIni.setModel(modeloTabelaUlt);
-                
+            modeloTabelaUlt = dao.getLocalizacaoDosVizinhos(dao.getUltSeq());
+            tabUltIni.setModel(modeloTabelaUlt);
         }
         
     }//GEN-LAST:event_botOkActionPerformed
@@ -999,7 +983,7 @@ public class InventarioUI extends javax.swing.JFrame {
     }//GEN-LAST:event_grupoAbasFocusGained
 
     private void abaAcervoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_abaAcervoFocusGained
-        //codBar.requestFocusInWindow();
+        
         System.out.println("Aba ativa");
     }//GEN-LAST:event_abaAcervoFocusGained
     
@@ -1035,12 +1019,6 @@ public class InventarioUI extends javax.swing.JFrame {
     //Muda os focos preferenciais dos componentes de cada aba de acordo com a que estiver selecionada
     private void grupoAbasStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_grupoAbasStateChanged
         
-        //InventarioUI.this.setPreferredSize(getDimensaoComponents(grupoAbas.getSelectedComponent()));
-        /*   if (primChamada != true){
-        this.setPreferredSize(getDimensaoComponents(grupoAbas.getSelectedComponent()));
-        InventarioUI.this.pack();
-        System.out.println("Pack");
-        }*/
                 
         InventarioUI.this.pack();
         
@@ -1075,7 +1053,6 @@ public class InventarioUI extends javax.swing.JFrame {
                 objGRD = new GerenciadorRelatorios(InventarioUI.this, true, dao.getLocalizados(), dao);
                 break;
             case 1:
-                //System.out.println((String) comboRelat.getSelectedItem());
                 objGRD = new GerenciadorRelatorios(InventarioUI.this, true, dao.getNaoLocalizados(), dao);
                 break;
             case 2:
@@ -1091,17 +1068,6 @@ public class InventarioUI extends javax.swing.JFrame {
             default:
                 System.out.println("Qualquer coisa!");
         }
-        
-        
-        /*if ((comboRelat.getSelectedItem().equals("Itens não localizados no acervo"))){
-        objGRD = new GerenciadorRelatorios(InventarioUI.this, true, dao.mostraTabelaAcervo(), dao);
-        System.out.println("Verdadeiro");
-        
-        }else {
-        objGRD = new GerenciadorRelatorios(InventarioUI.this, true, dao.mostraTabelaAcervoParcial(), dao);
-        System.out.println("Falso");
-        
-        }*/
         
         //Passa a referência desta classe
         objGRD.setRefInventarioUI(InventarioUI.this);
@@ -1130,14 +1096,9 @@ public class InventarioUI extends javax.swing.JFrame {
             logado = dao.login(userBD.getText(), pswdBD.getText());
             userBD.setText("");
             pswdBD.setText("");
-            //requestFocus();
-            //InventarioDAO.fazLogin(userBD.getText(), pswdBD.getText());
             if (logado) {
-                System.out.println("LOGADO!");
-                //dao.criaTabelas();
                 modeloTabelaUlt = dao.getLocalizacaoDosVizinhos(dao.getUltSeq());
                 tabUltIni.setModel(modeloTabelaUlt);
-                
             }
         }
     }//GEN-LAST:event_pswdBDKeyPressed
@@ -1159,7 +1120,6 @@ public class InventarioUI extends javax.swing.JFrame {
 
     private void botInsCodKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_botInsCodKeyPressed
         if ( evt.getKeyCode() == KeyEvent.VK_ENTER){
-            System.out.println("ENTER_BOTÃO INSERIR");
             insereDados();
         }
     }//GEN-LAST:event_botInsCodKeyPressed
@@ -1171,9 +1131,6 @@ public class InventarioUI extends javax.swing.JFrame {
     private void vrfExemplarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vrfExemplarActionPerformed
         System.out.println("Botão clicado");
 
-        /*Observacoes obs = new Observacoes();
-        obs.setVisible(true);
-        obs.setRefInventarioUI(this);*/
         Observacoes obsD = new Observacoes(InventarioUI.this, rootPaneCheckingEnabled);
         obsD.setRefInventarioUI(InventarioUI.this);
         obsD.setVisible(true);
@@ -1195,15 +1152,7 @@ public class InventarioUI extends javax.swing.JFrame {
     }//GEN-LAST:event_pswdBDActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        System.out.println("nada?");
-        try {
-            dao.fechaConexao();
-            System.out.println("Janela fechada!");
-        } catch (Exception e) {
-        }finally{
-        System.exit( 0 ); 
-        //this.dispose();
-        }
+        
     }//GEN-LAST:event_formWindowClosed
 
     private void userBDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userBDActionPerformed
@@ -1211,13 +1160,7 @@ public class InventarioUI extends javax.swing.JFrame {
     }//GEN-LAST:event_userBDActionPerformed
 
     private void abaInicioFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_abaInicioFocusGained
-        if(logado){
         
-            /*modeloTabelaLocaliz = dao.getLocalizacaoDosVizinhos(dao.getUltSeq());
-            tabLocaliz.setModel(modeloTabelaLocaliz);
-            modeloTabelaTombo = dao.getTomboDosVizinhos(dao.getUltSeq());
-            tabUltIni.setModel(modeloTabelaTombo);*/
-        }
     }//GEN-LAST:event_abaInicioFocusGained
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -1227,11 +1170,8 @@ public class InventarioUI extends javax.swing.JFrame {
                 JOptionPane.YES_NO_OPTION);
         if (i == JOptionPane.YES_OPTION) {
             dao.fechaConexao();
-            //System.exit(0);
             this.dispose();
         }
-        //this.dispose();
-
     }//GEN-LAST:event_formWindowClosing
 
     private void comboRelatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_comboRelatKeyPressed
@@ -1240,41 +1180,6 @@ public class InventarioUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_comboRelatKeyPressed
     
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(InventarioUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(InventarioUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(InventarioUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(InventarioUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new InventarioUI().setVisible(true);
-            }
-        });
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel abaAcervo;
     private javax.swing.JPanel abaAjuda;
@@ -1319,7 +1224,7 @@ public class InventarioUI extends javax.swing.JFrame {
     private javax.swing.JPanel painelLeCodAcervo;
     private javax.swing.JPanel painelLogin;
     private javax.swing.JTextField pswdBD;
-    private javax.swing.JLabel sesaoIni;
+    private javax.swing.JLabel sessaoIni;
     private javax.swing.JTable tabUltCod;
     private javax.swing.JTable tabUltIni;
     private static javax.swing.JTextField userBD;
