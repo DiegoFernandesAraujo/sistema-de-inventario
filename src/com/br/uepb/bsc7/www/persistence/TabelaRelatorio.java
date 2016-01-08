@@ -25,6 +25,8 @@ public class TabelaRelatorio extends AbstractTableModel{
 
     ResultSet resultSet = null;
     ResultSetMetaData metadados = null;
+    String[] nomesBD = {"tombo", "titulo", "autor", "localizacao", "situacao", "seq", "cod_barras", "obs", "verificar"};
+    String[] nomesExibicao = {"Tombo", "Título", "Autor", "Localização (CDD)", "Situação", "Sequência", "Tombo", "Observação", "Verificar"};
 
     public TabelaRelatorio(ResultSet resultSet, ResultSetMetaData metadados) {
         this.resultSet = resultSet;
@@ -64,51 +66,22 @@ public class TabelaRelatorio extends AbstractTableModel{
     }
     
     public String getColumnName(int coluna) {
+        
         try {
-            return metadados.getColumnName(coluna + 1);
+            
+            String nomeColuna = metadados.getColumnName(coluna + 1);
+            
+            for (int i = 0; i < nomesBD.length; i++) {
+                
+                if(nomeColuna.equals(nomesBD[i])){
+                    return nomesExibicao[i];
+                }
+            }
+            
+            //return metadados.getColumnName(coluna + 1);
         } catch (SQLException ex) {
             Logger.getLogger(TabelaRelatorio.class.getName()).log(Level.SEVERE, null, ex);
         }
         return "";
     }
-    
-    
-    
-    
-    
-    public static TableModel getModeloTabela() {
-        JTable tabela = new JTable();
-        
-        /*int opcao = Integer.parseInt(JOptionPane.showInputDialog("1 ou 2?"));
-        
-        if(opcao == 1){*/
-        
-        tabela.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][]{
-                    {"Aqui", "Ali", "Acolá", "Cá"},
-                    {"Foi", "Fui", "Fomos", "Fumamos"},
-                    {"1", "2", "3", "4"},
-                    {"8", "7", "6", "5"}
-                },
-                new String[]{
-                    "Title 1", "Title 2", "Title 3", "Title 4"
-                }
-        ));
-        /*}else{
-        
-        tabela.setModel(new javax.swing.table.DefaultTableModel(
-        new Object[][]{
-        {"Oxi", "Pronto", "Agora Lascou", "Vôti"},
-        {"Sei", "Çei", "Çabemos", "Sabões"},
-        {"9", "9", "9", "9"},
-        },
-        new String[]{
-        "Title 1", "Title 2", "Title 3", "Title 4"
-        }
-        ));
-        }*/
-        return tabela.getModel();
-    }
-    
-    
 }

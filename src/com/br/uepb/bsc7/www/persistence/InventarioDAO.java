@@ -221,9 +221,12 @@ public class InventarioDAO {
                     st.executeUpdate(sql);
 
                     //Tentativa de exibir na UI os valores de sequência sendo inseridos:
+                    InventarioUI.labelPorc.setText("Registro " + seq + " inserido!");
+                    objInventarioUI.setBarraProg(seq);
                     /*InventarioUI.labelPorc.setText("Registro " + seq + " inserido!");
                     InventarioUI.labelPorc.repaint();*/
                     //objInventarioUI.setLabelPorc(seq);
+                    
                 }
 
             }
@@ -349,8 +352,8 @@ public class InventarioDAO {
     }
 
     public TabelaRelatorio getNaoCadastrados() {
-        String sql = "select seq, cod_barras from acervo_estante"
-                + " where cod_barras not in (select tombo from acervo_siabi);";
+        String sql = "SELECT seq, cod_barras FROM acervo_estante"
+                + " WHERE cod_barras NOT IN (SELECT tombo FROM acervo_siabi);";
 
         try {
             conexao = cBD.getConnection(usuario, senha);
@@ -417,7 +420,7 @@ public class InventarioDAO {
     //Retorna cdd e tombo dos dois últimos valores lidos, se estes estiverem catalogados no SIABI
     public TabelaRelatorio getLocalizacaoDosVizinhos(int seq) {
     
-        String sql = "SELECT tombo AS Tombo, localizacao AS Localização"
+        String sql = "SELECT tombo, localizacao"
                 + " FROM (SELECT cod_barras"
                 + " FROM acervo_estante"
                 + " WHERE ((seq = " + seq + " - 1)"
@@ -442,7 +445,7 @@ public class InventarioDAO {
 
     //Retorna as três últimas linhas da tabela acervo_estante
     public TabelaRelatorio getTresUltimasLinhas() {
-        String sql = "SELECT cod_barras AS Tombo, verificar AS Verificar, obs AS Observações"
+        String sql = "SELECT cod_barras, verificar, obs"
                 + " FROM (SELECT COUNT(*) AS ult"
                 + " FROM acervo_estante) AS ultimo, "
                 + "acervo_estante WHERE seq > (ult - 3);";

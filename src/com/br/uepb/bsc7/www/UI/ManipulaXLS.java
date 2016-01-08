@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.SwingWorker;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -38,6 +39,7 @@ public class ManipulaXLS {
     ArrayList<String> dados = new ArrayList<>();
     InventarioDAO dao = null;
     public static boolean continua;
+    private InventarioUI objInventarioUI = null;
 
     public ManipulaXLS(InventarioDAO obj) {
         dao = obj;
@@ -48,6 +50,10 @@ public class ManipulaXLS {
 
     public void setRefInventarioDAO(InventarioDAO obj) {
         dao = obj;
+    }
+    
+    public void setRefInventarioUI(InventarioUI obj) {
+        objInventarioUI = obj;
     }
 
     public boolean ehSIABI(String filename) throws IOException {
@@ -73,73 +79,95 @@ public class ManipulaXLS {
 
         return siabi;
     }
+    
+    public int getTamXLS(String filename) throws IOException{
+        FileInputStream fileInputStream = new FileInputStream(filename);
+        wbx = new XSSFWorkbook(fileInputStream);
+        XSSFSheet sx = wbx.getSheet("Plan1");
+        System.out.println(sx.getLastRowNum());
+        return sx.getLastRowNum();
+    }
 
     public void leXLS(String filename) throws IOException {
-        System.out.println("Método leXLS chamado!");
-        FileInputStream fileInputStream = new FileInputStream(filename);
-        continua = true;
 
-        try {
-            //Obtem acesso à pasta de trabalho
-            wbx = new XSSFWorkbook(fileInputStream);
-            //Obtem acesso à planilha Plan1
-            XSSFSheet sx = wbx.getSheet("Plan1");
+        SwingWorker worker = new SwingWorker() {
+            protected Void doInBackground() throws Exception {
 
-            Iterator<Row> rowIterator = sx.rowIterator();
+                //Thread.sleep(100);
+                FileInputStream fileInputStream = new FileInputStream(filename);
+                continua = true;
 
-            while (rowIterator.hasNext()) {
+                try {
+                    //Obtem acesso à pasta de trabalho
+                    wbx = new XSSFWorkbook(fileInputStream);
+                    //Obtem acesso à planilha Plan1
+                    XSSFSheet sx = wbx.getSheet("Plan1");
 
-                if (continua == true) {
+                    Iterator<Row> rowIterator = sx.rowIterator();
 
-                    //Obtem acesso a cada linha de Plan1
-                    Row linha = rowIterator.next();
+                    while (rowIterator.hasNext()) {
 
-                    for (int countCel = 0; countCel < linha.getLastCellNum(); countCel++) {
+                        Thread.sleep(100);
 
-                        Cell celula;
-                        //Obtem acesso a cada célula de cada linha de Plan1
-                        if (linha.getCell(countCel) == null) {
-                            celula = linha.createCell(countCel);
-                        } else {
-                            celula = linha.getCell(countCel);
-                        }
+                        if (continua == true) {
 
-                        //Adiciona o valor de cada célula ao ArrayList que será passado a DAO
-                        try {
+                            //Obtem acesso a cada linha de Plan1
+                            Row linha = rowIterator.next();
 
-                            dados.add(celula.getStringCellValue());
-                        } catch (Exception ex) {
+                            for (int countCel = 0; countCel < linha.getLastCellNum(); countCel++) {
 
-                            try {
-                                Double temp = celula.getNumericCellValue();
-                                int valor = temp.intValue();
+                                Cell celula;
+                                //Obtem acesso a cada célula de cada linha de Plan1
+                                if (linha.getCell(countCel) == null) {
+                                    celula = linha.createCell(countCel);
+                                } else {
+                                    celula = linha.getCell(countCel);
+                                }
 
-                                dados.add((String) Integer.toString(valor));
+                                //Adiciona o valor de cada célula ao ArrayList que será passado a DAO
+                                try {
 
-                            } catch (Exception ex2) {
-                                JOptionPane.showMessageDialog(null, "ERRO em leXLS");
+                                    dados.add(celula.getStringCellValue());
+                                } catch (Exception ex) {
+
+                                    try {
+                                        Double temp = celula.getNumericCellValue();
+                                        int valor = temp.intValue();
+
+                                        dados.add((String) Integer.toString(valor));
+
+                                    } catch (Exception ex2) {
+                                        JOptionPane.showMessageDialog(null, "ERRO em leXLS");
+                                    }
+                                }
                             }
+
+                            //Insere os dados lidos no BD
+                            dao.insereLinha(dados);
+                            //Limpa o ArrayLista para preenchê-lo novamente
+                            dados.clear();
+                        } else {
+                            break;
                         }
                     }
-
-                    //Insere os dados lidos no BD
-                    dao.insereLinha(dados);
-                    //Limpa o ArrayLista para preenchê-lo novamente
-                    dados.clear();
-                } else {
-                    break;
+                    if (continua == true) {
+                        System.out.println("Acabou SIABI!");
+                        objInventarioUI.acabouSIABI();
+                        JOptionPane.showMessageDialog(null, "Arquivo carregado com sucesso!", null, JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Não foi possível carregar o arquivo!\nleXLS()", null, JOptionPane.ERROR_MESSAGE);
+                    }
+                    //Corrigir este catch com algo mais eficiente
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(null, "Não foi possível carregar o arquivo!\ncatch - leXLS()", null, JOptionPane.ERROR_MESSAGE);
                 }
-            }
-            if (continua == true) {
-                JOptionPane.showMessageDialog(null, "Arquivo carregado com sucesso!", null, JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(null, "Não foi possível carregar o arquivo!\nleXLS()", null, JOptionPane.ERROR_MESSAGE);
-            }
-            //Corrigir este catch com algo mais eficiente
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Não foi possível carregar o arquivo!\ncatch - leXLS()", null, JOptionPane.ERROR_MESSAGE);
-        }
 
+                return null;
+            }
+
+        };
+
+        worker.execute();
     }
 
     public void criaXLS(JTable tabela, String arqSaida, String nomePlan) throws IOException, NullPointerException {

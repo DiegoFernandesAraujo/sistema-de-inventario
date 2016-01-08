@@ -179,8 +179,6 @@ public class Observacoes extends javax.swing.JDialog {
 
     private void botGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botGuardarActionPerformed
 
-        //System.out.println(painelObs.getComponentCount());
-        //System.out.println("Antes do for.");
         StringBuilder sb = new StringBuilder();
         
         for (int i = 0; i< painelObs.getComponentCount(); i++) {
@@ -201,24 +199,20 @@ public class Observacoes extends javax.swing.JDialog {
                 }
             }
         }
-        //setObs(obs); //Chamada estática
-        //System.out.println("Após o for.");
         String obs = sb.append(".").toString().replaceFirst(", ","");
         guardaObs(obs);
     }//GEN-LAST:event_botGuardarActionPerformed
 
     private void guardaObs(String obsG){
-        //System.out.println(obsG);
+
         objInventarioUI.setObs(obsG);
         objInventarioUI.setFocusBotaoInserir();
-        //objInventarioUI.desmarcarVrfExemplar();
         objInventarioUI.blockVrfExemplar(false);
         this.dispose();
     }
     
     public void setRefInventarioUI(InventarioUI obj){
         objInventarioUI = obj;
-        System.out.println("setRefInventarioUI");
     }
     
     private void botGuardarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_botGuardarKeyReleased
@@ -228,7 +222,7 @@ public class Observacoes extends javax.swing.JDialog {
     }//GEN-LAST:event_botGuardarKeyReleased
 
     private void botCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botCancelarActionPerformed
-        //.desmarcarVrfExemplar(); //Não tá dando certo
+
         objInventarioUI.desmarcarVrfExemplar();
         this.dispose();
     }//GEN-LAST:event_botCancelarActionPerformed
@@ -241,10 +235,6 @@ public class Observacoes extends javax.swing.JDialog {
     }//GEN-LAST:event_botCancelarKeyReleased
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        System.out.println("Janela fechada!");
-        /*if (!guardar) {
-        objInventarioUI.desmarcarVrfExemplar();
-        }*/
         this.dispose();
     }//GEN-LAST:event_formWindowClosed
 
