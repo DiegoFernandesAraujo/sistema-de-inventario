@@ -352,8 +352,14 @@ public class InventarioDAO {
     }
 
     public TabelaRelatorio getNaoCadastrados() {
-        String sql = "SELECT seq, cod_barras FROM acervo_estante"
-                + " WHERE cod_barras NOT IN (SELECT tombo FROM acervo_siabi);";
+        String sql = "SELECT tombo, localizacao, "
+                + " FROM (SELECT cod_barras"
+                + " FROM acervo_estante"
+                + " WHERE ((seq = " + seq + " - 2) AS ant2"
+                + " OR (seq =  " + seq + " - 1) AS ant1"
+                + " OR (seq = " + seq + "+ 1) AS post2"
+                + " OR (seq =  " + seq + " +2) AS post1)) AS vizinhos, acervo_siabi"
+                + " WHERE cod_barras = tombo;";
 
         try {
             conexao = cBD.getConnection(usuario, senha);
@@ -420,12 +426,11 @@ public class InventarioDAO {
     //Retorna cdd e tombo dos dois últimos valores lidos, se estes estiverem catalogados no SIABI
     public TabelaRelatorio getLocalizacaoDosVizinhos(int seq) {
     
-        String sql = "SELECT tombo, localizacao"
+        String sql = "SELECT cod_barras, localizacao"
                 + " FROM (SELECT cod_barras"
                 + " FROM acervo_estante"
                 + " WHERE ((seq = " + seq + " - 1)"
-                + " OR (seq =  " + seq + "))) AS vizinhos, acervo_siabi"
-                + " WHERE cod_barras = tombo;";
+                + " OR (seq =  " + seq + "))) AS vizinhos;";
         try {
             conexao = cBD.getConnection(usuario, senha);
             PreparedStatement st = conexao.prepareStatement(sql);

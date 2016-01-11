@@ -113,7 +113,7 @@ public class InventarioUI extends javax.swing.JFrame {
         comboRelat = new javax.swing.JComboBox<>();
         abaAjuda = new javax.swing.JPanel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Sistema de Inventário - UEPB");
         setIconImage(new ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_livros.png")).getImage());
         setResizable(false);
@@ -372,7 +372,7 @@ public class InventarioUI extends javax.swing.JFrame {
                         .addContainerGap()
                         .addGroup(painelCargArqAcervoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                             .addComponent(botSelEstante)
-                            .addComponent(endArqEstante)))
+                            .addComponent(endArqEstante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(painelCargArqAcervoLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(painelCargArqAcervoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -631,21 +631,20 @@ public class InventarioUI extends javax.swing.JFrame {
                         .addComponent(jLabel6))
                     .addGroup(painelCargArqSIABILayout.createSequentialGroup()
                         .addGap(22, 22, 22)
-                        .addComponent(botCargSIABI)))
+                        .addComponent(botCargSIABI))
+                    .addGroup(painelCargArqSIABILayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(endArqSIABI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelCargArqSIABILayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(endArqSIABI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27))
         );
         painelCargArqSIABILayout.setVerticalGroup(
             painelCargArqSIABILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(painelCargArqSIABILayout.createSequentialGroup()
                 .addGap(13, 13, 13)
                 .addComponent(jLabel5)
-                .addGap(7, 7, 7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(endArqSIABI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(7, 7, 7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(botSelSIABI)
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -833,6 +832,10 @@ public class InventarioUI extends javax.swing.JFrame {
         botOk.requestFocusInWindow();
     }
     
+    public void setFocusSelArqSIABI(){
+        botSelSIABI.requestFocusInWindow();
+    }
+    
     public void desmarcarVrfExemplar(){
         vrfExemplar.setSelected(false);
         vrfExemplar.setEnabled(true);
@@ -934,14 +937,7 @@ public class InventarioUI extends javax.swing.JFrame {
         barraProg.setVisible(false);
             
     }
-    
-    private void endArqSIABIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_endArqSIABIActionPerformed
-        if (endArqSIABI.getText().equals("Nenhum arquivo selecionado")) {
-            endArqSIABI.setText("");
-            endArqSIABI.setForeground(new java.awt.Color(0, 0, 0));
-        }        // TODO add your handling code here:
-    }//GEN-LAST:event_endArqSIABIActionPerformed
-    //Falta tratar a extensão TXT
+        //Falta tratar a extensão TXT
     //Falta tratar eventos, como no caso de digitar um endereço inexistente
     private void botSelEstanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botSelEstanteActionPerformed
         
@@ -1029,6 +1025,8 @@ public class InventarioUI extends javax.swing.JFrame {
         if(logado){
             modeloTabelaUlt = dao.getLocalizacaoDosVizinhos(dao.getUltSeq());
             tabUltIni.setModel(modeloTabelaUlt);
+        }else{
+            setFocusUser();
         }
         
     }//GEN-LAST:event_botOkActionPerformed
@@ -1116,6 +1114,9 @@ public class InventarioUI extends javax.swing.JFrame {
                 modeloTabelaUlt = dao.getLocalizacaoDosVizinhos(dao.getUltSeq());
                 tabUltIni.setModel(modeloTabelaUlt);
             }
+        } else if (grupoAbas.getSelectedComponent() == abaSIABI) {  
+            setFocusSelArqSIABI();
+        
         }
 
     }//GEN-LAST:event_grupoAbasStateChanged
@@ -1240,12 +1241,12 @@ public class InventarioUI extends javax.swing.JFrame {
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
 
-        int i = JOptionPane.showConfirmDialog(null,
-                "Deseja realmente sair?", null,
-                JOptionPane.YES_NO_OPTION);
+        int i = JOptionPane.showConfirmDialog(null, "Deseja realmente sair?", null, JOptionPane.YES_NO_OPTION);
         if (i == JOptionPane.YES_OPTION) {
             dao.fechaConexao();
             this.dispose();
+        } else if (i == JOptionPane.NO_OPTION) {
+            return;
         }
     }//GEN-LAST:event_formWindowClosing
 
@@ -1280,8 +1281,15 @@ public class InventarioUI extends javax.swing.JFrame {
         if (endArqSIABI.getText().equals("")){
             endArqSIABI.setText("Nenhum arquivo selecionado");
             endArqSIABI.setForeground(new java.awt.Color(204, 204, 204));
-        }        // TODO add your handling code here:
+        }      
     }//GEN-LAST:event_endArqSIABIFocusLost
+
+    private void endArqSIABIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_endArqSIABIActionPerformed
+        if(endArqSIABI.getText().equals("Nenhum arquivo selecionado")){
+           endArqSIABI.setText("");
+           endArqSIABI.setForeground(new java.awt.Color(0, 0, 0));
+        }
+    }//GEN-LAST:event_endArqSIABIActionPerformed
 
     public void setEndArqEstante(String end){
         endArqEstante.setForeground(new java.awt.Color(0, 0, 0));

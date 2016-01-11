@@ -115,32 +115,64 @@ public class ManipulaXLS {
                             Row linha = rowIterator.next();
 
                             for (int countCel = 0; countCel < linha.getLastCellNum(); countCel++) {
+                                
+                                    Cell celula;
+                                    //Obtem acesso a cada célula de cada linha de Plan1
+                                    if (linha.getCell(countCel) == null) {
+                                        celula = linha.createCell(countCel);
+                                    } else {
+                                        celula = linha.getCell(countCel);
+                                    }
 
-                                Cell celula;
-                                //Obtem acesso a cada célula de cada linha de Plan1
-                                if (linha.getCell(countCel) == null) {
-                                    celula = linha.createCell(countCel);
-                                } else {
-                                    celula = linha.getCell(countCel);
-                                }
-
-                                //Adiciona o valor de cada célula ao ArrayList que será passado a DAO
-                                try {
-
-                                    dados.add(celula.getStringCellValue());
-                                } catch (Exception ex) {
-
+                                    //Adiciona o valor de cada célula ao ArrayList que será passado a DAO
                                     try {
-                                        Double temp = celula.getNumericCellValue();
-                                        int valor = temp.intValue();
+                                        
+                                        String valor = celula.getStringCellValue();
+                                
+                                        //Se estiver na coluna "tombo" e o valor for menor ou igual a 6
+                                        if (countCel == 2 && valor.length() < 6) {
+                                            
+                                            StringBuilder tombo = new StringBuilder();
+                                            tombo.append(0).append(valor);
+                                            dados.add(tombo.toString());
+                                            System.out.println("Tombo: " + tombo.toString());
+                                            
+                                        } else {
+                                            dados.add(valor);
+                                        }
+                                        
+                                    } catch (Exception ex) {
 
-                                        dados.add((String) Integer.toString(valor));
+                                        try {
+                                            
+                                            Double temp = celula.getNumericCellValue();
+                                            int valor = temp.intValue();
 
-                                    } catch (Exception ex2) {
-                                        JOptionPane.showMessageDialog(null, "ERRO em leXLS");
+                                            String valorTam = Integer.toString(valor);
+                                            /*System.out.println("ValorTam: " + valorTam);
+                                            System.out.println("Tamanho: " + valorTam.length());*/
+                                            
+                                            //Se estiver na coluna "tombo" e o valor for menor ou igual a 6
+                                            if (countCel == 2 && valorTam.length() < 6) {
+
+                                                StringBuilder tombo = new StringBuilder();
+
+                                                //String valorS = (String) Integer.toString(valor);
+                                                
+                                                tombo.append(0).append(valor);
+                                                
+                                                dados.add(tombo.toString());
+                                            } else {
+
+                                                dados.add((String) Integer.toString(valor));
+                                            }
+
+                                        } catch (Exception ex2) {
+                                            JOptionPane.showMessageDialog(null, "ERRO em leXLS");
+                                        }
                                     }
                                 }
-                            }
+                            
 
                             //Insere os dados lidos no BD
                             dao.insereLinha(dados);

@@ -44,3 +44,34 @@ CREATE TABLE IF NOT EXISTS acervo_estante (
    `situacao` varchar(45) null,
    primary key (`seq`)
    );
+   
+   select * from acervo_estante;
+   insert into acervo_estante (seq, cod_barras, verificar, obs) values (12, '010510', 'nao', '-');
+   #insert into acervo_estante (seq, cod_barras) values (10, 010519);
+   
+   SELECT cod_barras, localizacao
+   FROM (SELECT tombo as cod_barras, localizacao as localizacao FROM acervo_siabi 
+   where cod_barras in (SELECT tombo FROM acervo_siabi)) as teste;
+   
+   
+   SELECT cod_barras, localizacao
+   FROM (SELECT tombo as cod_barras, localizacao as localizacao FROM 
+   (SELECT tombo, localizacao FROM acervo_siabi), acervo_estante
+   where tombo = cod_barras) as teste;
+   
+   
+   SELECT cod_barras, localizacao from (SELECT tombo as cod_barras, localizacao
+   FROM acervo_siabi, acervo_estante
+   WHERE tombo = cod_barras) as abc;
+   
+   
+   SELECT tombo as cod_barras, localizacao as localizacao FROM acervo_siabi 
+   where cod_barras in (SELECT tombo FROM acervo_siabi);
+   
+   
+   #funcionando
+   SELECT tombo, localizacao from (SELECT tombo, localizacao
+   FROM acervo_siabi) as tbs, acervo_estante
+   WHERE tombo = cod_barras;
+   
+   
