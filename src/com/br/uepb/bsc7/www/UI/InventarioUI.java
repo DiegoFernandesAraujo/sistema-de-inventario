@@ -5,8 +5,10 @@
  */
 package com.br.uepb.bsc7.www.UI;
 
+
 import com.br.uepb.bsc7.www.persistence.InventarioDAO;
 import java.awt.Cursor;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
@@ -51,6 +53,7 @@ public class InventarioUI extends javax.swing.JFrame {
         labelProg.setVisible(false);
         labelPorc.setVisible(false);
         barraProg.setVisible(false);
+        botBkp.setEnabled(false);
         
     }
 
@@ -75,8 +78,6 @@ public class InventarioUI extends javax.swing.JFrame {
         jPanel11 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tabUltIni = new javax.swing.JTable();
-        jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
         abaEstante = new javax.swing.JPanel();
         painelCargArqAcervo = new javax.swing.JPanel();
         botCargEstante = new javax.swing.JButton();
@@ -112,6 +113,7 @@ public class InventarioUI extends javax.swing.JFrame {
         botGerRelat = new javax.swing.JButton();
         comboRelat = new javax.swing.JComboBox<>();
         abaAjuda = new javax.swing.JPanel();
+        botBkp = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Sistema de Inventário - UEPB");
@@ -237,6 +239,8 @@ public class InventarioUI extends javax.swing.JFrame {
         tabUltIni.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},
+                {null, null},
+                {null, null},
                 {null, null}
             },
             new String [] {
@@ -253,20 +257,12 @@ public class InventarioUI extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(tabUltIni);
 
-        jLabel9.setText("Penúltimo:");
-
-        jLabel10.setText("Último:");
-
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
         jPanel11Layout.setHorizontalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel11Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel9)
-                    .addComponent(jLabel10))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(85, 85, 85)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(111, Short.MAX_VALUE))
         );
@@ -274,15 +270,8 @@ public class InventarioUI extends javax.swing.JFrame {
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel11Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
-                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel10)
-                        .addGap(60, 60, 60))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(52, 52, 52))))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25))
         );
 
         javax.swing.GroupLayout abaInicioLayout = new javax.swing.GroupLayout(abaInicio);
@@ -706,7 +695,7 @@ public class InventarioUI extends javax.swing.JFrame {
             }
         });
 
-        comboRelat.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Itens localizados no acervo", "Itens não localizados no acervo", "Itens não cadastrados no SIABI", "Itens localizados no acervo tidos como emprestados", "Itens para verificação" }));
+        comboRelat.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Itens localizados na estante", "Itens não localizados na estante", "Itens não cadastrados no SIABI", "Itens localizados na estante tidos como emprestados", "Itens marcados para verificação", "Todos itens lidos no inventário" }));
         comboRelat.setToolTipText("Selecione o relatório a ser gerado");
         comboRelat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -742,7 +731,7 @@ public class InventarioUI extends javax.swing.JFrame {
             .addGroup(abaRelatoriosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(301, Short.MAX_VALUE))
+                .addContainerGap(297, Short.MAX_VALUE))
         );
         abaRelatoriosLayout.setVerticalGroup(
             abaRelatoriosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -767,6 +756,14 @@ public class InventarioUI extends javax.swing.JFrame {
 
         grupoAbas.addTab("Ajuda", abaAjuda);
 
+        botBkp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_backup.png"))); // NOI18N
+        botBkp.setToolTipText("Fazer backup do Banco de Dados");
+        botBkp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botBkpActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -775,13 +772,19 @@ public class InventarioUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(grupoAbas, javax.swing.GroupLayout.PREFERRED_SIZE, 761, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(botBkp, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(grupoAbas, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(botBkp)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -801,7 +804,7 @@ public class InventarioUI extends javax.swing.JFrame {
     
     //Modifica o campo obs a ser inserido na tabela acervo_estante
     public  void setObs(String obs){
-        System.out.println("Fui chamado!");
+        
         System.out.println(obs);
         obsIns = obs;
     }
@@ -909,7 +912,7 @@ public class InventarioUI extends javax.swing.JFrame {
                 
                 String msg = "Foram encontrados " + tamTab + " registros.";
                 
-                JOptionPane.showMessageDialog(null, msg + "\nEsta tarefa pode demorar um pouco. \nRecomenda-se não fazer uso de outras funções no computador \nenquanto a planilha estiver sendo carregada.</html>", null, JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, msg + "\nEsta tarefa pode demorar um pouco. \nRecomenda-se não fazer uso de outras funções no computador \nenquanto a planilha estiver sendo carregada.", null, JOptionPane.INFORMATION_MESSAGE);
                 
                 
                 xls.leXLS(endArqSIABI.getText());
@@ -981,26 +984,47 @@ public class InventarioUI extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "É necessário informar um código de barra!", null, JOptionPane.ERROR_MESSAGE);
                 return;
             } else {
-                System.out.println("ENTROU!");
+                
                 
                 if (vrfExemplar.isSelected()) {
                     verificar = "SIM";
                 } else {
                     verificar = "-";
                 }
+                
+                if(!dao.estahCadastradoNoSIABI(codBar.getText())){
+                    if(vrfExemplar.isSelected()){
+                        obsIns = obsIns + "Não cadastrado!";
+                    }else{
+                        verificar = "SIM";
+                        obsIns = " Não cadastrado!";
+                    }
+                } else {
+                    if(!vrfExemplar.isSelected()){
+                        obsIns = "";
+                    }
+                }
 
                 dadosIns.add(codBar.getText());
                 dadosIns.add(verificar);
                 dadosIns.add(obsIns);
-
+                
                 dao.insereLinha(dadosIns);
 
                 dadosIns.clear();
-
+                
                 JOptionPane.showMessageDialog(null, "Inserção realizada com sucesso!");
+                
+                if(!dao.estahCadastradoNoSIABI(codBar.getText())){
+                    Toolkit.getDefaultToolkit().beep();
+                    JOptionPane.showMessageDialog(null, "O código lido não está cadastrado no SIABI!", null, JOptionPane.ERROR_MESSAGE);
+                } 
+                
                 limpaTelaInsercao();
                 modeloTabelaAcerv = dao.getTresUltimasLinhas();
                 tabUltCod.setModel(modeloTabelaAcerv);
+                
+                
             }
         } else {
             JOptionPane.showMessageDialog(null, "Insira um nome de usuário e senha válidos!", null, JOptionPane.ERROR_MESSAGE);
@@ -1037,7 +1061,7 @@ public class InventarioUI extends javax.swing.JFrame {
 
     private void abaEstanteFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_abaEstanteFocusGained
         
-        System.out.println("Aba ativa");
+        
     }//GEN-LAST:event_abaEstanteFocusGained
     
     //Retorna a soma das dimensões dos JPanels de cada componente (neste caso abas) passado
@@ -1123,7 +1147,7 @@ public class InventarioUI extends javax.swing.JFrame {
 
     private void geraRelatorio(){
         GerenciadorRelatorios objGRD = null;
-        System.out.println(comboRelat.getSelectedIndex());
+        
         switch(comboRelat.getSelectedIndex()){
             case 0:
                 objGRD = new GerenciadorRelatorios(InventarioUI.this, true, dao.getLocalizados(), dao);
@@ -1140,6 +1164,10 @@ public class InventarioUI extends javax.swing.JFrame {
             case 4:
                 objGRD = new GerenciadorRelatorios(InventarioUI.this, true, dao.getItensParaVerificacao(), dao);
                 break;
+            case 5:
+                objGRD = new GerenciadorRelatorios(InventarioUI.this, true, dao.getExemplaresLidos(), dao);
+                break;
+    
 
             default:
                 System.out.println("Qualquer coisa!");
@@ -1205,7 +1233,7 @@ public class InventarioUI extends javax.swing.JFrame {
     }//GEN-LAST:event_botInsCodActionPerformed
 
     private void vrfExemplarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vrfExemplarActionPerformed
-        System.out.println("Botão clicado");
+        
 
         Observacoes obsD = new Observacoes(InventarioUI.this, rootPaneCheckingEnabled);
         obsD.setRefInventarioUI(InventarioUI.this);
@@ -1291,6 +1319,10 @@ public class InventarioUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_endArqSIABIActionPerformed
 
+    private void botBkpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botBkpActionPerformed
+        dao.fazBackup();
+    }//GEN-LAST:event_botBkpActionPerformed
+
     public void setEndArqEstante(String end){
         endArqEstante.setForeground(new java.awt.Color(0, 0, 0));
         endArqEstante.setText(end);
@@ -1308,6 +1340,7 @@ public class InventarioUI extends javax.swing.JFrame {
     private javax.swing.JPanel abaRelatorios;
     private javax.swing.JPanel abaSIABI;
     private javax.swing.JProgressBar barraProg;
+    private javax.swing.JButton botBkp;
     private javax.swing.JButton botCargEstante;
     private javax.swing.JButton botCargSIABI;
     private javax.swing.JButton botDesfInsCod;
@@ -1323,7 +1356,6 @@ public class InventarioUI extends javax.swing.JFrame {
     private javax.swing.JTextField endArqSIABI;
     private javax.swing.JTabbedPane grupoAbas;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1331,7 +1363,6 @@ public class InventarioUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;

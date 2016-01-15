@@ -2,6 +2,10 @@ package com.br.uepb.bsc7.www.persistence;
 
 import com.br.uepb.bsc7.www.UI.InventarioUI;
 import com.br.uepb.bsc7.www.UI.ManipulaXLS;
+import java.awt.HeadlessException;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,7 +13,9 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class InventarioDAO {
 
@@ -69,6 +75,66 @@ public class InventarioDAO {
         return sb.toString().replaceFirst(",", "");
     }
 
+    public void fazBackup(){
+        
+        try {
+            File bck = null;
+            JFileChooser fileChooser = new JFileChooser();
+            FileNameExtensionFilter filtro = new FileNameExtensionFilter("Arquivo SQL", "sql");
+            fileChooser.setFileFilter(filtro);
+            int returnVal = fileChooser.showSaveDialog(null);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                bck = fileChooser.getSelectedFile();
+            }
+            
+            System.out.println(bck.getAbsolutePath());
+            
+            FileOutputStream fileOutputStream = new FileOutputStream(bck.getAbsolutePath() + ".sql");
+            String comando = "cmd /c mysqldump.exe -u " + usuario + " -p " + senha + " " + "inventario_uepb" + " > " + bck;
+            System.out.println(comando);
+            try {
+                Runtime.getRuntime().exec("cmd /c mysqldump.exe -u " + usuario + " -p " + senha + " " + "inventario_uepb" + " > " + bck);
+                //Fecha o fileOutputStream
+                //Melhorar este catch    
+            } catch (IOException ex) {
+                System.out.println("Teste");
+                
+                PreparedStatement st = null;
+        //Statement st = null;
+        /*     String sql = "SELECT * INTO OUTFILE '" + bck.getAbsolutePath() + ".txt' FROM acervo_estante";
+        System.out.println(sql);
+        try {
+        
+        conexao = cBD.getConnection(usuario, senha);
+        st = conexao.prepareStatement(sql);
+        //st = conexao.createStatement();
+        //  st.executeUpdate(use);
+        //st.executeUpdate(sql);
+        st.execute();
+        //st.close();
+        
+        } catch (SQLException e) {
+        
+        JOptionPane.showMessageDialog(null, "Não foi possível criar Tabela acervo_estante! \n Erro MYSQL " + e.getErrorCode() + "\n" + e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
+        return;
+        } catch (Exception ex) {
+        //JOptionPane.showMessageDialog(null, "Arquivo não carregado!\ncatch - insereLinha()", null, JOptionPane.ERROR_MESSAGE);
+        return;
+        } finally {
+        cBD.closeConnection();
+        }
+        */     
+            } finally {
+                fileOutputStream.close();
+                
+            }
+        } catch (HeadlessException headlessException) {
+        } catch (IOException iOException) {
+        }
+        
+        
+    }
+    
     public void criaTabelas() {
         criaAcervoEstante();
         criaAcervoSIABI();
@@ -77,20 +143,24 @@ public class InventarioDAO {
     public void criaAcervoEstante() {
         String sql = "CREATE TABLE IF NOT EXISTS acervo_estante (\n"
                 + "	 seq  int not null,\n"
-                + "	 cod_barras  varchar (25) NOT NULL,\n"
+                + "	 cod_barras  varchar (250) NOT NULL,\n"
                 + "     verificar  varchar (5) NOT NULL,\n"
-                + "     obs  varchar (30) NOT NULL,\n"
+                + "     obs  varchar (250) NOT NULL,\n"
                 + "	primary key (seq)\n"
                 + ");";
 
         PreparedStatement st = null;
+        //Statement st = null;
 
         try {
 
             conexao = cBD.getConnection(usuario, senha);
             st = conexao.prepareStatement(sql);
-            st.executeUpdate(use);
-            st.executeUpdate(sql);
+            //st = conexao.createStatement();
+          //  st.executeUpdate(use);
+            //st.executeUpdate(sql);
+            st.execute();
+            //st.close();
 
         } catch (SQLException e) {
 
@@ -125,13 +195,15 @@ public class InventarioDAO {
                 + "   primary key ( seq )\n"
                 + "   );";
 
-        PreparedStatement st = null;
+        //PreparedStatement st = null;
+        Statement st = null;
 
         try {
 
             conexao = cBD.getConnection(usuario, senha);
-            st = conexao.prepareStatement(sql);
-            st.executeUpdate(use);
+            //st = conexao.prepareStatement(sql);
+            st = conexao.createStatement();
+        //    st.executeUpdate(use);
             st.executeUpdate(sql);
 
         } catch (SQLException e) {
@@ -300,9 +372,60 @@ public class InventarioDAO {
 
     //Retorna todos dos encontrados nos dois acervos, sem considerar a situacao.
     public TabelaRelatorio getLocalizados() {
-        String sql = "SELECT ac1.tombo, ac1.titulo, ac1.autor, ac1.localizacao"
+        String sql = "SELECT acervo_estante.seq, ac1.tombo, ac1.titulo, ac1.autor, ac1.localizacao"
                 + " FROM acervo_estante, acervo_siabi ac1"
-                + " WHERE acervo_estante.cod_barras = ac1.tombo;";
+                + " WHERE acervo_estante.cod_barras = ac1.tombo ORDER BY acervo_estante.seq;";
+
+        try {
+            conexao = cBD.getConnection(usuario, senha);
+            PreparedStatement st = conexao.prepareStatement(sql);
+            st.executeQuery(sql);
+            ResultSet rs = st.getResultSet();
+            ResultSetMetaData metadados = rs.getMetaData();
+            
+            return new TabelaRelatorio(rs, metadados);
+
+        } catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+            e.printStackTrace();
+            cBD.closeConnection();
+
+        }
+        return null;
+    }
+    
+    public TabelaRelatorio getItensLidos() {
+        String sql = "SELECT acervo_estante.seq, ac1.tombo, ac1.titulo, ac1.autor, ac1.localizacao"
+                + " FROM acervo_estante, acervo_siabi ac1"
+                + "  ORDER BY acervo_estante.seq;";
+
+        try {
+            conexao = cBD.getConnection(usuario, senha);
+            PreparedStatement st = conexao.prepareStatement(sql);
+            st.executeQuery(sql);
+            ResultSet rs = st.getResultSet();
+            ResultSetMetaData metadados = rs.getMetaData();
+            
+            return new TabelaRelatorio(rs, metadados);
+
+        } catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+            e.printStackTrace();
+            cBD.closeConnection();
+
+        }
+        return null;
+    }
+    
+    public TabelaRelatorio getExemplaresLidos() {
+        String sql = "(SELECT DISTINCT *\n" +
+                    "FROM (SELECT acervo_estante.seq AS seq, cod_barras, localizacao, titulo, autor, ano, edicao, volume, patrimonio, rb, situacao  FROM acervo_estante LEFT JOIN acervo_siabi ON cod_barras = tombo) AS nao_cadastrados\n" +
+                    "WHERE localizacao IS NULL) \n" +
+                    "UNION\n" +
+                    "(SELECT DISTINCT *\n" +
+                    "FROM (SELECT acervo_estante.seq AS seq, tombo, localizacao, titulo, autor, ano, edicao, volume, patrimonio, rb, situacao FROM acervo_estante LEFT JOIN acervo_siabi ON cod_barras = tombo) AS cadastrados\n" +
+                    "WHERE localizacao IS NOT NULL) \n" +
+                    " ORDER BY seq;";
 
         try {
             conexao = cBD.getConnection(usuario, senha);
@@ -322,14 +445,15 @@ public class InventarioDAO {
         return null;
     }
 
+
     public TabelaRelatorio getNaoLocalizados() {
-        String sql = "SELECT asi.tombo, asi.situacao, asi.titulo, asi.localizacao, asi.autor"
+        String sql = "SELECT asi.tombo, asi.patrimonio, asi.situacao, asi.titulo, asi.localizacao, asi.autor"
                 + " FROM acervo_siabi asi"
                 + " WHERE (asi.situacao <> \"02 - Emprestado\""
                 + " AND asi.situacao <>  \"07 - Perdido por Leitor\""
                 + " AND asi.situacao <> \"11 - Extraviado\""
                 + " AND asi.situacao <> \"14 - Inexistente\""
-                + " AND asi.situacao <> \"13 - Exemplar Exclu�do\")"
+                + " AND asi.situacao <> \"13 - Exemplar Excluído\")"
                 + " AND asi.tombo NOT IN (SELECT cod_barras"
                 + " FROM acervo_estante);";
 
@@ -352,20 +476,122 @@ public class InventarioDAO {
     }
 
     public TabelaRelatorio getNaoCadastrados() {
-        String sql = "SELECT tombo, localizacao, "
-                + " FROM (SELECT cod_barras"
-                + " FROM acervo_estante"
-                + " WHERE ((seq = " + seq + " - 2) AS ant2"
-                + " OR (seq =  " + seq + " - 1) AS ant1"
-                + " OR (seq = " + seq + "+ 1) AS post2"
-                + " OR (seq =  " + seq + " +2) AS post1)) AS vizinhos, acervo_siabi"
-                + " WHERE cod_barras = tombo;";
+        /*String sql = "SELECT tombo, localizacao, "
+        + " FROM (SELECT cod_barras"
+        + " FROM acervo_estante"
+        + " WHERE ((seq = " + seq + " - 2) AS ant2"
+        + " OR (seq =  " + seq + " - 1) AS ant1"
+        + " OR (seq = " + seq + "+ 1) AS post2"
+        + " OR (seq =  " + seq + " +2) AS post1)) AS vizinhos, acervo_siabi"
+        + " WHERE cod_barras = tombo;";*/
+        String sqlx = null, sql0 = null, sql1 = null, sql2 = null, sql3 = null, sql4 = null, sql5 = null, sql6 = null;
 
         try {
+
             conexao = cBD.getConnection(usuario, senha);
-            PreparedStatement st = conexao.prepareStatement(sql);
-            st.execute(sql);
-            ResultSet rs = st.getResultSet();
+
+            String sqlAntiga = "SELECT seq, cod_barras FROM acervo_estante"
+                    + " WHERE cod_barras NOT IN (SELECT tombo FROM acervo_siabi);";
+
+            PreparedStatement stAntiga = conexao.prepareStatement(sqlAntiga);
+            stAntiga.execute(sqlAntiga);
+
+            ResultSet rs1 = stAntiga.getResultSet();
+            rs1.last();
+            int tam = rs1.getRow();
+            rs1.beforeFirst();
+            int seqInt = 0;
+
+            sqlx = "DROP TEMPORARY TABLE IF EXISTS vizinhos;";
+            PreparedStatement stx = conexao.prepareStatement(sqlx);
+            stx.execute(sqlx);
+
+            sql0 = "Create  temporary table IF NOT EXISTS vizinhos(\n"
+                    + "anterior2 varchar(45) default '-',\n"
+                    + "anterior1 varchar(45) default '-',\n"
+                    + "item_nao_cad varchar(45) default '-',\n"
+                    + "posterior1 varchar(45) default '-',\n"
+                    + "posterior2 varchar(45) default '-'\n"
+                    + ");\n"
+                    + "\n";
+
+            PreparedStatement st0 = conexao.prepareStatement(sql0);
+            st0.execute(sql0);
+
+            //for (int i = 1; i <= tam; i++) {
+            while(rs1.next()){
+                seqInt = rs1.getInt(1);
+                System.out.println("seq: " + seqInt);
+                
+                sql1 = "set @anterior2:= (select localizacao\n"
+                        + "FROM (select seq, cod_barras\n"
+                        + "from acervo_estante\n"
+                        + "where seq = " + (seqInt - 2) + ") sequenciais\n"
+                        + "left join acervo_siabi\n"
+                        + "on sequenciais.cod_barras = tombo order by sequenciais.seq); \n"
+                        + "\n"
+                        + "\n";
+                PreparedStatement st1 = conexao.prepareStatement(sql1);
+                st1.execute(sql1);
+                
+                
+                sql2 = "set @anterior1:= (select localizacao\n"
+                        + "FROM (select seq, cod_barras\n"
+                        + "from acervo_estante\n"
+                        + "where seq = " + (seqInt - 1) + ")  sequenciais\n"
+                        + "left join acervo_siabi\n"
+                        + "on sequenciais.cod_barras = tombo order by sequenciais.seq);\n"
+                        + "\n"
+                        + "\n";
+                PreparedStatement st2 = conexao.prepareStatement(sql2);
+                st2.execute(sql2);
+                
+                
+                sql3 = "set @posterior1:= (select localizacao\n"
+                        + "FROM (select seq, cod_barras\n"
+                        + "from acervo_estante\n"
+                        + "where seq = " + (seqInt + 1) + ") sequenciais\n"
+                        + "left join acervo_siabi\n"
+                        + "on sequenciais.cod_barras = tombo order by sequenciais.seq);\n"
+                        + "\n";
+                PreparedStatement st3 = conexao.prepareStatement(sql3);
+                st3.execute(sql3);
+                
+                
+                sql4 = "set @posterior2:= (select localizacao\n"
+                        + "FROM (select seq, cod_barras\n"
+                        + "from acervo_estante\n"
+                        + "where seq = " + (seqInt + 2) + ") sequenciais\n"
+                        + "left join acervo_siabi\n"
+                        + "on sequenciais.cod_barras = tombo order by sequenciais.seq);\n"
+                        + "\n";
+                PreparedStatement st4 = conexao.prepareStatement(sql4);
+                st4.execute(sql4);
+                
+                
+                sql5 = "set @seqJava:= (select cod_barras\n"
+                        + "FROM (select seq, cod_barras\n"
+                        + "from acervo_estante\n"
+                        + "where seq = " + (seqInt) + ") sequenciais\n"
+                        + "left join acervo_siabi\n"
+                        + "on sequenciais.cod_barras = tombo order by sequenciais.seq);\n";
+                PreparedStatement st5 = conexao.prepareStatement(sql5);
+                st5.execute(sql5);        
+                
+                
+                sql6 = "insert into vizinhos (anterior2, anterior1, item_nao_cad, posterior1, posterior2) values (@anterior2, @anterior1, @seqJava, @posterior1, @posterior2);";
+                PreparedStatement st6 = conexao.prepareStatement(sql6);
+                st6.execute(sql6);
+                
+                
+            }//O for foi deposto
+
+            String sql7 = "SELECT * FROM vizinhos;";
+              
+           PreparedStatement st7 = conexao.prepareStatement(sql7);
+            st7.execute(sql7);
+
+            ResultSet rs = st7.getResultSet();
             ResultSetMetaData metadados = rs.getMetaData();
             return new TabelaRelatorio(rs, metadados);
 
@@ -377,6 +603,39 @@ public class InventarioDAO {
         }
         return null;
     }
+    
+    //Deve retornar a informação  de que o exemplar está cadastrado no SIABI assim que o código seja lido
+    public boolean estahCadastradoNoSIABI(String codigo) {
+        
+        String sql = "SELECT tombo FROM acervo_siabi WHERE '" + codigo + "' = tombo;";
+
+        try {
+            conexao = cBD.getConnection(usuario, senha);
+            PreparedStatement st = conexao.prepareStatement(sql);
+            st.execute(sql);
+            Object obj = null;
+            try {
+                ResultSet rs = st.getResultSet();
+                rs.last();
+                obj = rs.getObject(1);
+                rs.close();
+            } catch (SQLException ex) {
+                System.out.println(ex.getErrorCode());
+                ex.printStackTrace();
+            }
+                        
+            return obj != null;
+            
+
+        } catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+            e.printStackTrace();
+            cBD.closeConnection();
+
+        }
+        return false;
+    }
+    
 
     //Seleciona os que foram localizados nas estantes, mas "est�o" emprestados
     public TabelaRelatorio getLocalizadosMasEmprestados() {
@@ -426,15 +685,32 @@ public class InventarioDAO {
     //Retorna cdd e tombo dos dois últimos valores lidos, se estes estiverem catalogados no SIABI
     public TabelaRelatorio getLocalizacaoDosVizinhos(int seq) {
     
-        String sql = "SELECT cod_barras, localizacao"
+        //Acho que tem que ordenar e limitar a quantidade exibida ainda
+        
+        
+        String sql2 = "SELECT DISTINCT cod_barras, IF (tombo = cod_barras, localizacao, '') AS localizacao "
+                     + "FROM (SELECT tombo, localizacao, cod_barras "
+                     + "FROM acervo_siabi, acervo_estante "
+                     + "WHERE ((acervo_estante.seq = " + seq + " - 1) OR (acervo_estante.seq = " + seq + "))) AS ultimos LIMIT 2;";
+        //System.out.println(sql);
+        
+        String sql3 = "SELECT ultimos.cod_barras, localizacao "
+                      + "FROM (SELECT cod_barras, seq "
+                      + "FROM acervo_estante ae, (SELECT COUNT(*) AS tamanho FROM acervo_estante) total "
+                      + "WHERE (ae.seq = " + (seq - 3) + " OR ae.seq = " + (seq - 2) + " OR ae.seq = " + (seq - 1) + " OR ae.seq = " + seq + ")) ultimos "
+                      + "LEFT JOIN acervo_siabi "
+                      + "ON ultimos.cod_barras = tombo ORDER BY ultimos.seq;";
+        
+        String sql = "SELECT tombo, localizacao"
                 + " FROM (SELECT cod_barras"
                 + " FROM acervo_estante"
                 + " WHERE ((seq = " + seq + " - 1)"
-                + " OR (seq =  " + seq + "))) AS vizinhos;";
+                + " OR (seq =  " + seq + "))) AS vizinhos, acervo_siabi"
+                + " WHERE cod_barras = tombo;";
         try {
             conexao = cBD.getConnection(usuario, senha);
-            PreparedStatement st = conexao.prepareStatement(sql);
-            st.execute(sql);
+            PreparedStatement st = conexao.prepareStatement(sql3);
+            st.execute(sql3);
             ResultSet rs = st.getResultSet();
             ResultSetMetaData metadados = rs.getMetaData();
     
@@ -476,7 +752,7 @@ public class InventarioDAO {
     public TabelaRelatorio getItensParaVerificacao() {
         String sql = "SELECT *"
                 + " FROM acervo_estante"
-                + " WHERE verificar IS 'SIM';";
+                + " WHERE verificar = 'SIM';";
         try {
             conexao = cBD.getConnection(usuario, senha);
             Statement st = conexao.prepareStatement(sql);

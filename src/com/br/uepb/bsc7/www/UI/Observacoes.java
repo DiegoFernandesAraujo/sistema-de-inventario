@@ -45,6 +45,7 @@ public class Observacoes extends javax.swing.JDialog {
         botCancelar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         outrasObs = new javax.swing.JTextArea();
+        jCheckBox5 = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Observações");
@@ -56,7 +57,12 @@ public class Observacoes extends javax.swing.JDialog {
 
         painelObs.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Observações", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 13), new java.awt.Color(0, 0, 204))); // NOI18N
 
-        jCheckBox1.setText("Encadernar");
+        jCheckBox1.setText("Restauração");
+        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox1ActionPerformed(evt);
+            }
+        });
 
         jCheckBox2.setText("Etiqueta de dorso");
         jCheckBox2.addActionListener(new java.awt.event.ActionListener() {
@@ -107,6 +113,8 @@ public class Observacoes extends javax.swing.JDialog {
         outrasObs.setEnabled(false);
         jScrollPane1.setViewportView(outrasObs);
 
+        jCheckBox5.setText("Carimbar");
+
         javax.swing.GroupLayout painelObsLayout = new javax.swing.GroupLayout(painelObs);
         painelObs.setLayout(painelObsLayout);
         painelObsLayout.setHorizontalGroup(
@@ -115,27 +123,38 @@ public class Observacoes extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(painelObsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(painelObsLayout.createSequentialGroup()
-                        .addGroup(painelObsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jCheckBox1)
-                            .addComponent(jCheckBox2)
-                            .addComponent(jCheckBox3)
-                            .addComponent(jCheckBox4)
-                            .addComponent(jCheckBox6))
+                        .addComponent(jCheckBox1)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(painelObsLayout.createSequentialGroup()
-                        .addGap(93, 93, 93)
-                        .addComponent(botGuardar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(botCancelar)
-                        .addGap(100, 100, 100))
-                    .addComponent(jScrollPane1))
-                .addContainerGap())
+                        .addComponent(jCheckBox5)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(painelObsLayout.createSequentialGroup()
+                        .addGroup(painelObsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(painelObsLayout.createSequentialGroup()
+                                .addGap(93, 93, 93)
+                                .addComponent(botGuardar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(botCancelar))
+                            .addComponent(jCheckBox6))
+                        .addGap(112, 138, Short.MAX_VALUE))
+                    .addGroup(painelObsLayout.createSequentialGroup()
+                        .addGroup(painelObsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1)
+                            .addGroup(painelObsLayout.createSequentialGroup()
+                                .addGroup(painelObsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jCheckBox3)
+                                    .addComponent(jCheckBox4)
+                                    .addGroup(painelObsLayout.createSequentialGroup()
+                                        .addComponent(jCheckBox2)
+                                        .addGap(84, 84, 84)))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())))
         );
         painelObsLayout.setVerticalGroup(
             painelObsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelObsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jCheckBox1)
+                .addComponent(jCheckBox5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jCheckBox2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -143,14 +162,15 @@ public class Observacoes extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jCheckBox4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox6)
+                .addComponent(jCheckBox1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCheckBox6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addGroup(painelObsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botGuardar)
-                    .addComponent(botCancelar))
-                .addGap(38, 38, 38))
+                    .addComponent(botCancelar)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -164,9 +184,7 @@ public class Observacoes extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(22, Short.MAX_VALUE)
-                .addComponent(painelObs, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(painelObs, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -244,6 +262,10 @@ public class Observacoes extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_jCheckBox2ActionPerformed
 
+    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jCheckBox1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -289,6 +311,7 @@ public class Observacoes extends javax.swing.JDialog {
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JCheckBox jCheckBox3;
     private javax.swing.JCheckBox jCheckBox4;
+    private javax.swing.JCheckBox jCheckBox5;
     private javax.swing.JCheckBox jCheckBox6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea outrasObs;

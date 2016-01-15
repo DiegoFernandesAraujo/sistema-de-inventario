@@ -44,6 +44,7 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
     public GerenciadorRelatorios(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        botPDF.setVisible(false);
     }
     
     public GerenciadorRelatorios(java.awt.Frame parent, boolean modal, TableModel modelo, InventarioDAO objDAO) {
@@ -51,10 +52,15 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
         modeloTabela = modelo;
         dao = objDAO;
         initComponents();
-        quantitativos.setText(modelo.getRowCount() + " registros encontrados.");
+        if (modelo.getRowCount() > 1) {
+            quantitativos.setText(modelo.getRowCount() + " registros encontrados.");
+        } else {
+            quantitativos.setText(modelo.getRowCount() + " registros encontrados.");
+        }
         checkEmprest.setVisible(false);
         checkExtrav.setVisible(false);
         redimensionaTabela();
+        botPDF.setVisible(false);
     }
 
     private void redimensionaTabela(){
@@ -63,7 +69,7 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
         String valor = null;
         Font font = getFont();
         FontMetrics metrics = this.getFontMetrics(font);
-        int tam;
+        int tam = 0;
         int largPainel = 0;
         
         int[] maxDimColunas = new int[colunas];//Armazena as dimensões dos maiores conteúdos de cada coluna
@@ -82,7 +88,11 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
                         
                     }
                     
-                tam = metrics.stringWidth(valor);
+                try {
+                    tam = metrics.stringWidth(valor);
+                } catch (NullPointerException e) {
+                    tam = 0;
+                }
                 
                 
                 if (tam > max) {
@@ -99,10 +109,11 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
                 
                 tabRelat.getColumnModel().getColumn( k ).setPreferredWidth( maxDimColunas[k] );
                 largPainel = largPainel + maxDimColunas[k];
+            
             }else{
                
-                tabRelat.getColumnModel().getColumn( k ).setPreferredWidth( 200 );
-                largPainel = largPainel + 200;
+                tabRelat.getColumnModel().getColumn( k ).setPreferredWidth( 100 );
+                largPainel = largPainel + 150;
             }
         }
         //Redimensiona o painel      

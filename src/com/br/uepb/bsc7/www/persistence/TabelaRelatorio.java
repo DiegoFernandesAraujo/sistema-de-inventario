@@ -25,8 +25,8 @@ public class TabelaRelatorio extends AbstractTableModel{
 
     ResultSet resultSet = null;
     ResultSetMetaData metadados = null;
-    String[] nomesBD = {"tombo", "titulo", "autor", "localizacao", "situacao", "seq", "cod_barras", "obs", "verificar"};
-    String[] nomesExibicao = {"Tombo", "Título", "Autor", "Localização (CDD)", "Situação", "Sequência", "Tombo", "Observação", "Verificar"};
+    String[] nomesBD = {"tombo", "titulo", "autor", "localizacao", "situacao", "seq", "cod_barras", "obs", "verificar", "patrimonio", "rb", "edicao", "ano", "volume", "anterior2", "anterior1", "item_nao_cad", "posterior1", "posterior2"};
+    String[] nomesExibicao = {"Tombo", "Título", "Autor", "Localização (CDD)", "Situação", "Sequência", "Tombo", "Observação", "Verificar", "Patrimônio", "RB", "Edição", "Ano", "Volume", "Anterior2", "Anterior1", "Item não cadastrado", "Posterior1", "Posterior2"};
 
     public TabelaRelatorio(ResultSet resultSet, ResultSetMetaData metadados) {
         this.resultSet = resultSet;
