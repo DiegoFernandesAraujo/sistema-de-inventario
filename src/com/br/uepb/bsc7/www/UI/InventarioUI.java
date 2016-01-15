@@ -53,7 +53,9 @@ public class InventarioUI extends javax.swing.JFrame {
         labelProg.setVisible(false);
         labelPorc.setVisible(false);
         barraProg.setVisible(false);
-        botBkp.setEnabled(false);
+        //botBkp.setEnabled(false);
+        
+        botRestFab.setVisible(false);
         
     }
 
@@ -113,6 +115,9 @@ public class InventarioUI extends javax.swing.JFrame {
         botGerRelat = new javax.swing.JButton();
         comboRelat = new javax.swing.JComboBox<>();
         abaAjuda = new javax.swing.JPanel();
+        panelRest = new javax.swing.JPanel();
+        botRestBkp = new javax.swing.JToggleButton();
+        botRestFab = new javax.swing.JToggleButton();
         botBkp = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -743,21 +748,65 @@ public class InventarioUI extends javax.swing.JFrame {
 
         grupoAbas.addTab("Relatórios", abaRelatorios);
 
+        botRestBkp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_restaura_backup.png"))); // NOI18N
+        botRestBkp.setText("Restaurar backup");
+        botRestBkp.setEnabled(false);
+        botRestBkp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botRestBkpActionPerformed(evt);
+            }
+        });
+
+        botRestFab.setText("Restaurar padrão de fábrica");
+        botRestFab.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botRestFabActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelRestLayout = new javax.swing.GroupLayout(panelRest);
+        panelRest.setLayout(panelRestLayout);
+        panelRestLayout.setHorizontalGroup(
+            panelRestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelRestLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelRestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(botRestFab)
+                    .addComponent(botRestBkp))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        panelRestLayout.setVerticalGroup(
+            panelRestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelRestLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(botRestBkp)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(botRestFab)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout abaAjudaLayout = new javax.swing.GroupLayout(abaAjuda);
         abaAjuda.setLayout(abaAjudaLayout);
         abaAjudaLayout.setHorizontalGroup(
             abaAjudaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 756, Short.MAX_VALUE)
+            .addGroup(abaAjudaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panelRest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(527, Short.MAX_VALUE))
         );
         abaAjudaLayout.setVerticalGroup(
             abaAjudaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 277, Short.MAX_VALUE)
+            .addGroup(abaAjudaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panelRest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(181, Short.MAX_VALUE))
         );
 
         grupoAbas.addTab("Ajuda", abaAjuda);
 
         botBkp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_backup.png"))); // NOI18N
         botBkp.setToolTipText("Fazer backup do Banco de Dados");
+        botBkp.setEnabled(false);
         botBkp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botBkpActionPerformed(evt);
@@ -791,7 +840,7 @@ public class InventarioUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     //Retorna a extensão de um arquivo
-    private String getExtensao(File arq) {
+    public static String getExtensao(File arq) {
         String extArq = null;
         String nomeArq = arq.getName();
         int i = nomeArq.lastIndexOf('.');
@@ -856,6 +905,8 @@ public class InventarioUI extends javax.swing.JFrame {
         painelLogin.setToolTipText("A sessão será encerrada quando o programa for finalizado.");
         modeloTabelaUlt = dao.getLocalizacaoDosVizinhos(dao.getUltSeq());
         tabUltIni.setModel(modeloTabelaUlt);
+        botBkp.setEnabled(true);
+        botRestBkp.setEnabled(true);
     }
     
     private void botCargEstanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botCargEstanteActionPerformed
@@ -1323,6 +1374,14 @@ public class InventarioUI extends javax.swing.JFrame {
         dao.fazBackup();
     }//GEN-LAST:event_botBkpActionPerformed
 
+    private void botRestBkpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botRestBkpActionPerformed
+        dao.restauraBackup();
+    }//GEN-LAST:event_botRestBkpActionPerformed
+
+    private void botRestFabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botRestFabActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_botRestFabActionPerformed
+
     public void setEndArqEstante(String end){
         endArqEstante.setForeground(new java.awt.Color(0, 0, 0));
         endArqEstante.setText(end);
@@ -1348,6 +1407,8 @@ public class InventarioUI extends javax.swing.JFrame {
     private javax.swing.JButton botInsCod;
     private javax.swing.JButton botLimpCod;
     private javax.swing.JButton botOk;
+    private javax.swing.JToggleButton botRestBkp;
+    private javax.swing.JToggleButton botRestFab;
     private javax.swing.JButton botSelEstante;
     private javax.swing.JButton botSelSIABI;
     private javax.swing.JTextField codBar;
@@ -1376,6 +1437,7 @@ public class InventarioUI extends javax.swing.JFrame {
     private javax.swing.JPanel painelCargArqSIABI;
     private javax.swing.JPanel painelLeCodAcervo;
     private javax.swing.JPanel painelLogin;
+    private javax.swing.JPanel panelRest;
     private javax.swing.JTextField pswdBD;
     private javax.swing.JLabel sessaoIni;
     private javax.swing.JTable tabUltCod;

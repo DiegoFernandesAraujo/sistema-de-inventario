@@ -2,9 +2,7 @@ package com.br.uepb.bsc7.www.persistence;
 
 import com.br.uepb.bsc7.www.UI.InventarioUI;
 import com.br.uepb.bsc7.www.UI.ManipulaXLS;
-import java.awt.HeadlessException;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -75,65 +73,75 @@ public class InventarioDAO {
         return sb.toString().replaceFirst(",", "");
     }
 
-    public void fazBackup(){
+    public void fazBackup() {
+
+        String dir = "cd /d C:\\Program Files\\MySQL\\MySQL Server 5.7\\bin";
+        String dir86 = "cd /d C:\\Program Files(x86)\\MySQL\\MySQL Server 5.7\\bin";
+
+        File bck = null;
+        JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Arquivo SQL", "sql");
+        fileChooser.setFileFilter(filtro);
+        int returnVal = fileChooser.showSaveDialog(null);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            bck = fileChooser.getSelectedFile();
+        }
+        String arqBck = bck.getAbsolutePath() + ".sql";
+    
+        //Abre o prompt, executa os comandos e finaliza
+        String comandoDir = "cmd /c " + dir + " && mysqldump.exe -u" + usuario + " -p" + senha + " " + "inventario_uepb" + " > " + arqBck;
+        String comandoDir86 = "cmd /c " + dir86 + " && mysqldump.exe -u" + usuario + " -p" + senha + " " + "inventario_uepb" + " > " + arqBck;
+    
+        System.out.println("comandoDir: " + comandoDir);
+        System.out.println("comandoDir32: " + comandoDir86);
         
-        try {
-            File bck = null;
-            JFileChooser fileChooser = new JFileChooser();
-            FileNameExtensionFilter filtro = new FileNameExtensionFilter("Arquivo SQL", "sql");
-            fileChooser.setFileFilter(filtro);
-            int returnVal = fileChooser.showSaveDialog(null);
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                bck = fileChooser.getSelectedFile();
-            }
-            
-            System.out.println(bck.getAbsolutePath());
-            
-            FileOutputStream fileOutputStream = new FileOutputStream(bck.getAbsolutePath() + ".sql");
-            String comando = "cmd /c mysqldump.exe -u " + usuario + " -p " + senha + " " + "inventario_uepb" + " > " + bck;
-            System.out.println(comando);
             try {
-                Runtime.getRuntime().exec("cmd /c mysqldump.exe -u " + usuario + " -p " + senha + " " + "inventario_uepb" + " > " + bck);
-                //Fecha o fileOutputStream
-                //Melhorar este catch    
-            } catch (IOException ex) {
-                System.out.println("Teste");
-                
-                PreparedStatement st = null;
-        //Statement st = null;
-        /*     String sql = "SELECT * INTO OUTFILE '" + bck.getAbsolutePath() + ".txt' FROM acervo_estante";
-        System.out.println(sql);
-        try {
-        
-        conexao = cBD.getConnection(usuario, senha);
-        st = conexao.prepareStatement(sql);
-        //st = conexao.createStatement();
-        //  st.executeUpdate(use);
-        //st.executeUpdate(sql);
-        st.execute();
-        //st.close();
-        
-        } catch (SQLException e) {
-        
-        JOptionPane.showMessageDialog(null, "Não foi possível criar Tabela acervo_estante! \n Erro MYSQL " + e.getErrorCode() + "\n" + e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
-        return;
-        } catch (Exception ex) {
-        //JOptionPane.showMessageDialog(null, "Arquivo não carregado!\ncatch - insereLinha()", null, JOptionPane.ERROR_MESSAGE);
-        return;
-        } finally {
-        cBD.closeConnection();
-        }
-        */     
-            } finally {
-                fileOutputStream.close();
-                
+                Runtime.getRuntime().exec(comandoDir);
+                JOptionPane.showMessageDialog(null, "Backup realizado com sucesso!", null, JOptionPane.INFORMATION_MESSAGE);
+            } catch (Exception ex) {
+                try {
+                    Runtime.getRuntime().exec(comandoDir86);
+                    JOptionPane.showMessageDialog(null, "Backup realizado com sucesso!", null, JOptionPane.INFORMATION_MESSAGE);
+                } catch (IOException ex2) {
+                    JOptionPane.showMessageDialog(null, "Erro ao tentar realizar backup! \n" + ex2.getMessage(), null, JOptionPane.ERROR_MESSAGE);
+                }
             }
-        } catch (HeadlessException headlessException) {
-        } catch (IOException iOException) {
-        }
-        
         
     }
+    
+    public void restauraBackup() {
+        
+        String dir = "cd /d C:\\Program Files\\MySQL\\MySQL Server 5.7\\bin";
+
+        JFileChooser fc = new JFileChooser();
+        int returnVal = fc.showOpenDialog(null);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+
+            JFileChooser fileChooser = new JFileChooser();
+
+            FileNameExtensionFilter filtro = new FileNameExtensionFilter("Arquivo SQL", "sql");
+            fc.setFileFilter(filtro);
+
+            File arq = fc.getSelectedFile();
+            String endArq = arq.getAbsolutePath();
+
+            /*if (getExtensao(arq).equals("sql")) {
+            
+            }*/
+            String comando2 = "cmd /c " + dir + " && mysql.exe -u" + usuario + " -p" + senha + " " + "inventario_uepb" + " < " + endArq;
+            //System.out.println("comando de restauração: " + comando2);
+
+            try {
+                Runtime.getRuntime().exec(comando2);
+                JOptionPane.showMessageDialog(null, "Backup restaurado com sucesso!", null, JOptionPane.INFORMATION_MESSAGE);
+            } catch (IOException ex2) {
+                JOptionPane.showMessageDialog(null, "Erro ao tentar restaurar backup! \n" + ex2.getMessage(), null, JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+    }
+
+
     
     public void criaTabelas() {
         criaAcervoEstante();
