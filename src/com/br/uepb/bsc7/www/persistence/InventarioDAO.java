@@ -89,9 +89,9 @@ public class InventarioDAO {
         String arqBck = bck.getAbsolutePath() + ".sql";
         
         //Talvez seja melhor impedir de criar caso tenha espaço
-        if (arqBck.contains(" ")) {
-            JOptionPane.showMessageDialog(null, "O nome do arquivo de backup não pode conter espaços!\nTodos os espaços foram removidos!", null, JOptionPane.ERROR_MESSAGE);
-            arqBck = arqBck.replaceAll(" ", "");
+        if (arqBck.contains(" ") || arqBck.contains("/") || arqBck.contains("\\") || arqBck.contains(":") || arqBck.contains("<") || arqBck.contains(">")) {
+            JOptionPane.showMessageDialog(null, "O nome do arquivo não pode conter os caracteres: / \\ : * ? < > | ou espaços em branco.\nDigite um nome de arquivo válido.", null, JOptionPane.ERROR_MESSAGE);
+            fazBackup();
         }
         /*System.out.println("Path: " + bck.getAbsolutePath());
         System.out.println("arqBck: " + arqBck);*/
@@ -289,6 +289,77 @@ public class InventarioDAO {
         } catch (Exception ex) {
             //JOptionPane.showMessageDialog(null, "Arquivo não carregado!\ncatch - insereLinha()", null, JOptionPane.ERROR_MESSAGE);
             return;
+        } finally {
+            cBD.closeConnection();
+        }
+    }
+    
+    public boolean deletaSIABI(String senha) {
+        String sql = "DELETE FROM acervo_siabi;";
+
+        PreparedStatement st = null;
+
+        try {
+
+            conexao = cBD.getConnection(usuario, senha);
+            st = conexao.prepareStatement(sql);
+            st.executeUpdate(sql);
+            return true;
+
+        } catch (SQLException e) {
+
+            JOptionPane.showMessageDialog(null, "Não foi possível deletar Tabela acervo_siabi! \n Erro MYSQL " + e.getErrorCode() + "\n" + e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
+            return false;
+        } catch (Exception ex) {
+            //JOptionPane.showMessageDialog(null, "Arquivo não carregado!\ncatch - insereLinha()", null, JOptionPane.ERROR_MESSAGE);
+            return false;
+        } finally {
+            cBD.closeConnection();
+        }
+    }
+    
+    public boolean deletaAcervoEstante(String senha) {
+        String sql = "DELETE FROM acervo_estante;";
+
+        PreparedStatement st = null;
+
+        try {
+
+            conexao = cBD.getConnection(usuario, senha);
+            st = conexao.prepareStatement(sql);
+            st.executeUpdate(sql);
+            return true;
+        } catch (SQLException e) {
+
+            JOptionPane.showMessageDialog(null, "Não foi possível deletar Tabela acervo_estante! \n Erro MYSQL " + e.getErrorCode() + "\n" + e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
+            return false;
+        } catch (Exception ex) {
+            //JOptionPane.showMessageDialog(null, "Arquivo não carregado!\ncatch - insereLinha()", null, JOptionPane.ERROR_MESSAGE);
+            return false;
+        } finally {
+            cBD.closeConnection();
+        }
+    }
+    
+    public boolean deletaExcEstante(String senha) {
+        String sql = "DELETE FROM excluidos_estante;";
+
+        PreparedStatement st = null;
+
+        try {
+
+            conexao = cBD.getConnection(usuario, senha);
+            st = conexao.prepareStatement(sql);
+            st.executeUpdate(sql);
+            return true;
+
+        } catch (SQLException e) {
+
+            JOptionPane.showMessageDialog(null, "Não foi possível deletar Tabela excluidos_estante! \n Erro MYSQL " + e.getErrorCode() + "\n" + e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
+            return false;
+        } catch (Exception ex) {
+            //JOptionPane.showMessageDialog(null, "Arquivo não carregado!\ncatch - insereLinha()", null, JOptionPane.ERROR_MESSAGE);
+            return false;
         } finally {
             cBD.closeConnection();
         }
@@ -704,28 +775,8 @@ public class InventarioDAO {
     
     public void deletaTabelas(String senha){
         
-        String sql = "DELETE FROM acervo_estante;";
-        String sql2 = "DELETE FROM acervo_siabi;";
-        String sql3 = "DELETE FROM excluidos_estante;";
-        
-        try {
-            conexao = cBD.getConnection(usuario, senha);
-            
-            PreparedStatement st = conexao.prepareStatement(sql);
-            st.execute(sql);
-            
-            PreparedStatement st2 = conexao.prepareStatement(sql2);
-            st.execute(sql2);
-            
-            PreparedStatement st3 = conexao.prepareStatement(sql3);
-            st.execute(sql3);
-            
+        if( deletaAcervoEstante(senha) && deletaSIABI(senha) && deletaExcEstante(senha)){
             JOptionPane.showMessageDialog(null, "Todos os dados foram apagados!", null, JOptionPane.INFORMATION_MESSAGE);
-            
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Não foi possível apagar os dados!\nErro: " + e.getErrorCode(), null, JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-            cBD.closeConnection();
         }
     
     }

@@ -679,7 +679,7 @@
                   <Image iconType="3" name="/com/br/uepb/bsc7/www/images/icon_recuperar.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Recuperar linha"/>
-                <Property name="toolTipText" type="java.lang.String" value="Exclui linha espec&#xed;fica dentre os registros lidos"/>
+                <Property name="toolTipText" type="java.lang.String" value="Recupera linha espec&#xed;fica dentre os registros lidos"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botRecpLinhaActionPerformed"/>
@@ -995,7 +995,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="panelRest" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="541" max="32767" attributes="0"/>
+                      <EmptySpace pref="505" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -1003,8 +1003,8 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="panelRest" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="206" max="32767" attributes="0"/>
+                      <Component id="panelRest" min="-2" pref="99" max="-2" attributes="0"/>
+                      <EmptySpace pref="208" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -1015,52 +1015,60 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <EmptySpace max="32767" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="2" attributes="0">
-                              <Component id="botRestFab" alignment="2" min="-2" max="-2" attributes="0"/>
                               <Component id="botRestBkp" alignment="2" min="-2" max="-2" attributes="0"/>
+                              <Component id="botLimpaBD" alignment="2" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace pref="32" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                           <Component id="botRestBkp" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="botRestFab" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="25" max="32767" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="botLimpaBD" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="66" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
               </Layout>
               <SubComponents>
-                <Component class="javax.swing.JToggleButton" name="botRestBkp">
+                <Component class="javax.swing.JButton" name="botRestBkp">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/com/br/uepb/bsc7/www/images/icon_restaura_backup.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Restaurar backup"/>
-                    <Property name="enabled" type="boolean" value="false"/>
+                    <Property name="toolTipText" type="java.lang.String" value="Insere o valor acima na tabela"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botRestBkpActionPerformed"/>
+                    <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="botRestBkpKeyPressed"/>
                   </Events>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="botInsCod.setMnemonic(KeyEvent.VK_I);"/>
+                  </AuxValues>
                 </Component>
-                <Component class="javax.swing.JToggleButton" name="botRestFab">
+                <Component class="javax.swing.JButton" name="botLimpaBD">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/com/br/uepb/bsc7/www/images/icon_limpa_bd.gif"/>
+                      <Image iconType="3" name="/com/br/uepb/bsc7/www/images/icon_limpa_bd2.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Limpar base de dados"/>
                     <Property name="toolTipText" type="java.lang.String" value="Exclui todos os valores inseridos no banco de dados"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botRestFabActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botLimpaBDActionPerformed"/>
+                    <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="botLimpaBDKeyPressed"/>
                   </Events>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="botInsCod.setMnemonic(KeyEvent.VK_I);"/>
+                  </AuxValues>
                 </Component>
               </SubComponents>
             </Container>

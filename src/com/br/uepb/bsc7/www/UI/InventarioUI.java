@@ -57,6 +57,9 @@ public class InventarioUI extends javax.swing.JFrame {
         labelProg.setVisible(false);
         labelPorc.setVisible(false);
         barraProg.setVisible(false);
+        botRestBkp.setEnabled(false);
+        botLimpaBD.setEnabled(false);
+        botRestBkp.setEnabled(false);
         
     }
 
@@ -119,8 +122,8 @@ public class InventarioUI extends javax.swing.JFrame {
         comboRelat = new javax.swing.JComboBox<>();
         abaAjuda = new javax.swing.JPanel();
         panelRest = new javax.swing.JPanel();
-        botRestBkp = new javax.swing.JToggleButton();
-        botRestFab = new javax.swing.JToggleButton();
+        botRestBkp = new javax.swing.JButton();
+        botLimpaBD = new javax.swing.JButton();
         botBkp = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -556,7 +559,7 @@ public class InventarioUI extends javax.swing.JFrame {
 
         botRecpLinha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_recuperar.png"))); // NOI18N
         botRecpLinha.setText("Recuperar linha");
-        botRecpLinha.setToolTipText("Exclui linha específica dentre os registros lidos");
+        botRecpLinha.setToolTipText("Recupera linha específica dentre os registros lidos");
         botRecpLinha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botRecpLinhaActionPerformed(evt);
@@ -781,19 +784,31 @@ public class InventarioUI extends javax.swing.JFrame {
 
         botRestBkp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_restaura_backup.png"))); // NOI18N
         botRestBkp.setText("Restaurar backup");
-        botRestBkp.setEnabled(false);
+        botRestBkp.setToolTipText("Insere o valor acima na tabela");
+        botInsCod.setMnemonic(KeyEvent.VK_I);
         botRestBkp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botRestBkpActionPerformed(evt);
             }
         });
+        botRestBkp.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                botRestBkpKeyPressed(evt);
+            }
+        });
 
-        botRestFab.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_limpa_bd.gif"))); // NOI18N
-        botRestFab.setText("Limpar base de dados");
-        botRestFab.setToolTipText("Exclui todos os valores inseridos no banco de dados");
-        botRestFab.addActionListener(new java.awt.event.ActionListener() {
+        botLimpaBD.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_limpa_bd2.png"))); // NOI18N
+        botLimpaBD.setText("Limpar base de dados");
+        botLimpaBD.setToolTipText("Exclui todos os valores inseridos no banco de dados");
+        botInsCod.setMnemonic(KeyEvent.VK_I);
+        botLimpaBD.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botRestFabActionPerformed(evt);
+                botLimpaBDActionPerformed(evt);
+            }
+        });
+        botLimpaBD.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                botLimpaBDKeyPressed(evt);
             }
         });
 
@@ -802,20 +817,20 @@ public class InventarioUI extends javax.swing.JFrame {
         panelRestLayout.setHorizontalGroup(
             panelRestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelRestLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(26, 26, 26)
                 .addGroup(panelRestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(botRestFab)
-                    .addComponent(botRestBkp))
-                .addContainerGap())
+                    .addComponent(botRestBkp)
+                    .addComponent(botLimpaBD))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
         panelRestLayout.setVerticalGroup(
             panelRestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelRestLayout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(botRestBkp)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(botRestFab)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(botLimpaBD)
+                .addGap(66, 66, 66))
         );
 
         javax.swing.GroupLayout abaAjudaLayout = new javax.swing.GroupLayout(abaAjuda);
@@ -825,14 +840,14 @@ public class InventarioUI extends javax.swing.JFrame {
             .addGroup(abaAjudaLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(panelRest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(541, Short.MAX_VALUE))
+                .addContainerGap(505, Short.MAX_VALUE))
         );
         abaAjudaLayout.setVerticalGroup(
             abaAjudaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(abaAjudaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panelRest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(206, Short.MAX_VALUE))
+                .addComponent(panelRest, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(208, Short.MAX_VALUE))
         );
 
         grupoAbas.addTab("Ajuda", abaAjuda);
@@ -940,7 +955,8 @@ public class InventarioUI extends javax.swing.JFrame {
         tabUltIni.setModel(modeloTabelaUlt);
         botBkp.setEnabled(true);
         botRestBkp.setEnabled(true);
-        botRestFab.setEnabled(true);
+        botLimpaBD.setEnabled(true);
+        botRestBkp.setEnabled(true);
     }
     
     private void botCargEstanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botCargEstanteActionPerformed
@@ -1414,30 +1430,6 @@ public class InventarioUI extends javax.swing.JFrame {
         dao.fazBackup();
     }//GEN-LAST:event_botBkpActionPerformed
 
-    private void botRestBkpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botRestBkpActionPerformed
-        dao.restauraBackup();
-    }//GEN-LAST:event_botRestBkpActionPerformed
-
-    private void botRestFabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botRestFabActionPerformed
-        int opcao = JOptionPane.showConfirmDialog(null, "Deseja apagar todos os dados do banco de dados?", null, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-
-        if (opcao == JOptionPane.YES_OPTION) {
-            JPanel painelInput = new JPanel();
-            
-            //JLabel lblPswd = new JLabel("\"Informe a senha: \"");
-            JTextField pswd = new JPasswordField(20);
-            
-            painelInput.add(new JLabel("Informe a senha: "));
-            painelInput.add(pswd);
-            pswd.requestFocusInWindow();
-            
-            
-            JOptionPane.showMessageDialog(null, painelInput, null, JOptionPane.PLAIN_MESSAGE);
-            
-            dao.deletaTabelas(pswd.getText());
-        }
-    }//GEN-LAST:event_botRestFabActionPerformed
-
     private void botExcLinhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botExcLinhaActionPerformed
         String resp = JOptionPane.showInputDialog("Digite o número de sequência da linha a ser removida:");
         int seq = Integer.parseInt(resp);
@@ -1460,6 +1452,38 @@ public class InventarioUI extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "Linha restaurada com sucesso!", null, JOptionPane.INFORMATION_MESSAGE);
 
     }//GEN-LAST:event_botRecpLinhaActionPerformed
+
+    private void botRestBkpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botRestBkpActionPerformed
+        dao.restauraBackup();
+    }//GEN-LAST:event_botRestBkpActionPerformed
+
+    private void botRestBkpKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_botRestBkpKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_botRestBkpKeyPressed
+
+    private void botLimpaBDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botLimpaBDActionPerformed
+        int opcao = JOptionPane.showConfirmDialog(null, "Todos os dados do banco de dados serão apagados! Deseja continuar?", null, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+
+        if (opcao == JOptionPane.YES_OPTION) {
+            JPanel painelInput = new JPanel();
+            
+            //JLabel lblPswd = new JLabel("\"Informe a senha: \"");
+            JTextField pswd = new JPasswordField(20);
+            
+            painelInput.add(new JLabel("Informe a senha: "));
+            painelInput.add(pswd);
+            pswd.requestFocusInWindow();
+            
+            
+            JOptionPane.showMessageDialog(null, painelInput, null, JOptionPane.PLAIN_MESSAGE);
+            
+            dao.deletaTabelas(pswd.getText());
+        }
+    }//GEN-LAST:event_botLimpaBDActionPerformed
+
+    private void botLimpaBDKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_botLimpaBDKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_botLimpaBDKeyPressed
 
     public void setEndArqEstante(String end){
         endArqEstante.setForeground(new java.awt.Color(0, 0, 0));
@@ -1486,10 +1510,10 @@ public class InventarioUI extends javax.swing.JFrame {
     private javax.swing.JButton botGerRelat;
     private javax.swing.JButton botInsCod;
     private javax.swing.JButton botLimpCod;
+    private javax.swing.JButton botLimpaBD;
     private javax.swing.JButton botOk;
     private javax.swing.JToggleButton botRecpLinha;
-    private javax.swing.JToggleButton botRestBkp;
-    private javax.swing.JToggleButton botRestFab;
+    private javax.swing.JButton botRestBkp;
     private javax.swing.JButton botSelEstante;
     private javax.swing.JButton botSelSIABI;
     private javax.swing.JTextField codBar;
