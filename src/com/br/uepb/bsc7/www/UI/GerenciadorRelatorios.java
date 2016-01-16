@@ -54,9 +54,12 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
         initComponents();
         if (modelo.getRowCount() > 1) {
             quantitativos.setText(modelo.getRowCount() + " registros encontrados.");
+        } else if (modelo.getRowCount() < 1) {
+            quantitativos.setText("Nenhum registro encontrado.");
         } else {
-            quantitativos.setText(modelo.getRowCount() + " registros encontrados.");
+            quantitativos.setText(modelo.getRowCount() + " registro encontrado.");
         }
+        
         checkEmprest.setVisible(false);
         checkExtrav.setVisible(false);
         redimensionaTabela();

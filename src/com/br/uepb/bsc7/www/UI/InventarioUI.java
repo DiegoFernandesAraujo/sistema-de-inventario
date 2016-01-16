@@ -17,7 +17,11 @@ import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 import javax.swing.table.TableModel;
 
 /**
@@ -53,9 +57,6 @@ public class InventarioUI extends javax.swing.JFrame {
         labelProg.setVisible(false);
         labelPorc.setVisible(false);
         barraProg.setVisible(false);
-        //botBkp.setEnabled(false);
-        
-        botRestFab.setVisible(false);
         
     }
 
@@ -99,6 +100,8 @@ public class InventarioUI extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        botExcLinha = new javax.swing.JToggleButton();
+        botRecpLinha = new javax.swing.JToggleButton();
         abaSIABI = new javax.swing.JPanel();
         painelCargArqSIABI = new javax.swing.JPanel();
         botCargSIABI = new javax.swing.JButton();
@@ -297,7 +300,7 @@ public class InventarioUI extends javax.swing.JFrame {
                 .addGroup(abaInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(painelLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addContainerGap(111, Short.MAX_VALUE))
+                .addContainerGap(154, Short.MAX_VALUE))
         );
 
         grupoAbas.addTab("Início", abaInicio);
@@ -542,15 +545,39 @@ public class InventarioUI extends javax.swing.JFrame {
                 .addGap(28, 28, 28))
         );
 
+        botExcLinha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_excluir.png"))); // NOI18N
+        botExcLinha.setText("Excluir linha");
+        botExcLinha.setToolTipText("Exclui linha específica dentre os registros lidos");
+        botExcLinha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botExcLinhaActionPerformed(evt);
+            }
+        });
+
+        botRecpLinha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_recuperar.png"))); // NOI18N
+        botRecpLinha.setText("Recuperar linha");
+        botRecpLinha.setToolTipText("Exclui linha específica dentre os registros lidos");
+        botRecpLinha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botRecpLinhaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout abaEstanteLayout = new javax.swing.GroupLayout(abaEstante);
         abaEstante.setLayout(abaEstanteLayout);
         abaEstanteLayout.setHorizontalGroup(
             abaEstanteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(abaEstanteLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(painelCargArqAcervo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(painelLeCodAcervo, javax.swing.GroupLayout.PREFERRED_SIZE, 463, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(abaEstanteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(abaEstanteLayout.createSequentialGroup()
+                        .addComponent(botExcLinha)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(botRecpLinha))
+                    .addGroup(abaEstanteLayout.createSequentialGroup()
+                        .addComponent(painelCargArqAcervo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(painelLeCodAcervo, javax.swing.GroupLayout.PREFERRED_SIZE, 463, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(53, Short.MAX_VALUE))
         );
         abaEstanteLayout.setVerticalGroup(
@@ -560,7 +587,11 @@ public class InventarioUI extends javax.swing.JFrame {
                 .addGroup(abaEstanteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(painelCargArqAcervo, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
                     .addComponent(painelLeCodAcervo, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 9, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(abaEstanteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(botExcLinha)
+                    .addComponent(botRecpLinha))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         grupoAbas.addTab("Dados da estante", abaEstante);
@@ -675,7 +706,7 @@ public class InventarioUI extends javax.swing.JFrame {
             abaSIABILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(abaSIABILayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(painelCargArqSIABI, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE))
+                .addComponent(painelCargArqSIABI, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE))
             .addGroup(abaSIABILayout.createSequentialGroup()
                 .addGap(59, 59, 59)
                 .addComponent(barraProg, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -700,7 +731,7 @@ public class InventarioUI extends javax.swing.JFrame {
             }
         });
 
-        comboRelat.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Itens localizados na estante", "Itens não localizados na estante", "Itens não cadastrados no SIABI", "Itens localizados na estante tidos como emprestados", "Itens marcados para verificação", "Todos itens lidos no inventário" }));
+        comboRelat.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Itens localizados na estante", "Itens não localizados na estante", "Itens não cadastrados no SIABI", "Itens localizados na estante tidos como emprestados", "Itens marcados para verificação", "Itens lidos no inventário e posteriormente excluídos", "Todos itens lidos no inventário", "Todos itens lidos no inventário (para fins de backup)" }));
         comboRelat.setToolTipText("Selecione o relatório a ser gerado");
         comboRelat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -743,7 +774,7 @@ public class InventarioUI extends javax.swing.JFrame {
             .addGroup(abaRelatoriosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(216, Short.MAX_VALUE))
+                .addContainerGap(259, Short.MAX_VALUE))
         );
 
         grupoAbas.addTab("Relatórios", abaRelatorios);
@@ -757,7 +788,9 @@ public class InventarioUI extends javax.swing.JFrame {
             }
         });
 
-        botRestFab.setText("Restaurar padrão de fábrica");
+        botRestFab.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_limpa_bd.gif"))); // NOI18N
+        botRestFab.setText("Limpar base de dados");
+        botRestFab.setToolTipText("Exclui todos os valores inseridos no banco de dados");
         botRestFab.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botRestFabActionPerformed(evt);
@@ -769,20 +802,20 @@ public class InventarioUI extends javax.swing.JFrame {
         panelRestLayout.setHorizontalGroup(
             panelRestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelRestLayout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(panelRestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(botRestFab)
                     .addComponent(botRestBkp))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         panelRestLayout.setVerticalGroup(
             panelRestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelRestLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(botRestBkp)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(botRestFab)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout abaAjudaLayout = new javax.swing.GroupLayout(abaAjuda);
@@ -792,14 +825,14 @@ public class InventarioUI extends javax.swing.JFrame {
             .addGroup(abaAjudaLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(panelRest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(527, Short.MAX_VALUE))
+                .addContainerGap(541, Short.MAX_VALUE))
         );
         abaAjudaLayout.setVerticalGroup(
             abaAjudaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(abaAjudaLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(panelRest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(181, Short.MAX_VALUE))
+                .addContainerGap(206, Short.MAX_VALUE))
         );
 
         grupoAbas.addTab("Ajuda", abaAjuda);
@@ -830,7 +863,7 @@ public class InventarioUI extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(grupoAbas, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(grupoAbas, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(botBkp)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -907,6 +940,7 @@ public class InventarioUI extends javax.swing.JFrame {
         tabUltIni.setModel(modeloTabelaUlt);
         botBkp.setEnabled(true);
         botRestBkp.setEnabled(true);
+        botRestFab.setEnabled(true);
     }
     
     private void botCargEstanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botCargEstanteActionPerformed
@@ -1216,12 +1250,18 @@ public class InventarioUI extends javax.swing.JFrame {
                 objGRD = new GerenciadorRelatorios(InventarioUI.this, true, dao.getItensParaVerificacao(), dao);
                 break;
             case 5:
-                objGRD = new GerenciadorRelatorios(InventarioUI.this, true, dao.getExemplaresLidos(), dao);
+                objGRD = new GerenciadorRelatorios(InventarioUI.this, true, dao.getExcluidosEstante(), dao);
                 break;
-    
+            case 6:
+                objGRD = new GerenciadorRelatorios(InventarioUI.this, true, dao.getExemplaresLidos(), dao);
+                break;    
+            case 7:
+                objGRD = new GerenciadorRelatorios(InventarioUI.this, true, dao.getExemplaresLidosBKP(), dao);
+                break;    
 
             default:
                 System.out.println("Qualquer coisa!");
+                break;
         }
         
         //Passa a referência desta classe
@@ -1379,8 +1419,47 @@ public class InventarioUI extends javax.swing.JFrame {
     }//GEN-LAST:event_botRestBkpActionPerformed
 
     private void botRestFabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botRestFabActionPerformed
-        // TODO add your handling code here:
+        int opcao = JOptionPane.showConfirmDialog(null, "Deseja apagar todos os dados do banco de dados?", null, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+        if (opcao == JOptionPane.YES_OPTION) {
+            JPanel painelInput = new JPanel();
+            
+            //JLabel lblPswd = new JLabel("\"Informe a senha: \"");
+            JTextField pswd = new JPasswordField(20);
+            
+            painelInput.add(new JLabel("Informe a senha: "));
+            painelInput.add(pswd);
+            pswd.requestFocusInWindow();
+            
+            
+            JOptionPane.showMessageDialog(null, painelInput, null, JOptionPane.PLAIN_MESSAGE);
+            
+            dao.deletaTabelas(pswd.getText());
+        }
     }//GEN-LAST:event_botRestFabActionPerformed
+
+    private void botExcLinhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botExcLinhaActionPerformed
+        String resp = JOptionPane.showInputDialog("Digite o número de sequência da linha a ser removida:");
+        int seq = Integer.parseInt(resp);
+
+        int opcao = JOptionPane.showConfirmDialog(null, "Deseja remover a linha cujo número de sequência é: " + seq + "?", null, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+        if (opcao == JOptionPane.YES_OPTION) {
+            dao.removeLinhaEstante(seq);
+        }
+
+        JOptionPane.showMessageDialog(null, "Linha excluída com sucesso!", null, JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_botExcLinhaActionPerformed
+
+    private void botRecpLinhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botRecpLinhaActionPerformed
+        String resp = JOptionPane.showInputDialog("Digite o número de sequência da linha a ser recuperada:");
+        int seq = Integer.parseInt(resp);
+
+        dao.restauraLinhaEstante(seq);
+
+        JOptionPane.showMessageDialog(null, "Linha restaurada com sucesso!", null, JOptionPane.INFORMATION_MESSAGE);
+
+    }//GEN-LAST:event_botRecpLinhaActionPerformed
 
     public void setEndArqEstante(String end){
         endArqEstante.setForeground(new java.awt.Color(0, 0, 0));
@@ -1403,10 +1482,12 @@ public class InventarioUI extends javax.swing.JFrame {
     private javax.swing.JButton botCargEstante;
     private javax.swing.JButton botCargSIABI;
     private javax.swing.JButton botDesfInsCod;
+    private javax.swing.JToggleButton botExcLinha;
     private javax.swing.JButton botGerRelat;
     private javax.swing.JButton botInsCod;
     private javax.swing.JButton botLimpCod;
     private javax.swing.JButton botOk;
+    private javax.swing.JToggleButton botRecpLinha;
     private javax.swing.JToggleButton botRestBkp;
     private javax.swing.JToggleButton botRestFab;
     private javax.swing.JButton botSelEstante;
