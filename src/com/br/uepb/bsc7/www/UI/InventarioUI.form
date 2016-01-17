@@ -309,7 +309,7 @@
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Group type="102" attributes="0">
                               <Component id="botExcLinha" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="botRecpLinha" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
@@ -331,9 +331,9 @@
                           <Component id="painelLeCodAcervo" min="-2" pref="255" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="botExcLinha" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="botRecpLinha" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="2" attributes="0">
+                          <Component id="botExcLinha" alignment="2" min="-2" max="-2" attributes="0"/>
+                          <Component id="botRecpLinha" alignment="2" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="20" max="32767" attributes="0"/>
                   </Group>
@@ -661,29 +661,37 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JToggleButton" name="botExcLinha">
+            <Component class="javax.swing.JButton" name="botExcLinha">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/com/br/uepb/bsc7/www/images/icon_excluir.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Excluir linha"/>
-                <Property name="toolTipText" type="java.lang.String" value="Exclui linha espec&#xed;fica dentre os registros lidos"/>
+                <Property name="toolTipText" type="java.lang.String" value="Insere o valor acima na tabela"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botExcLinhaActionPerformed"/>
+                <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="botExcLinhaKeyPressed"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="botInsCod.setMnemonic(KeyEvent.VK_I);"/>
+              </AuxValues>
             </Component>
-            <Component class="javax.swing.JToggleButton" name="botRecpLinha">
+            <Component class="javax.swing.JButton" name="botRecpLinha">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/com/br/uepb/bsc7/www/images/icon_recuperar.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Recuperar linha"/>
-                <Property name="toolTipText" type="java.lang.String" value="Recupera linha espec&#xed;fica dentre os registros lidos"/>
+                <Property name="toolTipText" type="java.lang.String" value="Insere o valor acima na tabela"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botRecpLinhaActionPerformed"/>
+                <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="botRecpLinhaKeyPressed"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="botInsCod.setMnemonic(KeyEvent.VK_I);"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>
@@ -983,8 +991,8 @@
         <Container class="javax.swing.JPanel" name="abaAjuda">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Ajuda">
-                <Property name="tabTitle" type="java.lang.String" value="Ajuda"/>
+              <JTabbedPaneConstraints tabName="Banco de dados">
+                <Property name="tabTitle" type="java.lang.String" value="Banco de dados"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>

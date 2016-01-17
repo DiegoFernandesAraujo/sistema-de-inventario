@@ -5,9 +5,9 @@
  */
 package com.br.uepb.bsc7.www.UI;
 
-
 import com.br.uepb.bsc7.www.persistence.InventarioDAO;
 import java.awt.Cursor;
+import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -46,7 +46,7 @@ public class InventarioUI extends javax.swing.JFrame {
     private boolean logado = false;
     private String obsIns = "";
     Cursor cursor = null;
-    
+
     /**
      * Creates new form InventarioUI
      */
@@ -60,7 +60,7 @@ public class InventarioUI extends javax.swing.JFrame {
         botRestBkp.setEnabled(false);
         botLimpaBD.setEnabled(false);
         botRestBkp.setEnabled(false);
-        
+
     }
 
     /**
@@ -103,8 +103,8 @@ public class InventarioUI extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        botExcLinha = new javax.swing.JToggleButton();
-        botRecpLinha = new javax.swing.JToggleButton();
+        botExcLinha = new javax.swing.JButton();
+        botRecpLinha = new javax.swing.JButton();
         abaSIABI = new javax.swing.JPanel();
         painelCargArqSIABI = new javax.swing.JPanel();
         botCargSIABI = new javax.swing.JButton();
@@ -550,19 +550,31 @@ public class InventarioUI extends javax.swing.JFrame {
 
         botExcLinha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_excluir.png"))); // NOI18N
         botExcLinha.setText("Excluir linha");
-        botExcLinha.setToolTipText("Exclui linha específica dentre os registros lidos");
+        botExcLinha.setToolTipText("Insere o valor acima na tabela");
+        botInsCod.setMnemonic(KeyEvent.VK_I);
         botExcLinha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botExcLinhaActionPerformed(evt);
             }
         });
+        botExcLinha.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                botExcLinhaKeyPressed(evt);
+            }
+        });
 
         botRecpLinha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_recuperar.png"))); // NOI18N
         botRecpLinha.setText("Recuperar linha");
-        botRecpLinha.setToolTipText("Recupera linha específica dentre os registros lidos");
+        botRecpLinha.setToolTipText("Insere o valor acima na tabela");
+        botInsCod.setMnemonic(KeyEvent.VK_I);
         botRecpLinha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botRecpLinhaActionPerformed(evt);
+            }
+        });
+        botRecpLinha.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                botRecpLinhaKeyPressed(evt);
             }
         });
 
@@ -575,7 +587,7 @@ public class InventarioUI extends javax.swing.JFrame {
                 .addGroup(abaEstanteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(abaEstanteLayout.createSequentialGroup()
                         .addComponent(botExcLinha)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(botRecpLinha))
                     .addGroup(abaEstanteLayout.createSequentialGroup()
                         .addComponent(painelCargArqAcervo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -591,7 +603,7 @@ public class InventarioUI extends javax.swing.JFrame {
                     .addComponent(painelCargArqAcervo, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
                     .addComponent(painelLeCodAcervo, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(abaEstanteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(abaEstanteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(botExcLinha)
                     .addComponent(botRecpLinha))
                 .addContainerGap(20, Short.MAX_VALUE))
@@ -850,7 +862,7 @@ public class InventarioUI extends javax.swing.JFrame {
                 .addContainerGap(208, Short.MAX_VALUE))
         );
 
-        grupoAbas.addTab("Ajuda", abaAjuda);
+        grupoAbas.addTab("Banco de dados", abaAjuda);
 
         botBkp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_backup.png"))); // NOI18N
         botBkp.setToolTipText("Fazer backup do Banco de Dados");
@@ -893,59 +905,59 @@ public class InventarioUI extends javax.swing.JFrame {
         String nomeArq = arq.getName();
         int i = nomeArq.lastIndexOf('.');
 
-        if (i > 0 &&  i < nomeArq.length() - 1) {
-            extArq = nomeArq.substring(i+1).toLowerCase();
+        if (i > 0 && i < nomeArq.length() - 1) {
+            extArq = nomeArq.substring(i + 1).toLowerCase();
         }
         return extArq;
     }
-    
+
     //Modifica o campo obs a ser inserido na tabela acervo_estante
-    public  void setObs(String obs){
-        
+    public void setObs(String obs) {
+
         System.out.println(obs);
         obsIns = obs;
     }
-    
-    public void setBarraProg(int valor){
-        
+
+    public void setBarraProg(int valor) {
+
         barraProg.setValue(valor);
-    
+
     }
-    
-    public  void setFocusBotaoInserir(){
+
+    public void setFocusBotaoInserir() {
         botInsCod.requestFocusInWindow();
     }
-    
-    public void setFocusCodBar(){
+
+    public void setFocusCodBar() {
         codBar.requestFocusInWindow();
     }
-    
-    public static void setFocusUser(){
+
+    public static void setFocusUser() {
         userBD.requestFocusInWindow();
     }
-    
-    public void setFocusPswd(){
+
+    public void setFocusPswd() {
         pswdBD.requestFocusInWindow();
     }
-    
-    public void setFocusBotaoOk(){
+
+    public void setFocusBotaoOk() {
         botOk.requestFocusInWindow();
     }
-    
-    public void setFocusSelArqSIABI(){
+
+    public void setFocusSelArqSIABI() {
         botSelSIABI.requestFocusInWindow();
     }
-    
-    public void desmarcarVrfExemplar(){
+
+    public void desmarcarVrfExemplar() {
         vrfExemplar.setSelected(false);
         vrfExemplar.setEnabled(true);
     }
-    
-    public void blockVrfExemplar(boolean b){
+
+    public void blockVrfExemplar(boolean b) {
         vrfExemplar.setEnabled(b);
     }
-    
-    public void travaLogin(){
+
+    public void travaLogin() {
         userBD.setEnabled(false);
         pswdBD.setEnabled(false);
         botOk.setEnabled(false);
@@ -958,11 +970,11 @@ public class InventarioUI extends javax.swing.JFrame {
         botLimpaBD.setEnabled(true);
         botRestBkp.setEnabled(true);
     }
-    
+
     private void botCargEstanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botCargEstanteActionPerformed
-        
+
         try {
-        
+
             ManipulaXLS xls = new ManipulaXLS(dao);
             xls.leXLS(endArqEstante.getText());
             //xls.setRefInventarioDAO(dao);
@@ -973,7 +985,7 @@ public class InventarioUI extends javax.swing.JFrame {
     }//GEN-LAST:event_botCargEstanteActionPerformed
 
     private void endArqEstanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_endArqEstanteActionPerformed
-        if(endArqEstante.getText().equals("Nenhum arquivo selecionado")){
+        if (endArqEstante.getText().equals("Nenhum arquivo selecionado")) {
             endArqEstante.setText("");
             endArqEstante.setForeground(new java.awt.Color(0, 0, 0));
         }
@@ -981,54 +993,52 @@ public class InventarioUI extends javax.swing.JFrame {
 
     //Não funcional ainda
     //Tentativa de exibir na UI os valores de sequência sendo inseridos
-    public void setLabelPorc(int valor){
+    public void setLabelPorc(int valor) {
         labelPorc.setText("Registro " + valor + " inserido!");
         labelPorc.repaint();
         abaSIABI.repaint();
         return;
     }
-    
+
     private void botCargSIABIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botCargSIABIActionPerformed
-        
+
         try {
-            
+
             ManipulaXLS xls = new ManipulaXLS(dao);
-            
-            if(xls.ehSIABI(endArqSIABI.getText())){
+
+            if (xls.ehSIABI(endArqSIABI.getText())) {
                 dao.deletaSIABI();
                 dao.setRefInventarioUI(InventarioUI.this);
                 travaAbas();
                 xls.setRefInventarioUI(this);
-                
+
                 cursor = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
                 grupoAbas.setCursor(cursor);
-                
+
                 int tamTab = xls.getTamXLS(endArqSIABI.getText());
-                
+
                 barraProg.setMaximum(tamTab);
-                
+
                 labelProg.setVisible(true);
                 labelPorc.setVisible(true);
                 barraProg.setVisible(true);
-                
+
                 String msg = "Foram encontrados " + tamTab + " registros.";
-                
+
                 JOptionPane.showMessageDialog(null, msg + "\nEsta tarefa pode demorar um pouco. \nRecomenda-se não fazer uso de outras funções no computador \nenquanto a planilha estiver sendo carregada.", null, JOptionPane.INFORMATION_MESSAGE);
-                
-                
+
                 xls.leXLS(endArqSIABI.getText());
-                
+
             }
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Arquivo não selecionado!", null, JOptionPane.ERROR_MESSAGE);
             //Logger.getLogger(ManipulaXLS.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
-            
+        } finally {
+
             //labelProg.setVisible(false);
             //barraProg.setVisible(false);
-        
         }
-        
+
     }//GEN-LAST:event_botCargSIABIActionPerformed
 
     public void acabouSIABI() {
@@ -1039,12 +1049,12 @@ public class InventarioUI extends javax.swing.JFrame {
         labelProg.setVisible(false);
         labelPorc.setVisible(false);
         barraProg.setVisible(false);
-            
+
     }
-        //Falta tratar a extensão TXT
+    //Falta tratar a extensão TXT
     //Falta tratar eventos, como no caso de digitar um endereço inexistente
     private void botSelEstanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botSelEstanteActionPerformed
-        
+
         abreArq(1);
     }//GEN-LAST:event_botSelEstanteActionPerformed
 
@@ -1075,7 +1085,7 @@ public class InventarioUI extends javax.swing.JFrame {
             }
         }
     }
-    
+
     private void insereDados() {
         String verificar = null;
 
@@ -1085,59 +1095,55 @@ public class InventarioUI extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "É necessário informar um código de barra!", null, JOptionPane.ERROR_MESSAGE);
                 return;
             } else {
-                
-                
+
                 if (vrfExemplar.isSelected()) {
                     verificar = "SIM";
                 } else {
                     verificar = "-";
                 }
-                
-                if(!dao.estahCadastradoNoSIABI(codBar.getText())){
-                    if(vrfExemplar.isSelected()){
+
+                if (!dao.estahCadastradoNoSIABI(codBar.getText())) {
+                    if (vrfExemplar.isSelected()) {
                         obsIns = obsIns + "Não cadastrado!";
-                    }else{
+                    } else {
                         verificar = "SIM";
                         obsIns = " Não cadastrado!";
                     }
-                } else {
-                    if(!vrfExemplar.isSelected()){
-                        obsIns = "";
-                    }
+                } else if (!vrfExemplar.isSelected()) {
+                    obsIns = "";
                 }
 
                 dadosIns.add(codBar.getText());
                 dadosIns.add(verificar);
                 dadosIns.add(obsIns);
-                
+
                 dao.insereLinha(dadosIns);
 
                 dadosIns.clear();
-                
+
                 JOptionPane.showMessageDialog(null, "Inserção realizada com sucesso!");
-                
-                if(!dao.estahCadastradoNoSIABI(codBar.getText())){
+
+                if (!dao.estahCadastradoNoSIABI(codBar.getText())) {
                     Toolkit.getDefaultToolkit().beep();
                     JOptionPane.showMessageDialog(null, "O código lido não está cadastrado no SIABI!", null, JOptionPane.ERROR_MESSAGE);
-                } 
-                
+                }
+
                 limpaTelaInsercao();
                 modeloTabelaAcerv = dao.getTresUltimasLinhas();
                 tabUltCod.setModel(modeloTabelaAcerv);
-                
-                
+
             }
         } else {
             JOptionPane.showMessageDialog(null, "Insira um nome de usuário e senha válidos!", null, JOptionPane.ERROR_MESSAGE);
         }
     }
-    
-    private void limpaTelaInsercao(){
+
+    private void limpaTelaInsercao() {
         codBar.setText("");
         desmarcarVrfExemplar();
         setFocusCodBar();
     }
-    
+
     private void botSelSIABIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botSelSIABIActionPerformed
         abreArq(2);
     }//GEN-LAST:event_botSelSIABIActionPerformed
@@ -1147,24 +1153,24 @@ public class InventarioUI extends javax.swing.JFrame {
         logado = dao.login(userBD.getText(), pswdBD.getText());
         userBD.setText("");
         pswdBD.setText("");
-        if(logado){
+        if (logado) {
             modeloTabelaUlt = dao.getLocalizacaoDosVizinhos(dao.getUltSeq());
             tabUltIni.setModel(modeloTabelaUlt);
-        }else{
+        } else {
             setFocusUser();
         }
-        
+
     }//GEN-LAST:event_botOkActionPerformed
 
     private void grupoAbasFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_grupoAbasFocusGained
-        
+
     }//GEN-LAST:event_grupoAbasFocusGained
 
     private void abaEstanteFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_abaEstanteFocusGained
-        
-        
+
+
     }//GEN-LAST:event_abaEstanteFocusGained
-    
+
     //Retorna a soma das dimensões dos JPanels de cada componente (neste caso abas) passado
     /*public Dimension getDimensaoComponents(Component c) {
     
@@ -1192,35 +1198,30 @@ public class InventarioUI extends javax.swing.JFrame {
     
     return new Dimension(larg, alt);
     }*/
-    
-    
-    private void travaAbas(){
-    
+    private void travaAbas() {
+
         abaInicio.setEnabled(false);
         abaEstante.setEnabled(false);
         abaRelatorios.setEnabled(false);
         abaAjuda.setEnabled(false);
-        
-        
+
     }
-    
-    private void destravaAbas(){
-    
+
+    private void destravaAbas() {
+
         abaInicio.setEnabled(true);
         abaEstante.setEnabled(true);
         abaRelatorios.setEnabled(true);
         abaAjuda.setEnabled(true);
-        
-        
+
     }
-    
+
     //Muda os focos preferenciais dos componentes de cada aba de acordo com a que estiver selecionada
     private void grupoAbasStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_grupoAbasStateChanged
-        
-                
+
         InventarioUI.this.pack();
-        
-        if (grupoAbas.getSelectedComponent() == abaEstante) {  
+
+        if (grupoAbas.getSelectedComponent() == abaEstante) {
             //System.out.println ("Aba Acervo");  
             setFocusCodBar();
             if (logado) {
@@ -1228,28 +1229,28 @@ public class InventarioUI extends javax.swing.JFrame {
 
                 modeloTabelaAcerv = dao.getTresUltimasLinhas();
                 tabUltCod.setModel(modeloTabelaAcerv);
-                
+
             }
         } else if (grupoAbas.getSelectedComponent() == abaInicio) {
             setFocusUser();
             if (logado) {
-                
+
                 dao.fechaConexao();
 
                 modeloTabelaUlt = dao.getLocalizacaoDosVizinhos(dao.getUltSeq());
                 tabUltIni.setModel(modeloTabelaUlt);
             }
-        } else if (grupoAbas.getSelectedComponent() == abaSIABI) {  
+        } else if (grupoAbas.getSelectedComponent() == abaSIABI) {
             setFocusSelArqSIABI();
-        
+
         }
 
     }//GEN-LAST:event_grupoAbasStateChanged
 
-    private void geraRelatorio(){
+    private void geraRelatorio() {
         GerenciadorRelatorios objGRD = null;
-        
-        switch(comboRelat.getSelectedIndex()){
+
+        switch (comboRelat.getSelectedIndex()) {
             case 0:
                 objGRD = new GerenciadorRelatorios(InventarioUI.this, true, dao.getLocalizados(), dao);
                 break;
@@ -1270,32 +1271,32 @@ public class InventarioUI extends javax.swing.JFrame {
                 break;
             case 6:
                 objGRD = new GerenciadorRelatorios(InventarioUI.this, true, dao.getExemplaresLidos(), dao);
-                break;    
+                break;
             case 7:
                 objGRD = new GerenciadorRelatorios(InventarioUI.this, true, dao.getExemplaresLidosBKP(), dao);
-                break;    
+                break;
 
             default:
                 System.out.println("Qualquer coisa!");
                 break;
         }
-        
+
         //Passa a referência desta classe
         objGRD.setRefInventarioUI(InventarioUI.this);
         objGRD.setVisible(true);
     }
-    
+
     private void botGerRelatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botGerRelatActionPerformed
         geraRelatorio();
-        
+
     }//GEN-LAST:event_botGerRelatActionPerformed
 
-    public static String getNomeRelatorio(){
+    public static String getNomeRelatorio() {
         return (String) comboRelat.getSelectedItem();
     }
-    
+
     private void userBDKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_userBDKeyPressed
-        if ( evt.getKeyCode() == KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             setFocusPswd();
         }
     }//GEN-LAST:event_userBDKeyPressed
@@ -1330,7 +1331,7 @@ public class InventarioUI extends javax.swing.JFrame {
     }//GEN-LAST:event_botLimpCodActionPerformed
 
     private void botInsCodKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_botInsCodKeyPressed
-        if ( evt.getKeyCode() == KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             insereDados();
         }
     }//GEN-LAST:event_botInsCodKeyPressed
@@ -1340,7 +1341,6 @@ public class InventarioUI extends javax.swing.JFrame {
     }//GEN-LAST:event_botInsCodActionPerformed
 
     private void vrfExemplarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vrfExemplarActionPerformed
-        
 
         Observacoes obsD = new Observacoes(InventarioUI.this, rootPaneCheckingEnabled);
         obsD.setRefInventarioUI(InventarioUI.this);
@@ -1348,7 +1348,7 @@ public class InventarioUI extends javax.swing.JFrame {
     }//GEN-LAST:event_vrfExemplarActionPerformed
 
     private void codBarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codBarKeyPressed
-        if ( evt.getKeyCode() == KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             setFocusBotaoInserir();
         }
     }//GEN-LAST:event_codBarKeyPressed
@@ -1358,12 +1358,12 @@ public class InventarioUI extends javax.swing.JFrame {
     }//GEN-LAST:event_codBarActionPerformed
 
     private void pswdBDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pswdBDActionPerformed
-        
-        
+
+
     }//GEN-LAST:event_pswdBDActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        
+
     }//GEN-LAST:event_formWindowClosed
 
     private void userBDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userBDActionPerformed
@@ -1371,7 +1371,7 @@ public class InventarioUI extends javax.swing.JFrame {
     }//GEN-LAST:event_userBDActionPerformed
 
     private void abaInicioFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_abaInicioFocusGained
-        
+
     }//GEN-LAST:event_abaInicioFocusGained
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -1386,7 +1386,7 @@ public class InventarioUI extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void comboRelatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_comboRelatKeyPressed
-        if ( evt.getKeyCode() == KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             geraRelatorio();
         }
     }//GEN-LAST:event_comboRelatKeyPressed
@@ -1394,64 +1394,41 @@ public class InventarioUI extends javax.swing.JFrame {
     private void endArqEstanteFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_endArqEstanteFocusGained
         if (endArqEstante.getText().equals("Nenhum arquivo selecionado")) {
             endArqEstante.setText("");
-            endArqEstante.setForeground(new java.awt.Color(0, 0, 0));        
+            endArqEstante.setForeground(new java.awt.Color(0, 0, 0));
         }
     }//GEN-LAST:event_endArqEstanteFocusGained
 
     private void endArqEstanteFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_endArqEstanteFocusLost
-        if (endArqEstante.getText().equals("")){
+        if (endArqEstante.getText().equals("")) {
             endArqEstante.setText("Nenhum arquivo selecionado");
             endArqEstante.setForeground(new java.awt.Color(204, 204, 204));
-        }      
+        }
     }//GEN-LAST:event_endArqEstanteFocusLost
 
     private void endArqSIABIFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_endArqSIABIFocusGained
         if (endArqSIABI.getText().equals("Nenhum arquivo selecionado")) {
             endArqSIABI.setText("");
-            endArqSIABI.setForeground(new java.awt.Color(0, 0, 0));        
+            endArqSIABI.setForeground(new java.awt.Color(0, 0, 0));
         }
     }//GEN-LAST:event_endArqSIABIFocusGained
 
     private void endArqSIABIFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_endArqSIABIFocusLost
-        if (endArqSIABI.getText().equals("")){
+        if (endArqSIABI.getText().equals("")) {
             endArqSIABI.setText("Nenhum arquivo selecionado");
             endArqSIABI.setForeground(new java.awt.Color(204, 204, 204));
-        }      
+        }
     }//GEN-LAST:event_endArqSIABIFocusLost
 
     private void endArqSIABIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_endArqSIABIActionPerformed
-        if(endArqSIABI.getText().equals("Nenhum arquivo selecionado")){
-           endArqSIABI.setText("");
-           endArqSIABI.setForeground(new java.awt.Color(0, 0, 0));
+        if (endArqSIABI.getText().equals("Nenhum arquivo selecionado")) {
+            endArqSIABI.setText("");
+            endArqSIABI.setForeground(new java.awt.Color(0, 0, 0));
         }
     }//GEN-LAST:event_endArqSIABIActionPerformed
 
     private void botBkpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botBkpActionPerformed
         dao.fazBackup();
     }//GEN-LAST:event_botBkpActionPerformed
-
-    private void botExcLinhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botExcLinhaActionPerformed
-        String resp = JOptionPane.showInputDialog("Digite o número de sequência da linha a ser removida:");
-        int seq = Integer.parseInt(resp);
-
-        int opcao = JOptionPane.showConfirmDialog(null, "Deseja remover a linha cujo número de sequência é: " + seq + "?", null, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-
-        if (opcao == JOptionPane.YES_OPTION) {
-            dao.removeLinhaEstante(seq);
-        }
-
-        JOptionPane.showMessageDialog(null, "Linha excluída com sucesso!", null, JOptionPane.INFORMATION_MESSAGE);
-    }//GEN-LAST:event_botExcLinhaActionPerformed
-
-    private void botRecpLinhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botRecpLinhaActionPerformed
-        String resp = JOptionPane.showInputDialog("Digite o número de sequência da linha a ser recuperada:");
-        int seq = Integer.parseInt(resp);
-
-        dao.restauraLinhaEstante(seq);
-
-        JOptionPane.showMessageDialog(null, "Linha restaurada com sucesso!", null, JOptionPane.INFORMATION_MESSAGE);
-
-    }//GEN-LAST:event_botRecpLinhaActionPerformed
 
     private void botRestBkpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botRestBkpActionPerformed
         dao.restauraBackup();
@@ -1466,18 +1443,27 @@ public class InventarioUI extends javax.swing.JFrame {
 
         if (opcao == JOptionPane.YES_OPTION) {
             JPanel painelInput = new JPanel();
-            
+
             //JLabel lblPswd = new JLabel("\"Informe a senha: \"");
             JTextField pswd = new JPasswordField(20);
-            
+
             painelInput.add(new JLabel("Informe a senha: "));
             painelInput.add(pswd);
             pswd.requestFocusInWindow();
-            
-            
-            JOptionPane.showMessageDialog(null, painelInput, null, JOptionPane.PLAIN_MESSAGE);
-            
-            dao.deletaTabelas(pswd.getText());
+
+            //JOptionPane.showMessageDialog(null, painelInput, null, JOptionPane.PLAIN_MESSAGE);
+            int resp = JOptionPane.showConfirmDialog(null, painelInput, null, JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+            System.out.println("pswd.getText(): " + pswd.getText());
+
+            if (resp == JOptionPane.OK_OPTION) {
+                if (pswd.getText() != null && !"".equals(pswd.getText())) {
+                    dao.deletaTabelas(pswd.getText());
+                } else {
+                    JOptionPane.showMessageDialog(null, "Nenhuma senha informada!", null, JOptionPane.ERROR_MESSAGE);
+                }
+            }
+
         }
     }//GEN-LAST:event_botLimpaBDActionPerformed
 
@@ -1485,16 +1471,73 @@ public class InventarioUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_botLimpaBDKeyPressed
 
-    public void setEndArqEstante(String end){
+    private void botExcLinhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botExcLinhaActionPerformed
+        String resp = JOptionPane.showInputDialog("Digite o número de sequência da linha a ser removida:");
+
+        if (!"".equals(resp)) {
+
+            if (resp != null) {
+
+                try {
+                    int seq = Integer.parseInt(resp);
+
+                    int opcao = JOptionPane.showConfirmDialog(null, "Deseja remover a linha cujo número de sequência é: " + seq + "?", null, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+                    if (opcao == JOptionPane.YES_OPTION) {
+                        dao.removeLinhaEstante(seq);
+                    }
+                } catch (NumberFormatException numberFormatException) {
+                    JOptionPane.showMessageDialog(null, "Digite um número de sequência válido!", null, JOptionPane.ERROR_MESSAGE);
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Digite um número de sequência válido!", null, JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+    }//GEN-LAST:event_botExcLinhaActionPerformed
+
+    private void botExcLinhaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_botExcLinhaKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_botExcLinhaKeyPressed
+
+    private void botRecpLinhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botRecpLinhaActionPerformed
+        String resp = JOptionPane.showInputDialog("Digite o número de sequência da linha a ser recuperada: ");
+
+        if (!"".equals(resp)) {
+            
+            if (resp != null) {
+
+                try {
+                    int seq = Integer.parseInt(resp);
+                    dao.restauraLinhaEstante(seq);
+                } catch (NumberFormatException numberFormatException) {
+                    JOptionPane.showMessageDialog(null, "Digite um número de sequência válido!", null, JOptionPane.ERROR_MESSAGE);
+                }
+
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Digite um número de sequência válido!", null, JOptionPane.ERROR_MESSAGE);
+        }
+
+
+    }//GEN-LAST:event_botRecpLinhaActionPerformed
+
+    private void botRecpLinhaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_botRecpLinhaKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_botRecpLinhaKeyPressed
+
+    public void setEndArqEstante(String end) {
         endArqEstante.setForeground(new java.awt.Color(0, 0, 0));
         endArqEstante.setText(end);
     }
-    
-    public void setEndArqSIABI(String end){
+
+    public void setEndArqSIABI(String end) {
         endArqSIABI.setForeground(new java.awt.Color(0, 0, 0));
         endArqSIABI.setText(end);
     }
-        
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel abaAjuda;
     private javax.swing.JPanel abaEstante;
@@ -1506,13 +1549,13 @@ public class InventarioUI extends javax.swing.JFrame {
     private javax.swing.JButton botCargEstante;
     private javax.swing.JButton botCargSIABI;
     private javax.swing.JButton botDesfInsCod;
-    private javax.swing.JToggleButton botExcLinha;
+    private javax.swing.JButton botExcLinha;
     private javax.swing.JButton botGerRelat;
     private javax.swing.JButton botInsCod;
     private javax.swing.JButton botLimpCod;
     private javax.swing.JButton botLimpaBD;
     private javax.swing.JButton botOk;
-    private javax.swing.JToggleButton botRecpLinha;
+    private javax.swing.JButton botRecpLinha;
     private javax.swing.JButton botRestBkp;
     private javax.swing.JButton botSelEstante;
     private javax.swing.JButton botSelSIABI;

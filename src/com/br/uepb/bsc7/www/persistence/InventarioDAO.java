@@ -87,7 +87,7 @@ public class InventarioDAO {
             bck = fileChooser.getSelectedFile();
         }
         String arqBck = bck.getAbsolutePath() + ".sql";
-        
+
         //Talvez seja melhor impedir de criar caso tenha espaço
         if (arqBck.contains(" ") || arqBck.contains("/") || arqBck.contains("\\") || arqBck.contains(":") || arqBck.contains("<") || arqBck.contains(">")) {
             JOptionPane.showMessageDialog(null, "O nome do arquivo não pode conter os caracteres: / \\ : * ? < > | ou espaços em branco.\nDigite um nome de arquivo válido.", null, JOptionPane.ERROR_MESSAGE);
@@ -235,7 +235,7 @@ public class InventarioDAO {
             cBD.closeConnection();
         }
     }
-    
+
     //Cria tabela para armazenar linhas excluídas de acervo_estante a partir do método removeLinhaEstante()
     public void criaTabelaExcluidos() {
         String sql = "create table if not exists excluidos_estante (\n"
@@ -270,7 +270,6 @@ public class InventarioDAO {
         }
     }
 
-
     public void deletaSIABI() {
         String sql = "DELETE FROM acervo_siabi;";
 
@@ -293,7 +292,7 @@ public class InventarioDAO {
             cBD.closeConnection();
         }
     }
-    
+
     public boolean deletaSIABI(String senha) {
         String sql = "DELETE FROM acervo_siabi;";
 
@@ -317,7 +316,7 @@ public class InventarioDAO {
             cBD.closeConnection();
         }
     }
-    
+
     public boolean deletaAcervoEstante(String senha) {
         String sql = "DELETE FROM acervo_estante;";
 
@@ -340,7 +339,7 @@ public class InventarioDAO {
             cBD.closeConnection();
         }
     }
-    
+
     public boolean deletaExcEstante(String senha) {
         String sql = "DELETE FROM excluidos_estante;";
 
@@ -568,7 +567,7 @@ public class InventarioDAO {
         }
         return null;
     }
-    
+
     public TabelaRelatorio getExemplaresLidosBKP() {
         String sql = "SELECT * FROM acervo_estante;";
 
@@ -772,65 +771,67 @@ public class InventarioDAO {
         }
         return false;
     }
-    
-    public void deletaTabelas(String senha){
-        
-        if( deletaAcervoEstante(senha) && deletaSIABI(senha) && deletaExcEstante(senha)){
+
+    public void deletaTabelas(String senha) {
+
+        if (deletaAcervoEstante(senha) && deletaSIABI(senha) && deletaExcEstante(senha)) {
             JOptionPane.showMessageDialog(null, "Todos os dados foram apagados!", null, JOptionPane.INFORMATION_MESSAGE);
         }
-    
+
     }
-    
-    
+
     public void removeLinhaEstante(int seq) {
 
-       //Armazena na tabela excluidos_estante a linha a ser removida de acervo_estante para fins de possível restauração dos valores excluídos
+        //Armazena na tabela excluidos_estante a linha a ser removida de acervo_estante para fins de possível restauração dos valores excluídos
         String sql = "INSERT INTO excluidos_estante (SELECT * FROM acervo_estante WHERE seq = " + seq + ");";
         String sql2 = "DELETE FROM acervo_estante WHERE seq = " + seq + ");";
-        
+
         try {
             conexao = cBD.getConnection(usuario, senha);
-            
+
             PreparedStatement st = conexao.prepareStatement(sql);
             st.execute(sql);
-            
+
             PreparedStatement st2 = conexao.prepareStatement(sql2);
             st.execute(sql2);
-       
+            JOptionPane.showMessageDialog(null, "Linha excluída com sucesso!", null, JOptionPane.INFORMATION_MESSAGE);
+
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
+            JOptionPane.showMessageDialog(null, "Não foi possível excluir a linha " + seq + "!\nErro MySQL: e.getErrorCode()", null, JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
             cBD.closeConnection();
         }
-       
+
     }
-    
+
     public void restauraLinhaEstante(int seq) {
 
-       //Recupera da tabela excluidos_estante a linha antes removida de acervo_estante
+        //Recupera da tabela excluidos_estante a linha antes removida de acervo_estante
         String sql = "INSERT INTO acervo_estante (SELECT * FROM excluidos_estante WHERE seq = " + seq + ");";
         String sql2 = "DELETE FROM excluidos_estante WHERE seq = " + seq + ");";
-        
+
         try {
             conexao = cBD.getConnection(usuario, senha);
-            
+
             PreparedStatement st = conexao.prepareStatement(sql);
             st.execute(sql);
-            
+
             PreparedStatement st2 = conexao.prepareStatement(sql2);
             st.execute(sql2);
-       
+
+            JOptionPane.showMessageDialog(null, "Linha restaurada com sucesso!", null, JOptionPane.INFORMATION_MESSAGE);
+
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
+            JOptionPane.showMessageDialog(null, "Não foi possível excluir a linha " + seq + "!\nErro MySQL: e.getErrorCode()", null, JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
             cBD.closeConnection();
         }
-       
+
     }
-    
+
     public TabelaRelatorio getExcluidosEstante() {
         String sql = "SELECT * FROM excluidos_estante;";
-        
+
         try {
             conexao = cBD.getConnection(usuario, senha);
             PreparedStatement st = conexao.prepareStatement(sql);
