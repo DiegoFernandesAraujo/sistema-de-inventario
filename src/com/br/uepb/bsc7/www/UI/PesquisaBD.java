@@ -36,7 +36,7 @@ public class PesquisaBD extends javax.swing.JDialog {
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
-        botExcLinha1 = new javax.swing.JButton();
+        botPesq = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -92,18 +92,17 @@ public class PesquisaBD extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        botExcLinha1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_pesquisar.png"))); // NOI18N
-        botExcLinha1.setText("Pesquisar");
-        botExcLinha1.setToolTipText("Insere o valor acima na tabela");
-        botInsCod.setMnemonic(KeyEvent.VK_I);
-        botExcLinha1.addActionListener(new java.awt.event.ActionListener() {
+        botPesq.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_pesquisar.png"))); // NOI18N
+        botPesq.setText("Pesquisar");
+        botPesq.setToolTipText("Insere o valor acima na tabela");
+        botPesq.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botExcLinha1ActionPerformed(evt);
+                botPesqActionPerformed(evt);
             }
         });
-        botExcLinha1.addKeyListener(new java.awt.event.KeyAdapter() {
+        botPesq.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                botExcLinha1KeyPressed(evt);
+                botPesqKeyPressed(evt);
             }
         });
 
@@ -113,33 +112,31 @@ public class PesquisaBD extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(botPesq)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(19, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(botExcLinha1)
-                .addGap(37, 37, 37))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(botExcLinha1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(botPesq)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void botExcLinha1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botExcLinha1ActionPerformed
+    private void botPesqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botPesqActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_botExcLinha1ActionPerformed
+    }//GEN-LAST:event_botPesqActionPerformed
 
-    private void botExcLinha1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_botExcLinha1KeyPressed
+    private void botPesqKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_botPesqKeyPressed
         // TODO add your handling code here:
-    }//GEN-LAST:event_botExcLinha1KeyPressed
+    }//GEN-LAST:event_botPesqKeyPressed
 
     /**
      * @param args the command line arguments
@@ -184,7 +181,7 @@ public class PesquisaBD extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton botExcLinha1;
+    private javax.swing.JButton botPesq;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JRadioButton jRadioButton1;

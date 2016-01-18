@@ -105,7 +105,7 @@ public class InventarioUI extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         botExcLinha = new javax.swing.JButton();
         botRecpLinha = new javax.swing.JButton();
-        botExcLinha1 = new javax.swing.JButton();
+        botPesq = new javax.swing.JButton();
         abaSIABI = new javax.swing.JPanel();
         painelCargArqSIABI = new javax.swing.JPanel();
         botCargSIABI = new javax.swing.JButton();
@@ -579,18 +579,17 @@ public class InventarioUI extends javax.swing.JFrame {
             }
         });
 
-        botExcLinha1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_pesquisar.png"))); // NOI18N
-        botExcLinha1.setText("Pesquisar registros");
-        botExcLinha1.setToolTipText("Insere o valor acima na tabela");
-        botInsCod.setMnemonic(KeyEvent.VK_I);
-        botExcLinha1.addActionListener(new java.awt.event.ActionListener() {
+        botPesq.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_pesquisar.png"))); // NOI18N
+        botPesq.setText("Pesquisar registros");
+        botPesq.setToolTipText("Insere o valor acima na tabela");
+        botPesq.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botExcLinha1ActionPerformed(evt);
+                botPesqActionPerformed(evt);
             }
         });
-        botExcLinha1.addKeyListener(new java.awt.event.KeyAdapter() {
+        botPesq.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                botExcLinha1KeyPressed(evt);
+                botPesqKeyPressed(evt);
             }
         });
 
@@ -602,7 +601,7 @@ public class InventarioUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(abaEstanteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(abaEstanteLayout.createSequentialGroup()
-                        .addComponent(botExcLinha1)
+                        .addComponent(botPesq)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(botExcLinha)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -624,7 +623,7 @@ public class InventarioUI extends javax.swing.JFrame {
                 .addGroup(abaEstanteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(botExcLinha)
                     .addComponent(botRecpLinha)
-                    .addComponent(botExcLinha1))
+                    .addComponent(botPesq))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
 
@@ -1570,13 +1569,13 @@ public class InventarioUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_botRecpLinhaKeyPressed
 
-    private void botExcLinha1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botExcLinha1ActionPerformed
+    private void botPesqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botPesqActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_botExcLinha1ActionPerformed
+    }//GEN-LAST:event_botPesqActionPerformed
 
-    private void botExcLinha1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_botExcLinha1KeyPressed
+    private void botPesqKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_botPesqKeyPressed
         // TODO add your handling code here:
-    }//GEN-LAST:event_botExcLinha1KeyPressed
+    }//GEN-LAST:event_botPesqKeyPressed
 
     public void setEndArqEstante(String end) {
         endArqEstante.setForeground(new java.awt.Color(0, 0, 0));
@@ -1600,12 +1599,12 @@ public class InventarioUI extends javax.swing.JFrame {
     private javax.swing.JButton botCargSIABI;
     private javax.swing.JButton botDesfInsCod;
     private javax.swing.JButton botExcLinha;
-    private javax.swing.JButton botExcLinha1;
     private javax.swing.JButton botGerRelat;
     private javax.swing.JButton botInsCod;
     private javax.swing.JButton botLimpCod;
     private javax.swing.JButton botLimpaBD;
     private javax.swing.JButton botOk;
+    private javax.swing.JButton botPesq;
     private javax.swing.JButton botRecpLinha;
     private javax.swing.JButton botRestBkp;
     private javax.swing.JButton botSelEstante;
