@@ -458,7 +458,7 @@ public class InventarioDAO {
                 cBD.closeConnection();
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Não há valores a serem removidos", null, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Não há valores a serem removidos!", null, JOptionPane.ERROR_MESSAGE);
         }
     }
 

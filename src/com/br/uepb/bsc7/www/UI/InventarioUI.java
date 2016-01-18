@@ -934,6 +934,7 @@ public class InventarioUI extends javax.swing.JFrame {
 
     public static void setFocusUser() {
         userBD.requestFocusInWindow();
+        setFocusInicio();
     }
 
     public void setFocusPswd() {
@@ -1135,7 +1136,12 @@ public class InventarioUI extends javax.swing.JFrame {
             }
         } else {
             JOptionPane.showMessageDialog(null, "Insira um nome de usuário e senha válidos!", null, JOptionPane.ERROR_MESSAGE);
+            setFocusInicio();
         }
+    }
+    
+    public static void setFocusInicio(){
+        grupoAbas.setSelectedIndex(0);
     }
 
     private void limpaTelaInsercao() {
@@ -1223,6 +1229,7 @@ public class InventarioUI extends javax.swing.JFrame {
 
         if (grupoAbas.getSelectedComponent() == abaEstante) {
             //System.out.println ("Aba Acervo");  
+            
             setFocusCodBar();
             if (logado) {
                 dao.fechaConexao();
@@ -1474,6 +1481,8 @@ public class InventarioUI extends javax.swing.JFrame {
     private void botExcLinhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botExcLinhaActionPerformed
         String resp = JOptionPane.showInputDialog("Digite o número de sequência da linha a ser removida:");
 
+        if(logado){
+        
         if (!"".equals(resp)) {
 
             if (resp != null) {
@@ -1495,6 +1504,11 @@ public class InventarioUI extends javax.swing.JFrame {
             }
         }
 
+        }else{
+            JOptionPane.showMessageDialog(null, "Insira um nome de usuário e senha válidos!", null, JOptionPane.ERROR_MESSAGE);
+            setFocusInicio();
+        }
+        
     }//GEN-LAST:event_botExcLinhaActionPerformed
 
     private void botExcLinhaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_botExcLinhaKeyPressed
@@ -1502,6 +1516,10 @@ public class InventarioUI extends javax.swing.JFrame {
     }//GEN-LAST:event_botExcLinhaKeyPressed
 
     private void botRecpLinhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botRecpLinhaActionPerformed
+        
+        if(logado){
+        
+        
         String resp = JOptionPane.showInputDialog("Digite o número de sequência da linha a ser recuperada: ");
 
         if (!"".equals(resp)) {
@@ -1519,6 +1537,11 @@ public class InventarioUI extends javax.swing.JFrame {
 
         } else {
             JOptionPane.showMessageDialog(null, "Digite um número de sequência válido!", null, JOptionPane.ERROR_MESSAGE);
+        }
+        
+        }else{
+            JOptionPane.showMessageDialog(null, "Insira um nome de usuário e senha válidos!", null, JOptionPane.ERROR_MESSAGE);
+            setFocusInicio();
         }
 
 
@@ -1563,7 +1586,7 @@ public class InventarioUI extends javax.swing.JFrame {
     private static javax.swing.JComboBox<String> comboRelat;
     private javax.swing.JTextField endArqEstante;
     private javax.swing.JTextField endArqSIABI;
-    private javax.swing.JTabbedPane grupoAbas;
+    private static javax.swing.JTabbedPane grupoAbas;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
