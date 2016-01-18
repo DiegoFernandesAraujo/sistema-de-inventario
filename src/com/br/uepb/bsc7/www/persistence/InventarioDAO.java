@@ -293,6 +293,78 @@ public class InventarioDAO {
         }
     }
 
+    public void atualizaLinha(int seq, String cod, String verf, String obs) {
+        String sql = "UPDATE acervo_estante SET cod_barras = " + cod
+                + ", verificar = " + verf + ", obs = " + obs + " WHERE seq = " + seq + ";";
+
+        PreparedStatement st = null;
+
+        try {
+
+            conexao = cBD.getConnection(usuario, senha);
+            st = conexao.prepareStatement(sql);
+            st.executeUpdate(sql);
+            JOptionPane.showMessageDialog(null, "Dados atualizados com sucesso!", null, JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (SQLException e) {
+
+            JOptionPane.showMessageDialog(null, "Não foi possível atualizar os dados da linha: " + seq + "! \n Erro MYSQL " + e.getErrorCode() + "\n" + e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
+            return;
+        } catch (Exception ex) {
+            //JOptionPane.showMessageDialog(null, "Arquivo não carregado!\ncatch - insereLinha()", null, JOptionPane.ERROR_MESSAGE);
+            return;
+        } finally {
+            cBD.closeConnection();
+        }
+    }
+
+    public TabelaRelatorio pesquisaLinha(String termo, int opcao) {
+
+        String sql = null;
+
+        switch (opcao) {
+
+            case 1://Caso o termo escolhido seja o número de sequência
+
+                sql = "SELECT * FROM acervo_estante WHERE seq = " + Integer.parseInt(termo) + ";";
+                break;
+
+            case 2://Caso o termo escolhido seja o código de barras
+
+                sql = "SELECT * FROM acervo_estante WHERE cod_barras = " + termo + ";";
+                break;
+
+            case 3://Caso o termo escolhido esteja contido dentro de obs
+
+                //Tenho que ver qual a sintaxe do SQL para o caso em que se verifica se uma coluna contém algo
+                sql = "SELECT * FROM acervo_estante WHERE obs LIKE %" + termo + "%;";
+                break;
+        }
+
+        PreparedStatement st = null;
+
+        try {
+
+            conexao = cBD.getConnection(usuario, senha);
+            st = conexao.prepareStatement(sql);
+            st.executeQuery(sql);
+            ResultSet rs = st.getResultSet();
+            ResultSetMetaData metadados = rs.getMetaData();
+
+            return new TabelaRelatorio(rs, metadados);
+
+        } catch (SQLException e) {
+
+            JOptionPane.showMessageDialog(null, "Não foi possível encontrar os dados solicitados! \n Erro MYSQL " + e.getErrorCode() + "\n" + e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
+            return null;
+        } catch (Exception ex) {
+            //JOptionPane.showMessageDialog(null, "Arquivo não carregado!\ncatch - insereLinha()", null, JOptionPane.ERROR_MESSAGE);
+            return null;
+        } finally {
+            cBD.closeConnection();
+        }
+    }
+
     public boolean deletaSIABI(String senha) {
         String sql = "DELETE FROM acervo_siabi;";
 
