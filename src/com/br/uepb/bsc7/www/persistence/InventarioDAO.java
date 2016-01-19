@@ -328,9 +328,9 @@ public class InventarioDAO {
 
                 try {
                     int seq = Integer.parseInt(termo);
-                    System.out.println("seq: " + seq);
-                    sql = "SELECT * FROM acervo_estante WHERE seq = " + seq + ";";
-                    
+                    /*if(seq <= getNumLinhas()){*/
+                        sql = "SELECT * FROM acervo_estante WHERE seq = " + seq + ";";
+                        /*}else{}*/
                 } catch (NumberFormatException numberFormatException) {
                     JOptionPane.showMessageDialog(null, "Digite um número de sequência válido!", null, JOptionPane.ERROR_MESSAGE);
                 }
@@ -862,20 +862,31 @@ public class InventarioDAO {
 
         //Armazena na tabela excluidos_estante a linha a ser removida de acervo_estante para fins de possível restauração dos valores excluídos
         String sql = "INSERT INTO excluidos_estante (SELECT * FROM acervo_estante WHERE seq = " + seq + ");";
-        String sql2 = "DELETE FROM acervo_estante WHERE seq = " + seq + ");";
+        String sql2 = "DELETE FROM acervo_estante WHERE seq = " + seq + ";";
 
         try {
             conexao = cBD.getConnection(usuario, senha);
 
-            PreparedStatement st = conexao.prepareStatement(sql);
-            st.execute(sql);
-
+            
+            try {
+                System.out.println(sql);
+                PreparedStatement st = conexao.prepareStatement(sql);
+                st.execute(sql);
+                
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Não foi possível excluir a linha " + seq + "!\nErro MySQL: " + ex.getErrorCode(), null, JOptionPane.ERROR_MESSAGE);
+                ex.printStackTrace();
+                cBD.closeConnection();
+                return;
+            }
+            System.out.println("Executou o primeiro sql!");
+            System.out.println(sql2);
             PreparedStatement st2 = conexao.prepareStatement(sql2);
-            st.execute(sql2);
+            st2.execute(sql2);
             JOptionPane.showMessageDialog(null, "Linha excluída com sucesso!", null, JOptionPane.INFORMATION_MESSAGE);
 
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Não foi possível excluir a linha " + seq + "!\nErro MySQL: e.getErrorCode()", null, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Não foi possível excluir a linha " + seq + "!\nErro MySQL: " + e.getErrorCode(), null, JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
             cBD.closeConnection();
         }
@@ -886,21 +897,32 @@ public class InventarioDAO {
 
         //Recupera da tabela excluidos_estante a linha antes removida de acervo_estante
         String sql = "INSERT INTO acervo_estante (SELECT * FROM excluidos_estante WHERE seq = " + seq + ");";
-        String sql2 = "DELETE FROM excluidos_estante WHERE seq = " + seq + ");";
+        String sql2 = "DELETE FROM excluidos_estante WHERE seq = " + seq + ";";
 
         try {
             conexao = cBD.getConnection(usuario, senha);
 
-            PreparedStatement st = conexao.prepareStatement(sql);
-            st.execute(sql);
+            PreparedStatement st = null;
+            try {
+                System.out.println(sql);
+                st = conexao.prepareStatement(sql);
+                st.execute(sql);
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Não foi possível restaurar a linha " + seq + "!\nErro MySQL: " + ex.getErrorCode(), null, JOptionPane.ERROR_MESSAGE);
+                ex.printStackTrace();
+                cBD.closeConnection();
+                return;
+            }
 
+            System.out.println("Executou o primeiro sql em restauraLinha!");
+            System.out.println(sql2);
             PreparedStatement st2 = conexao.prepareStatement(sql2);
             st.execute(sql2);
 
             JOptionPane.showMessageDialog(null, "Linha restaurada com sucesso!", null, JOptionPane.INFORMATION_MESSAGE);
 
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Não foi possível excluir a linha " + seq + "!\nErro MySQL: e.getErrorCode()", null, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Não foi possível restaurar a linha " + seq + "!\nErro MySQL: e.getErrorCode()", null, JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
             cBD.closeConnection();
         }

@@ -7,6 +7,7 @@ package com.br.uepb.bsc7.www.UI;
 
 import com.br.uepb.bsc7.www.persistence.InventarioDAO;
 import com.br.uepb.bsc7.www.persistence.TabelaRelatorio;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 /**
@@ -30,9 +31,35 @@ public class TelaPesquisa extends javax.swing.JDialog {
     
     public TelaPesquisa(java.awt.Frame parent, boolean modal, TabelaRelatorio modelo, InventarioDAO objDAO) {
         super(parent, modal);
+        
         modeloTabela = modelo;
+        
         dao = objDAO;
         initComponents();
+        
+        /* tabPesq.addColumn(new TableColumn(3));
+        tabPesq.getColumnModel().getColumn(4).setHeaderValue("Editar?");
+        
+        
+        for (int i = 0; i < tabPesq.getRowCount(); i++) {
+        System.out.println("tabPesq.getColumnCount(): " + tabPesq.getColumnCount());
+        //tabPesq.getModel().setValueAt(new JCheckBox(), i, tabPesq.getColumnCount());
+        //tabPesq.getModel().setValueAt(new Boolean(false), 0, 4);
+        for (int j = 0; j < tabPesq.getColumnCount(); j++) {
+        if(j == 4){
+        System.out.println("Entrou na coluna 4!");
+        //tabPesq.getModel().setValueAt(new Boolean(false), i, j);
+        tabPesq.setValueAt(false, i, j);
+        
+        //tabPesq.
+        }
+        
+        //System.out.println("valor: " + tabPesq.getValueAt(i, 4));
+        System.out.print(i +" , "+ j + " - ");
+        System.out.println("valor: " + tabPesq.getValueAt(i, j));
+        //add(new JCheckBox(), tabPesq.getColumnCount());
+        }
+        }*/
         setVisible(true);
         
     }

@@ -7,6 +7,7 @@ package com.br.uepb.bsc7.www.UI;
 
 import com.br.uepb.bsc7.www.persistence.InventarioDAO;
 import java.awt.Component;
+import java.awt.event.KeyEvent;
 import javax.swing.JCheckBox;
 import javax.swing.JRadioButton;
 
@@ -25,8 +26,11 @@ public class PesquisaBD extends javax.swing.JDialog {
         super(parent, modal);
         dao = objDAO;
         initComponents();
-        travaTextFields(false, false, false);
+        radioSeq.setSelected(true);
+        travaTextFields(true, false, false);
+        setFocusTextFieldSeq();
         setVisible(modal);
+                
     }
 
     /**
@@ -81,6 +85,23 @@ public class PesquisaBD extends javax.swing.JDialog {
                 textFieldSeqActionPerformed(evt);
             }
         });
+        textFieldSeq.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textFieldSeqKeyPressed(evt);
+            }
+        });
+
+        textFieldCod.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textFieldCodKeyPressed(evt);
+            }
+        });
+
+        textFieldObs.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textFieldObsKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout painelPesqLayout = new javax.swing.GroupLayout(painelPesq);
         painelPesq.setLayout(painelPesqLayout);
@@ -124,6 +145,7 @@ public class PesquisaBD extends javax.swing.JDialog {
         );
 
         botPesq.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_pesquisar.png"))); // NOI18N
+        botPesq.setMnemonic(KeyEvent.VK_P);
         botPesq.setText("Pesquisar");
         botPesq.setToolTipText("Insere o valor acima na tabela");
         botPesq.addActionListener(new java.awt.event.ActionListener() {
@@ -234,6 +256,24 @@ public class PesquisaBD extends javax.swing.JDialog {
         travaTextFields(false, false, true);
         setFocusTextFieldObs();
     }//GEN-LAST:event_radioObsActionPerformed
+
+    private void textFieldSeqKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldSeqKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            new TelaPesquisa(null, true, dao.pesquisaLinha(textFieldSeq.getText(), 1), dao);
+        }
+    }//GEN-LAST:event_textFieldSeqKeyPressed
+
+    private void textFieldCodKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldCodKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            new TelaPesquisa(null, true, dao.pesquisaLinha(textFieldCod.getText(), 2), dao);
+        }
+    }//GEN-LAST:event_textFieldCodKeyPressed
+
+    private void textFieldObsKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldObsKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            new TelaPesquisa(null, true, dao.pesquisaLinha(textFieldObs.getText(), 3), dao);
+        }
+    }//GEN-LAST:event_textFieldObsKeyPressed
 
     /**
      * @param args the command line arguments

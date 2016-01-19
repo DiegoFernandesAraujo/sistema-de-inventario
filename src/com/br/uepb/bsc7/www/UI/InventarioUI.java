@@ -59,6 +59,8 @@ public class InventarioUI extends javax.swing.JFrame {
         botRestBkp.setEnabled(false);
         botLimpaBD.setEnabled(false);
         botRestBkp.setEnabled(false);
+        botEdit.setEnabled(false);
+        botEdit.setVisible(false);
 
     }
 
@@ -105,6 +107,7 @@ public class InventarioUI extends javax.swing.JFrame {
         botExcLinha = new javax.swing.JButton();
         botRecpLinha = new javax.swing.JButton();
         botPesq = new javax.swing.JButton();
+        botEdit = new javax.swing.JButton();
         abaSIABI = new javax.swing.JPanel();
         painelCargArqSIABI = new javax.swing.JPanel();
         botCargSIABI = new javax.swing.JButton();
@@ -592,6 +595,20 @@ public class InventarioUI extends javax.swing.JFrame {
             }
         });
 
+        botEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_pesquisar.png"))); // NOI18N
+        botEdit.setText("Editar registros");
+        botEdit.setToolTipText("Insere o valor acima na tabela");
+        botEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botEditActionPerformed(evt);
+            }
+        });
+        botEdit.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                botEditKeyPressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout abaEstanteLayout = new javax.swing.GroupLayout(abaEstante);
         abaEstante.setLayout(abaEstanteLayout);
         abaEstanteLayout.setHorizontalGroup(
@@ -600,6 +617,8 @@ public class InventarioUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(abaEstanteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(abaEstanteLayout.createSequentialGroup()
+                        .addComponent(botEdit)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(botPesq)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(botExcLinha)
@@ -622,7 +641,8 @@ public class InventarioUI extends javax.swing.JFrame {
                 .addGroup(abaEstanteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(botExcLinha)
                     .addComponent(botRecpLinha)
-                    .addComponent(botPesq))
+                    .addComponent(botPesq)
+                    .addComponent(botEdit))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
 
@@ -1579,6 +1599,14 @@ public class InventarioUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_botPesqKeyPressed
 
+    private void botEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botEditActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_botEditActionPerformed
+
+    private void botEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_botEditKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_botEditKeyPressed
+
     public void setEndArqEstante(String end) {
         endArqEstante.setForeground(new java.awt.Color(0, 0, 0));
         endArqEstante.setText(end);
@@ -1600,6 +1628,7 @@ public class InventarioUI extends javax.swing.JFrame {
     private javax.swing.JButton botCargEstante;
     private javax.swing.JButton botCargSIABI;
     private javax.swing.JButton botDesfInsCod;
+    private javax.swing.JButton botEdit;
     private javax.swing.JButton botExcLinha;
     private javax.swing.JButton botGerRelat;
     private javax.swing.JButton botInsCod;
