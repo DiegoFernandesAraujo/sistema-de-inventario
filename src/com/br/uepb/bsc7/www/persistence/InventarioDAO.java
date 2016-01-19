@@ -320,13 +320,20 @@ public class InventarioDAO {
 
     public TabelaRelatorio pesquisaLinha(String termo, int opcao) {
 
-        String sql = null;
+        String sql = "SELECT * FROM acervo_estante";
 
         switch (opcao) {
 
             case 1://Caso o termo escolhido seja o número de sequência
 
-                sql = "SELECT * FROM acervo_estante WHERE seq = " + Integer.parseInt(termo) + ";";
+                try {
+                    int seq = Integer.parseInt(termo);
+                    System.out.println("seq: " + seq);
+                    sql = "SELECT * FROM acervo_estante WHERE seq = " + seq + ";";
+                    
+                } catch (NumberFormatException numberFormatException) {
+                    JOptionPane.showMessageDialog(null, "Digite um número de sequência válido!", null, JOptionPane.ERROR_MESSAGE);
+                }
                 break;
 
             case 2://Caso o termo escolhido seja o código de barras
@@ -337,7 +344,8 @@ public class InventarioDAO {
             case 3://Caso o termo escolhido esteja contido dentro de obs
 
                 //Tenho que ver qual a sintaxe do SQL para o caso em que se verifica se uma coluna contém algo
-                sql = "SELECT * FROM acervo_estante WHERE obs LIKE %" + termo + "%;";
+                sql = "SELECT * FROM acervo_estante WHERE obs LIKE '%" + termo + "%';";
+                System.out.println(sql);
                 break;
         }
 
@@ -360,8 +368,6 @@ public class InventarioDAO {
         } catch (Exception ex) {
             //JOptionPane.showMessageDialog(null, "Arquivo não carregado!\ncatch - insereLinha()", null, JOptionPane.ERROR_MESSAGE);
             return null;
-        } finally {
-            cBD.closeConnection();
         }
     }
 

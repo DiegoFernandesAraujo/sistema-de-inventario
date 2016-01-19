@@ -64,6 +64,7 @@ public class ConexaoBD {
         } catch (SQLException e) {
             
             if (e.getErrorCode() == 1044 || e.getErrorCode() == 1045) {
+                System.out.println("Conexão BD");
                 JOptionPane.showMessageDialog(null, "Insira um nome de usuário e senha válidos!", null, JOptionPane.ERROR_MESSAGE);
                 ManipulaXLS.continua = false;
                 InventarioUI.setFocusUser();

@@ -5,6 +5,11 @@
  */
 package com.br.uepb.bsc7.www.UI;
 
+import com.br.uepb.bsc7.www.persistence.InventarioDAO;
+import java.awt.Component;
+import javax.swing.JCheckBox;
+import javax.swing.JRadioButton;
+
 /**
  *
  * @author Diego
@@ -14,9 +19,14 @@ public class PesquisaBD extends javax.swing.JDialog {
     /**
      * Creates new form PesquisaBD
      */
-    public PesquisaBD(java.awt.Frame parent, boolean modal) {
+    InventarioDAO dao = null;
+    
+    public PesquisaBD(java.awt.Frame parent, boolean modal, InventarioDAO objDAO) {
         super(parent, modal);
+        dao = objDAO;
         initComponents();
+        travaTextFields(false, false, false);
+        setVisible(modal);
     }
 
     /**
@@ -29,67 +39,88 @@ public class PesquisaBD extends javax.swing.JDialog {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
-        jPanel1 = new javax.swing.JPanel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
-        jRadioButton3 = new javax.swing.JRadioButton();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        painelPesq = new javax.swing.JPanel();
+        radioSeq = new javax.swing.JRadioButton();
+        radioCod = new javax.swing.JRadioButton();
+        radioObs = new javax.swing.JRadioButton();
+        textFieldSeq = new javax.swing.JTextField();
+        textFieldCod = new javax.swing.JTextField();
+        textFieldObs = new javax.swing.JTextField();
         botPesq = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Selecione o critério de pesquisa:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 13), new java.awt.Color(0, 0, 204))); // NOI18N
+        painelPesq.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Selecione o critério de pesquisa:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 13), new java.awt.Color(0, 0, 204))); // NOI18N
 
-        buttonGroup1.add(jRadioButton1);
-        jRadioButton1.setText("Número de sequência:");
+        buttonGroup1.add(radioSeq);
+        radioSeq.setText("Sequência:");
+        radioSeq.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioSeqActionPerformed(evt);
+            }
+        });
 
-        buttonGroup1.add(jRadioButton2);
-        jRadioButton2.setText("Tombo:");
+        buttonGroup1.add(radioCod);
+        radioCod.setText("Código de barras:");
+        radioCod.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioCodActionPerformed(evt);
+            }
+        });
 
-        buttonGroup1.add(jRadioButton3);
-        jRadioButton3.setText("Texto contido no campo \"Observações\":");
+        buttonGroup1.add(radioObs);
+        radioObs.setText("Texto contido no campo \"Observações\":");
+        radioObs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioObsActionPerformed(evt);
+            }
+        });
 
-        jTextField1.setText("jTextField1");
+        textFieldSeq.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textFieldSeqActionPerformed(evt);
+            }
+        });
 
-        jTextField2.setText("jTextField1");
-
-        jTextField3.setText("jTextField1");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout painelPesqLayout = new javax.swing.GroupLayout(painelPesq);
+        painelPesq.setLayout(painelPesqLayout);
+        painelPesqLayout.setHorizontalGroup(
+            painelPesqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(painelPesqLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jRadioButton1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jRadioButton2, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jRadioButton3, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE))
+                .addGroup(painelPesqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(radioSeq)
+                    .addComponent(radioCod)
+                    .addComponent(radioObs))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(painelPesqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(textFieldObs, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textFieldCod, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textFieldSeq, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jRadioButton1)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jRadioButton2)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton3)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+
+        painelPesqLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {textFieldCod, textFieldObs, textFieldSeq});
+
+        painelPesqLayout.setVerticalGroup(
+            painelPesqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(painelPesqLayout.createSequentialGroup()
+                .addGroup(painelPesqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(painelPesqLayout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(radioSeq))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelPesqLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(textFieldSeq, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(painelPesqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(radioCod)
+                    .addComponent(textFieldCod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(painelPesqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(radioObs)
+                    .addComponent(textFieldObs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         botPesq.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/br/uepb/bsc7/www/images/icon_pesquisar.png"))); // NOI18N
@@ -114,15 +145,15 @@ public class PesquisaBD extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(botPesq)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(19, Short.MAX_VALUE))
+                    .addComponent(painelPesq, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(painelPesq, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(botPesq)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -131,64 +162,94 @@ public class PesquisaBD extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botPesqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botPesqActionPerformed
-        // TODO add your handling code here:
+
+        for (int i = 0; i < painelPesq.getComponentCount(); i++) {
+
+            Component comp = painelPesq.getComponent(i);
+
+            if (comp instanceof JRadioButton) {
+
+                JRadioButton radio = (JRadioButton) comp;
+
+                if (radio.isSelected()) {
+                    System.out.println(radio.getText());
+                    if (radio.getText().equals("Sequência:")) {
+                        new TelaPesquisa(null, true, dao.pesquisaLinha(textFieldSeq.getText(), 1), dao);
+                    } else {
+                        if (radio.getText().equals("Código de barras:")) {
+                            new TelaPesquisa(null, true, dao.pesquisaLinha(textFieldCod.getText(), 2), dao);
+                        }
+                        if (radio.getText().equals("Texto contido no campo \"Observações\":")) {
+                            new TelaPesquisa(null, true, dao.pesquisaLinha(textFieldObs.getText(), 3), dao);
+                        }
+                    }
+                }
+            }
+        }
+
     }//GEN-LAST:event_botPesqActionPerformed
 
     private void botPesqKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_botPesqKeyPressed
         // TODO add your handling code here:
     }//GEN-LAST:event_botPesqKeyPressed
 
+    private void textFieldSeqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldSeqActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textFieldSeqActionPerformed
+
+    private void travaTextFields(boolean a, boolean b, boolean c){
+        textFieldSeq.setText("");
+        textFieldCod.setText("");
+        textFieldObs.setText("");
+        
+        textFieldSeq.setEnabled(a);
+        textFieldCod.setEnabled(b);
+        textFieldObs.setEnabled(c);
+        
+    }
+    
+    private void setFocusTextFieldCod() {
+        textFieldCod.requestFocusInWindow();
+    }
+    
+    private void setFocusTextFieldSeq() {
+        textFieldSeq.requestFocusInWindow();
+    }
+    
+    private void setFocusTextFieldObs() {
+        textFieldObs.requestFocusInWindow();
+    }
+    
+    private void radioCodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioCodActionPerformed
+        travaTextFields(false, true, false);
+        setFocusTextFieldCod();
+    }//GEN-LAST:event_radioCodActionPerformed
+
+    private void radioSeqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioSeqActionPerformed
+        travaTextFields(true, false, false);
+        setFocusTextFieldSeq();
+    }//GEN-LAST:event_radioSeqActionPerformed
+
+    private void radioObsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioObsActionPerformed
+        travaTextFields(false, false, true);
+        setFocusTextFieldObs();
+    }//GEN-LAST:event_radioObsActionPerformed
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PesquisaBD.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PesquisaBD.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PesquisaBD.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PesquisaBD.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                PesquisaBD dialog = new PesquisaBD(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botPesq;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JRadioButton jRadioButton3;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JPanel painelPesq;
+    private javax.swing.JRadioButton radioCod;
+    private javax.swing.JRadioButton radioObs;
+    private javax.swing.JRadioButton radioSeq;
+    private javax.swing.JTextField textFieldCod;
+    private javax.swing.JTextField textFieldObs;
+    private javax.swing.JTextField textFieldSeq;
     // End of variables declaration//GEN-END:variables
 }

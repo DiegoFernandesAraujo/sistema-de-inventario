@@ -344,7 +344,7 @@ public class GerenciadorRelatorios extends javax.swing.JDialog {
     }
     
     private void botPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botPDFActionPerformed
-        new GerenciadorPDF().geraPDF(tabRelat);
+        //new GerenciadorPDF().geraPDF(tabRelat);
     }//GEN-LAST:event_botPDFActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed

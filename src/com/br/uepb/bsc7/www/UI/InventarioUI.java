@@ -7,7 +7,6 @@ package com.br.uepb.bsc7.www.UI;
 
 import com.br.uepb.bsc7.www.persistence.InventarioDAO;
 import java.awt.Cursor;
-import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -1570,7 +1569,10 @@ public class InventarioUI extends javax.swing.JFrame {
     }//GEN-LAST:event_botRecpLinhaKeyPressed
 
     private void botPesqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botPesqActionPerformed
-        // TODO add your handling code here:
+        if(logado){
+            PesquisaBD pesquisa = new PesquisaBD(this, true, dao);
+            
+        }
     }//GEN-LAST:event_botPesqActionPerformed
 
     private void botPesqKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_botPesqKeyPressed
